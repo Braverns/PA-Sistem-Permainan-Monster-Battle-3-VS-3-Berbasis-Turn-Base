@@ -187,3 +187,21 @@ bool loginUser(User users[], int jumlah_user, int &current_user, int &state, boo
     return login_berhasil;
 }
 
+
+
+
+
+
+// AJIS
+
+
+
+
+
+
+
+
+
+
+
+// ULUNG

@@ -315,3 +315,20 @@ void deleteMonster(Monster monsters[], int *jumlah_monster)
 }
 
 
+
+
+
+
+// AJIS
+
+
+
+
+
+
+
+
+
+
+
+// ULUNG
