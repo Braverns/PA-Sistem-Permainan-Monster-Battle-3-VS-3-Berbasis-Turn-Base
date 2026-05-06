@@ -18,3 +18,20 @@ void logout(int &state)
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     cin.get();
 }
+
+
+
+
+// AJIS
+
+
+
+
+
+
+
+
+
+
+
+// ULUNG

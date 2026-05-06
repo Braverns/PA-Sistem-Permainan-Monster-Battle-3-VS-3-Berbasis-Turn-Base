@@ -69,3 +69,21 @@ int main()
 
     return 0;
 }
+
+
+
+
+
+// AJIS
+
+
+
+
+
+
+
+
+
+
+
+// ULUNG
