@@ -1,6 +1,6 @@
 #include "global.h"
 
-void menuUser(User users[], Monster monsters[],int &jumlah_monster,int current_user, int &state)
+void menuUser(User users[], Monster monsters[], int &jumlah_monster, int current_user, int &state)
 {
     CLEAR_SCREEN;
     int pilih;
@@ -15,315 +15,43 @@ void menuUser(User users[], Monster monsters[],int &jumlah_monster,int current_u
     cout << "| 5  | Delete Monster             |\n";
     cout << "| 6  | Sort Menu                  |\n";
     cout << "| 7  | Search Menu                |\n";
-    cout << "| 0 | Logout                     |\n";
+    cout << "| 8  | Battle (Coming Soon)       |\n";
+    cout << "| 0  | Logout                     |\n";
     cout << "|____|____________________________|\n";
     cout << "Pilih: ";
 
     cin >> pilih;
-
     if(cin.fail())
     {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Input harus angka!\n";
-
-        cout << "\nTekan ENTER untuk melanjutkan...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
+        tampilPesan("Menu tidak valid!");
         return;
     }
 
     switch(pilih)
     {
-        case 1:
-            gachaMonster(users, monsters, jumlah_monster, current_user);
-            break;
-
+        case 1: gachaMonster(users, monsters, jumlah_monster, current_user); break;
         case 2:
-            if(jumlah_monster == 0)
             {
-                cout << "Belum ada monster\n";
+                CLEAR_SCREEN;
 
-                cout << "\nTekan ENTER untuk kembali...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin.get();
+                if(jumlah_monster == 0)
+                    tampilPesan("Belum ada monster!");
+                else
+                    tampilMonsterList(monsters, jumlah_monster);
 
+                tungguEnter();
                 break;
             }
-
-            tampilMonsterList(monsters, jumlah_monster);
-
-            cout << "\nTekan ENTER untuk kembali...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin.get();
-
-            break;
-
-        case 3:
-        {
-            CLEAR_SCREEN;
-            if(users[current_user].deck.jumlah == 0)
-            {
-                cout << "Deck masih kosong\n";
-
-                cout << "\nTekan ENTER untuk kembali...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin.get();
-
-                break;
-            }
-
-            tampilUserDeck(users, current_user);
-
-            cout << "\nTekan ENTER untuk kembali...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin.get();
-
-            break;
-        }
-
-        case 4:
-            sacrificeMonster(users, current_user);
-            break;
-
-        case 5:
-            deleteMonsterUser(users, current_user);
-            break;
-
-
-        // case 6
-        case 7:
-        {
-            CLEAR_SCREEN;
-
-            if(users[current_user].deck.jumlah == 0)
-            {
-                cout << "Deck kosong\n";
-
-                cout << "\nTekan ENTER untuk kembali...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin.get();
-                break;
-            }
-
-            sortDeckNamaAscending(users[current_user].deck.monsters, users[current_user].deck.jumlah);
-
-            tampilUserDeck(users, current_user);
-
-            cout << "\n(Disorting berdasarkan Nama A-Z)\n";
-
-            cout << "\nTekan ENTER untuk kembali...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin.get();
-            break;
-        }
-
+        case 3: tampilUserDeck(users, current_user); break;
+        case 4: sacrificeMonster(users, current_user); break;
+        case 5: deleteMonsterUser(users, current_user); break;
+        case 6: menuSort(users, current_user); break;
+        case 7: menuSearch(users, current_user); break;
         case 8:
-        {
-            CLEAR_SCREEN;
-
-            if(users[current_user].deck.jumlah == 0)
-            {
-                cout << "Deck kosong\n";
-
-                cout << "\nTekan ENTER untuk kembali...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin.get();
-                break;
-            }
-
-            sortDeckHPDescending(users[current_user].deck.monsters, users[current_user].deck.jumlah);
-
-            tampilUserDeck(users, current_user);
-
-            cout << "\n(Disorting berdasarkan HP Descending)\n";
-
-            cout << "\nTekan ENTER untuk kembali...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin.get();
+            tampilPesan("Fitur battle akan datang di update selanjutnya!");
             break;
-        }
-
-        case 9:
-        {
-            CLEAR_SCREEN;
-
-            if(users[current_user].deck.jumlah == 0)
-            {
-                cout << "Deck kosong\n";
-
-                cout << "\nTekan ENTER untuk kembali...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin.get();
-                break;
-            }
-
-            sortDeckIDAscending(users[current_user].deck.monsters, users[current_user].deck.jumlah);
-
-            tampilUserDeck(users, current_user);
-
-            cout << "\n(Disorting berdasarkan ID Ascending)\n";
-
-            cout << "\nTekan ENTER untuk kembali...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin.get();
-            break;
-        }
-
-        case 10:
-        {
-            CLEAR_SCREEN;
-
-            if(users[current_user].deck.jumlah == 0)
-            {
-                cout << "Deck kosong\n";
-
-                cout << "\nTekan ENTER untuk kembali...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin.get();
-                break;
-            }
-
-            cout << "\n_______________________________\n";
-            cout << "|   SEARCH MONSTER BY ID      |\n";
-            cout << "|_____________________________|\n";
-
-            sortDeckIDAscending(users[current_user].deck.monsters,
-                                users[current_user].deck.jumlah);
-
-            int id;
-            cout << "Masukkan ID monster: ";
-            cin >> id;
-
-            int index = binarySearchID(
-                users[current_user].deck.monsters,
-                users[current_user].deck.jumlah,
-                id
-            );
-
-            if(index != -1)
-            {
-                cout << "\n__________________________________________________________________________\n";
-                cout << "|                                                                        |\n";
-                cout << "|                        HASIL PENCARIAN MONSTER                         |\n";
-                cout << "|________________________________________________________________________|\n";
-
-                cout << left
-                    << setw(7)  << "|No"
-                    << setw(25) << "Nama"
-                    << setw(10) << "HP"
-                    << setw(10) << "ATK"
-                    << setw(21) << "Type"
-                    << "|"
-                    << endl;
-
-                cout << "|------------------------------------------------------------------------|\n";
-
-                cout << "|"
-                    << left << setw(6)  << index + 1
-                    << setw(25) << users[current_user].deck.monsters[index].nama
-                    << setw(10) << users[current_user].deck.monsters[index].hp
-                    << setw(10) << users[current_user].deck.monsters[index].attack
-                    << setw(21) << users[current_user].deck.monsters[index].type
-                    << "|\n";
-
-                cout << "|________________________________________________________________________|\n";
-            }
-            else
-            {
-                cout << "\nMonster tidak ditemukan\n";
-            }
-
-            cout << "\nTekan ENTER untuk kembali...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin.get();
-
-            break;
-        }
-
-        case 11:
-        {
-            CLEAR_SCREEN;
-
-            if(users[current_user].deck.jumlah == 0)
-            {
-                cout << "Deck kosong\n";
-
-                cout << "\nTekan ENTER untuk kembali...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin.get();
-                break;
-            }
-
-            cout << "\n_______________________________\n";
-            cout << "|   SEARCH MONSTER BY NAMA    |\n";
-            cout << "|_____________________________|\n";
-
-            string nama;
-            cout << "Masukkan nama monster: ";
-            cin >> nama;
-
-            bool ditemukan = false;
-            int jumlah_ditemukan = 0;
-
-            cout << "\n__________________________________________________________________________\n";
-            cout << "|                                                                        |\n";
-            cout << "|                        HASIL PENCARIAN MONSTER                         |\n";
-            cout << "|________________________________________________________________________|\n";
-
-            cout << left
-                << setw(7)  << "|No"
-                << setw(25) << "Nama"
-                << setw(10) << "HP"
-                << setw(10) << "ATK"
-                << setw(21) << "Type"
-                << "|"
-                << endl;
-
-            cout << "|------------------------------------------------------------------------|\n";
-
-            for(int i = 0; i < users[current_user].deck.jumlah; i++)
-            {
-                if(users[current_user].deck.monsters[i].nama == nama)
-                {
-                    ditemukan = true;
-                    jumlah_ditemukan++;
-
-                    cout << "|"
-                        << left << setw(6)  << i + 1
-                        << setw(25) << users[current_user].deck.monsters[i].nama
-                        << setw(10) << users[current_user].deck.monsters[i].hp
-                        << setw(10) << users[current_user].deck.monsters[i].attack
-                        << setw(21) << users[current_user].deck.monsters[i].type
-                        << "|\n";
-                }
-            }
-
-            if(!ditemukan)
-            {
-                cout << "|                        MONSTER TIDAK DITEMUKAN                         |\n";
-            }
-
-            cout << "|________________________________________________________________________|\n";
-
-            if(ditemukan)
-            {
-                cout << "\n(" << jumlah_ditemukan << " monster ditemukan)\n";
-            }
-
-            cout << "\nTekan ENTER untuk kembali...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin.get();
-
-            break;
-        }
-
-        case 0:
-            logout(state);
-            break;
-
-        default:
-            menuTidakValid();
+        case 0: logout(state); break;
+        default: tampilPesan("Menu tidak valid!");
     }
 }
 
@@ -334,12 +62,7 @@ void gachaMonster(User users[], Monster monsters[],
 {
     if(jumlah_monster == 0)
     {
-        cout << "Belum ada monster untuk digacha\n";
-
-        cout << "\nTekan ENTER untuk kembali...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan("Belum ada monster yang tersedia untuk gacha!");
         return;
     }
 
@@ -348,23 +71,13 @@ void gachaMonster(User users[], Monster monsters[],
             throw "Gold tidak cukup!";
     }
     catch(const char* msg) {
-        cout << msg << endl;
-
-        cout << "\nTekan ENTER untuk kembali...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan(msg);
         return;
     }
     
         if(users[current_user].deck.jumlah >= 100)
         {
-            cout << "Deck monster penuh\n";
-
-            cout << "\nTekan ENTER untuk kembali...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin.get();
-
+            tampilPesan("Deck monster penuh!");
             return;
         }
 
@@ -394,14 +107,13 @@ void gachaMonster(User users[], Monster monsters[],
     cout << "Attack        : " << um.attack << "\n";
     cout << "Gold tersisa: " << users[current_user].gold << "\n";
 
-    cout << "\nTekan ENTER untuk kembali...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
+    tungguEnter();
 }
 
 
 void tampilUserDeck(User users[], int current_user)
 {
+    CLEAR_SCREEN;
     cout << "\n__________________________________________________________________________\n";
     cout << "|                                                                        |\n";
     cout << "|                               USER DECK                                |\n";
@@ -426,6 +138,8 @@ void tampilUserDeck(User users[], int current_user)
 
     cout << "|________________________________________________________________________|\n";
     cout << "Gold : " << users[current_user].gold << endl;
+
+    tungguEnter();
 }
 
 
@@ -453,9 +167,7 @@ void sacrificeMonster(User users[], int current_user)
     {
         cout << "Minimal butuh 2 monster untuk sacrifice\n";
 
-        cout << "\nTekan ENTER untuk kembali...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
+        tungguEnter();
 
         return;
     }
@@ -478,12 +190,7 @@ void sacrificeMonster(User users[], int current_user)
        korban < 0 || korban >= users[current_user].deck.jumlah ||
        target == korban)
     {
-        cout << "Pilihan tidak valid\n";
-
-        cout << "\nTekan ENTER untuk kembali...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan("Pilihan monster tidak valid!");
         return;
     }
 
@@ -508,12 +215,7 @@ void sacrificeMonster(User users[], int current_user)
     }
     else
     {
-        cout << "Pilihan tidak valid\n";
-
-        cout << "\nTekan ENTER untuk kembali...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan("Pilihan tidak valid!");
         return;
     }
 
@@ -527,9 +229,7 @@ void sacrificeMonster(User users[], int current_user)
 
     cout << "Monster korban berhasil dikorbankan\n";
 
-    cout << "\nTekan ENTER untuk kembali...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
+    tungguEnter();
 }
 
 
@@ -537,12 +237,7 @@ void deleteMonsterUser(User users[], int current_user)
 {
     if(users[current_user].deck.jumlah == 0)
     {
-        cout << "Deck kosong\n";
-
-        cout << "\nTekan ENTER untuk kembali...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan("Deck kosong!");
         return;
     }
 
@@ -560,12 +255,7 @@ void deleteMonsterUser(User users[], int current_user)
             throw "Index monster tidak valid!";
     }
     catch(const char* msg) {
-        cout << msg << endl;
-
-        cout << "\nTekan ENTER untuk kembali...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan(msg);
         return;
     }
 
@@ -585,9 +275,7 @@ void deleteMonsterUser(User users[], int current_user)
     cout << "+50 gold diterima\n";
     cout << "Gold sekarang: " << users[current_user].gold << "\n";
 
-    cout << "\nTekan ENTER untuk kembali...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
+    tungguEnter();
 }
 
 void sortDeckNamaAscending(UserMonster monsters[], int jumlah)
@@ -709,6 +397,8 @@ void menuSort(User users[], int current_user)
     }
 
     tampilUserDeck(users, current_user);
+
+    tungguEnter();
 }
 
 void menuSearch(User users[], int current_user)
@@ -723,48 +413,143 @@ void menuSearch(User users[], int current_user)
     cout << "Pilih: ";
     cin >> pilih;
 
-    if(users[current_user].deck.jumlah == 0)
+    if(cin.fail())
     {
-        cout << "Deck kosong\n";
+        tampilPesan("Menu tidak valid!");
         return;
     }
 
+    if(users[current_user].deck.jumlah == 0)
+    {
+        tampilPesan("Deck kosong!");
+        return;
+    }
+
+    // id
     if(pilih == 1)
     {
-        sortDeckIDAscending(users[current_user].deck.monsters,
-                            users[current_user].deck.jumlah);
+        CLEAR_SCREEN;
+
+        sortDeckIDAscending(users[current_user].deck.monsters, users[current_user].deck.jumlah);
 
         int id;
         cout << "Masukkan ID: ";
         cin >> id;
 
-        int index = binarySearchID(
-            users[current_user].deck.monsters,
-            users[current_user].deck.jumlah,
-            id
-        );
+        CLEAR_SCREEN;
 
-        if(index != -1)
-            cout << "Ditemukan: " << users[current_user].deck.monsters[index].nama << endl;
-        else
-            cout << "Tidak ditemukan\n";
+        int index = binarySearchID(users[current_user].deck.monsters, users[current_user].deck.jumlah, id);
+
+        tampilHasilSearchID(users[current_user].deck.monsters, index);
     }
+
+    // nama
     else if(pilih == 2)
     {
+        CLEAR_SCREEN;
+
         string nama;
         cout << "Masukkan nama: ";
         cin >> nama;
 
-        int index = sequentialSearchNama(
-            users[current_user].deck.monsters,
-            users[current_user].deck.jumlah,
-            nama
-        );
+        CLEAR_SCREEN;
 
-        if(index != -1)
-            cout << "Ditemukan: " << users[current_user].deck.monsters[index].nama << endl;
-        else
-            cout << "Tidak ditemukan\n";
+        tampilHasilSearchNama(users[current_user].deck.monsters, users[current_user].deck.jumlah, nama);
+    }
+
+    else
+    {
+        menuTidakValid();
+        return;
+    }
+
+    tungguEnter();
+}
+
+void tampilHasilSearchID(UserMonster monsters[], int index)
+{
+    cout << "\n__________________________________________________________________________\n";
+    cout << "|                                                                        |\n";
+    cout << "|                        HASIL PENCARIAN MONSTER                         |\n";
+    cout << "|________________________________________________________________________|\n";
+
+    cout << left
+         << setw(7)  << "|No"
+         << setw(25) << "Nama"
+         << setw(10) << "HP"
+         << setw(10) << "ATK"
+         << setw(21) << "Type"
+         << "|"
+         << endl;
+
+    cout << "|------------------------------------------------------------------------|\n";
+
+    if(index != -1)
+    {
+        cout << "|"
+             << left << setw(6)  << index + 1
+             << setw(25) << monsters[index].nama
+             << setw(10) << monsters[index].hp
+             << setw(10) << monsters[index].attack
+             << setw(21) << monsters[index].type
+             << "|\n";
+    }
+    else
+    {
+        cout << "|                        MONSTER TIDAK DITEMUKAN                         |\n";
+    }
+
+    cout << "|________________________________________________________________________|\n";
+}
+
+void tampilHasilSearchNama(UserMonster monsters[], int jumlah, string nama)
+{
+    bool ditemukan = false;
+    int count = 0;
+
+    cout << "\n__________________________________________________________________________\n";
+    cout << "|                                                                        |\n";
+    cout << "|                        HASIL PENCARIAN MONSTER                         |\n";
+    cout << "|________________________________________________________________________|\n";
+
+    cout << left
+         << setw(7)  << "|No"
+         << setw(25) << "Nama"
+         << setw(10) << "HP"
+         << setw(10) << "ATK"
+         << setw(21) << "Type"
+         << "|"
+         << endl;
+
+    cout << "|------------------------------------------------------------------------|\n";
+
+    for(int i = 0; i < jumlah; i++)
+    {
+        if(monsters[i].nama == nama)
+        {
+            ditemukan = true;
+            count++;
+
+            cout << "|"
+                 << left << setw(6)  << i + 1
+                 << setw(25) << monsters[i].nama
+                 << setw(10) << monsters[i].hp
+                 << setw(10) << monsters[i].attack
+                 << setw(21) << monsters[i].type
+                 << "|\n";
+        }
+    }
+
+    if(!ditemukan)
+    {
+        cout << "|                        MONSTER TIDAK DITEMUKAN                         |\n";
+    }
+
+    cout << "|________________________________________________________________________|\n";
+
+    if(ditemukan)
+    {
+        cout << "\n(" << count << " monster ditemukan)\n";
     }
 }
 
