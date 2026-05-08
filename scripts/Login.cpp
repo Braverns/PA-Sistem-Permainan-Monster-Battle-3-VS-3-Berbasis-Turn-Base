@@ -4,6 +4,7 @@ void menuHome(int &state, bool &program_jalan)
 {
     CLEAR_SCREEN;
     int pilih;
+    
 
     cout << "\n_________________________________\n";
     cout << "|             HOME              |\n";
@@ -20,14 +21,7 @@ void menuHome(int &state, bool &program_jalan)
             throw "Input harus berupa angka!";
     }
     catch(const char* msg) {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << msg << endl;
-
-        cout << "\nTekan ENTER untuk kembali...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan(msg);
         return;
     }
 
@@ -46,7 +40,7 @@ void menuHome(int &state, bool &program_jalan)
             break;
 
         default:
-            cout << "Pilihan tidak valid!\n";
+            tampilPesan("Pilihan tidak valid!");
     }
 }
 
@@ -62,7 +56,7 @@ void daftarUser(User users[], int &jumlah_user, int &state)
 
     if(jumlah_user >= 100)
     {
-        cout << "Database user penuh!\n";
+        tampilPesan("Database user penuh!");
         state = 0;
         return;
     }
@@ -88,7 +82,7 @@ void daftarUser(User users[], int &jumlah_user, int &state)
 
     if(username_ada)
     {
-        cout << "Username sudah dipakai!\n";
+        tampilPesan("Username sudah dipakai!");
     }
     else
     {
@@ -109,14 +103,12 @@ void daftarUser(User users[], int &jumlah_user, int &state)
 
         jumlah_user++;
 
-        cout << "User berhasil dibuat\n";
+        tampilPesan("User berhasil dibuat");
     }
 
     state = 0;
 
-    cout << "\nTekan ENTER untuk melanjutkan...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
+    tungguEnter();
 }
 
 
@@ -169,20 +161,18 @@ bool loginUser(User users[], int jumlah_user, int &current_user, int &state, boo
         if(!login_berhasil)
         {
             percobaan++;
-            cout << "Username atau password salah\n";
+            tampilPesan("Username atau password salah");
             cout << "Sisa percobaan: " << 3 - percobaan << endl;
         }
     }
 
     if(!login_berhasil)
     {
-        cout << "\nLogin gagal 3 kali\n";
+        tampilPesan("Login gagal 3 kali");
         program_jalan = false;
     }
 
-    cout << "\nTekan ENTER untuk melanjutkan...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
+    tungguEnter();
 
     return login_berhasil;
 }

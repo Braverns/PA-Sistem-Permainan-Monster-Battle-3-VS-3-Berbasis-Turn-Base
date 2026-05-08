@@ -1,5 +1,7 @@
 #include "global.h"
 
+// g++ *.cpp -o game
+
 int main()
 {
     srand(time(0));
@@ -65,7 +67,7 @@ int main()
         }
     }
 
-    cout << "\nProgram selesai\n";
+    tampilPesan("Terima kasih telah bermain Battle Monster!");
 
     return 0;
 }

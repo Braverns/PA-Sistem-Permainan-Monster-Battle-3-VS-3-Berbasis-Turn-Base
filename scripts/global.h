@@ -96,4 +96,11 @@ int sequentialSearchNama(UserMonster monsters[], int jumlah, string nama);
 void menuSort(User users[], int current_user);
 void menuSearch(User users[], int current_user);
 
+void tampilHasilSearchID(UserMonster monsters[], int index);
+void tampilHasilSearchNama(UserMonster monsters[], int jumlah, string nama);
+
+void tampilPesan(string pesan);
+
+void tungguEnter();
+
 #endif

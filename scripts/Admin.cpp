@@ -24,14 +24,7 @@ void menuAdmin(User users[], Monster monsters[],int &jumlah_monster, int &next_m
 
     if(cin.fail())
     {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Input harus angka!\n";
-
-        cout << "\nTekan ENTER untuk melanjutkan...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan("Pilihan tidak valid!");
         return;
     }
 
@@ -45,21 +38,13 @@ void menuAdmin(User users[], Monster monsters[],int &jumlah_monster, int &next_m
         case 2:
             if(jumlah_monster == 0)
             {
-                cout << "Belum ada monster\n";
-
-                cout << "\nTekan ENTER untuk melanjutkan...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin.get();
-
+                tampilPesan("Belum ada monster untuk ditampilkan!");
                 break;
             }
 
             tampilMonsterList(monsters, jumlah_monster, "DATABASE MONSTER");
 
-            cout << "\nTekan ENTER untuk melanjutkan...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin.get();
-
+            tungguEnter();
             break;
 
         case 3:
@@ -76,7 +61,7 @@ void menuAdmin(User users[], Monster monsters[],int &jumlah_monster, int &next_m
             break;
 
         default:
-            menuTidakValid();
+            tampilPesan("Pilihan tidak valid!");
     }
 }
 
@@ -84,12 +69,7 @@ void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id
 {
     if(jumlah_monster >= 100)
     {
-        cout << "Database monster penuh!\n";
-
-        cout << "\nTekan ENTER untuk melanjutkan...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan("Database monster penuh!");
         return;
     }
 
@@ -117,11 +97,7 @@ void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id
 
     jumlah_monster++;
 
-    cout << "Monster berhasil dibuat\n";
-
-    cout << "\nTekan ENTER untuk melanjutkan...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
+    tampilPesan("Monster berhasil dibuat");
 }
 
 void tampilMonsterList(Monster monsters[], int jumlah_monster)
@@ -207,12 +183,7 @@ void updateMonster(Monster monsters[], int jumlah_monster)
 {
     if(jumlah_monster == 0)
     {
-        cout << "Belum ada monster\n";
-
-        cout << "\nTekan ENTER untuk melanjutkan...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan("Belum ada monster untuk diupdate!");
         return;
     }
 
@@ -250,12 +221,11 @@ void updateMonster(Monster monsters[], int jumlah_monster)
 
     if(!ditemukan)
     {
-        cout << "ID monster tidak ditemukan\n";
+        tampilPesan("ID monster tidak ditemukan!");
+        return;
     }
 
-    cout << "\nTekan ENTER untuk melanjutkan...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
+    tungguEnter();
 }
 
 
@@ -264,12 +234,7 @@ void deleteMonster(Monster monsters[], int *jumlah_monster)
 {
     if(*jumlah_monster == 0)
     {
-        cout << "Belum ada monster\n";
-
-        cout << "\nTekan ENTER untuk melanjutkan...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan("Belum ada monster untuk dihapus!");
         return;
     }
 
@@ -291,12 +256,7 @@ void deleteMonster(Monster monsters[], int *jumlah_monster)
 
     if(index == -1)
     {
-        cout << "Monster tidak ditemukan\n";
-
-        cout << "\nTekan ENTER untuk melanjutkan...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan("ID monster tidak ditemukan!");
         return;
     }
 
@@ -307,11 +267,7 @@ void deleteMonster(Monster monsters[], int *jumlah_monster)
 
     (*jumlah_monster)--;
 
-    cout << "Monster berhasil dihapus\n";
-
-    cout << "\nTekan ENTER untuk melanjutkan...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
+    tampilPesan("Monster berhasil dihapus");
 }
 
 
