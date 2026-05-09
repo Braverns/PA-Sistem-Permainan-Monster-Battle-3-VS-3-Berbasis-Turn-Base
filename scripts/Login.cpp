@@ -108,7 +108,6 @@ void daftarUser(User users[], int &jumlah_user, int &state)
 
     state = 0;
 
-    tungguEnter();
 }
 
 
@@ -161,8 +160,7 @@ bool loginUser(User users[], int jumlah_user, int &current_user, int &state, boo
         if(!login_berhasil)
         {
             percobaan++;
-            tampilPesan("Username atau password salah");
-            cout << "Sisa percobaan: " << 3 - percobaan << endl;
+            tampilPesan("Username atau password salah! Sisa percobaan: " + to_string(3 - percobaan));
         }
     }
 
@@ -171,8 +169,6 @@ bool loginUser(User users[], int jumlah_user, int &current_user, int &state, boo
         tampilPesan("Login gagal 3 kali");
         program_jalan = false;
     }
-
-    tungguEnter();
 
     return login_berhasil;
 }
