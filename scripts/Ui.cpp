@@ -93,11 +93,16 @@ void logout(int &state)
 void tungguEnter()
 {
     cin.clear();
-    cout << "\nTekan ENTER untuk kemballi...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "\nTekan ENTER untuk kemballi...";
     cin.get();
 }
 
+void tunggu()
+{
+    cout << "\nTekan ENTER untuk kemballi...";
+    cin.get();
+}
 
 
 // AJIS

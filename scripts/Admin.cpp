@@ -15,8 +15,7 @@ void menuAdmin(User users[], Monster monsters[],int &jumlah_monster, int &next_m
     cout << "| 2 | Read Monster List          |\n";
     cout << "| 3 | Update Monster             |\n";
     cout << "| 4 | Delete Monster             |\n";
-    cout << "| 5 | Read Permintaan User       |\n";
-    cout << "| 6 | Logout                     |\n";
+    cout << "| 0 | Logout                     |\n";
     cout << "|___|____________________________|\n";
     cout << "Pilih: ";
 
@@ -55,8 +54,7 @@ void menuAdmin(User users[], Monster monsters[],int &jumlah_monster, int &next_m
             deleteMonster(monsters, &jumlah_monster);
             break;
 
-        // case 5
-        case 6:
+        case 0:
             logout(state);
             break;
 
@@ -77,17 +75,23 @@ void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id
 
     cout << "\nCREATE MONSTER\n\n";
 
-    cout << "Nama monster   : ";
-    cin.ignore();
+    cout << "Nama monster    : ";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, m.status.nama);
 
-    cout << "HP monster     : ";
+    cout << "HP monster      : ";
     cin >> m.status.hp;
 
-    cout << "Attack monster : ";
+    cout << "Attack monster  : ";
     cin >> m.status.attack;
 
-    cout << "Type monster   : ";
+    cout << "Defense monster : ";
+    cin >> m.status.defense;
+
+    cout << "Speed monster   : ";
+    cin >> m.status.speed;
+
+    cout << "Type monster    : ";
     cin >> m.type.tipe;
 
     m.status.id = next_monster_id;
@@ -102,38 +106,44 @@ void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id
 
 void tampilMonsterList(Monster monsters[], int jumlah_monster)
 {
-    cout << "\n__________________________________________________________________________\n";
-    cout << "|                                                                        |\n";
-    cout << "|                               MONSTER LIST                             |\n";
-    cout << "|________________________________________________________________________|\n";
+    cout << "\n _______________________________________________________________________________________________\n";
+    cout << "|                                                                                               |\n";
+    cout << "|                                         MONSTER LIST                                          |\n";
+    cout << "|_______________________________________________________________________________________________|\n";
 
     cout << left 
          << setw(5)  << "|ID"
-         << setw(25) << "Nama"
-         << setw(11) << "HP"
-         << setw(11) << "ATK"
-         << setw(21) << "Type"
+         << setw(25) << "|Nama"
+         << setw(11) << "|HP"
+         << setw(11) << "|ATK"
+         << setw(11) << "|DEF"
+         << setw(11) << "|SPD"
+         << setw(22) << "|Type"
          << "|"
          << endl;
 
-    cout << "|------------------------------------------------------------------------|\n";
+    cout << "|----|------------------------|----------|----------|----------|----------|---------------------|\n";
 
     for(int i = 0; i < jumlah_monster; i++)
     {
         cout << "|"
              << left << setw(4)  << monsters[i].status.id
-             << ""
-             << setw(25) << monsters[i].status.nama
-             << ""
-             << setw(11) << monsters[i].status.hp
-             << ""
-             << setw(11) << monsters[i].status.attack
-             << ""
+             << "|"
+             << setw(24) << monsters[i].status.nama
+             << "|"
+             << setw(10) << monsters[i].status.hp
+             << "|"
+             << setw(10) << monsters[i].status.attack
+             << "|"
+             << setw(10) << monsters[i].status.defense
+             << "|"
+             << setw(10) << monsters[i].status.speed
+             << "|"
              << setw(21) << monsters[i].type.tipe
              << "|\n";
     }
 
-    cout << "|________________________________________________________________________|\n";
+    cout << "|____|________________________|__________|__________|__________|__________|_____________________|\n";
 }
 
 
@@ -142,38 +152,44 @@ void tampilMonsterList(Monster monsters[], int jumlah_monster, string judul)
 {
     cout << "\n" << judul << "\n";
 
-    cout << "\n__________________________________________________________________________\n";
-    cout << "|                                                                        |\n";
-    cout << "|                               MONSTER LIST                             |\n";
-    cout << "|________________________________________________________________________|\n";
+    cout << "\n _______________________________________________________________________________________________\n";
+    cout << "|                                                                                               |\n";
+    cout << "|                                         MONSTER LIST                                          |\n";
+    cout << "|_______________________________________________________________________________________________|\n";
 
     cout << left 
          << setw(5)  << "|ID"
-         << setw(25) << "Nama"
-         << setw(11) << "HP"
-         << setw(11) << "ATK"
-         << setw(21) << "Type"
+         << setw(25) << "|Nama"
+         << setw(11) << "|HP"
+         << setw(11) << "|ATK"
+         << setw(11) << "|DEF"
+         << setw(11) << "|SPD"
+         << setw(22) << "|Type"
          << "|"
          << endl;
 
-    cout << "|------------------------------------------------------------------------|\n";
+    cout << "|----|------------------------|----------|----------|----------|----------|---------------------|\n";
 
     for(int i = 0; i < jumlah_monster; i++)
     {
         cout << "|"
              << left << setw(4)  << monsters[i].status.id
-             << ""
-             << setw(25) << monsters[i].status.nama
-             << ""
-             << setw(11) << monsters[i].status.hp
-             << ""
-             << setw(11) << monsters[i].status.attack
-             << ""
+             << "|"
+             << setw(24) << monsters[i].status.nama
+             << "|"
+             << setw(10) << monsters[i].status.hp
+             << "|"
+             << setw(10) << monsters[i].status.attack
+             << "|"
+             << setw(10) << monsters[i].status.defense
+             << "|"
+             << setw(10) << monsters[i].status.speed
+             << "|"
              << setw(21) << monsters[i].type.tipe
              << "|\n";
     }
-
-    cout << "|________________________________________________________________________|\n";
+                                                                                   
+    cout << "|____|________________________|__________|__________|__________|__________|_____________________|\n";
 }
 
 
@@ -203,16 +219,23 @@ void updateMonster(Monster monsters[], int jumlah_monster)
 
             cout << "\nUPDATE MONSTER\n\n";
 
-            cout << "Nama baru   : ";
-            cin >> monsters[i].status.nama;
+            cout << "Nama Baru    : ";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getline(cin, monsters[i].status.nama);
 
-            cout << "HP baru     : ";
+            cout << "HP Baru      : ";
             cin >> monsters[i].status.hp;
 
-            cout << "Attack baru : ";
+            cout << "Attack Baru  : ";
             cin >> monsters[i].status.attack;
 
-            cout << "Type baru   : ";
+            cout << "Defense Baru : ";
+            cin >> monsters[i].status.defense;
+
+            cout << "Speed Baru   : ";
+            cin >> monsters[i].status.speed;
+
+            cout << "Type Baru    : ";
             cin >> monsters[i].type.tipe;
 
             cout << "Monster berhasil diupdate\n";
