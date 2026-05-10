@@ -7,6 +7,8 @@
 #include <limits>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
+#include <sstream>
 using namespace std;
 
 #ifdef _WIN32
@@ -65,6 +67,12 @@ struct BattleMonster
     bool hidup;
 };
 
+struct TurnUnit
+{
+    bool player_side;
+    int index;
+    int speed;
+};
 
 struct User
 {
@@ -109,14 +117,25 @@ void tungguEnter();
 void tunggu();
 
 // USER
-void menuUser(User users[], Monster monsters[],int &jumlah_monster,int current_user, int &state);
-void gachaMonster(User users[], Monster monsters[], int jumlah_monster, int current_user);
+void menuUser(User users[], Monster monsters[], int &jumlah_monster, int jumlah_user, int current_user,int &state);
+void gachaMonster(User users[], Monster monsters[], int jumlah_monster, int current_user, int jumlah_user);
 void buatKartuMonster(UserMonster monster, string kartu[]);
 void tampilMultiKartu(UserMonster monsters[], int jumlah);
 void tampilUserDeck(User users[], int current_user);
 void tampilUserDeckRekursif(UserMonster monsters[], int index, int jumlah);
-void sacrificeMonster(User users[], int current_user);
-void deleteMonsterUser(User users[], int current_user);
+void sacrificeMonster(User users[], int current_user, int jumlah_user);
+void deleteMonsterUser(User users[],int current_user,int jumlah_user);
+void pilihActiveTeam(User users[], int current_user);
+void tampilActiveTeam(User users[], int current_user);
+
+
+// BATTLE
+void battleMenu(User users[],Monster monsters[],int jumlah_monster,int current_user,int jumlah_user);
+void tampilBattleTeam(BattleMonster team[],string judul);
+bool semuaMonsterMati(BattleMonster team[]);
+void urutkanTurn(TurnUnit turns[], int jumlah);
+void playerAttack(BattleMonster player[], BattleMonster enemy[], int attacker);
+void enemyAttack(BattleMonster enemy[], BattleMonster player[],int attacker);
 
 // SEARCH & SORT
 void sortDeckNamaAscending(UserMonster monsters[], int jumlah);
@@ -124,7 +143,6 @@ void sortDeckHPDescending(UserMonster monsters[], int jumlah);
 void sortDeckIDAscending(UserMonster monsters[], int jumlah);
 
 int binarySearchID(UserMonster monsters[], int jumlah, int id);
-int sequentialSearchNama(UserMonster monsters[], int jumlah, string nama);
 
 void menuSort(User users[], int current_user);
 void menuSearch(User users[], int current_user);
@@ -132,5 +150,11 @@ void menuSearch(User users[], int current_user);
 void tampilHasilSearchID(UserMonster monsters[], int index);
 void tampilHasilSearchNama(UserMonster monsters[], int jumlah, string nama);
 
-
+// DATABASE
+void loadMonsterCSV(Monster monsters[], int &jumlah);
+void saveMonsterCSV(Monster monsters[], int jumlah);
+void loadUserCSV(User users[], int &jumlah);
+void saveUserCSV(User users[], int jumlah);
+void loadDeckCSV(User users[], int jumlah_user);
+void saveDeckCSV(User users[], int jumlah_user);
 #endif
