@@ -1,0 +1,3 @@
+id,username,password,role,gold
+0,admin,123,admin,0
+1,ajis,123,user,1000

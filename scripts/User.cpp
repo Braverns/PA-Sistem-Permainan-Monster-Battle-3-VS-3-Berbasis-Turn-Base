@@ -1,6 +1,7 @@
 #include "global.h"
 
-void menuUser(User users[], Monster monsters[], int &jumlah_monster, int current_user, int &state)
+
+void menuUser(User users[], Monster monsters[], int &jumlah_monster, int jumlah_user, int current_user,int &state)
 {
     CLEAR_SCREEN;
     int pilih;
@@ -8,14 +9,15 @@ void menuUser(User users[], Monster monsters[], int &jumlah_monster, int current
     cout << "\n___________________________________\n";
     cout << "|            MENU USER            |\n";
     cout << "|_________________________________|\n";
-    cout << "| 1  | Gacha Monster              |\n";
-    cout << "| 2  | Lihat Monster List         |\n";
-    cout << "| 3  | Lihat Deck                 |\n";
-    cout << "| 4  | Sacrifice Monster          |\n";
-    cout << "| 5  | Delete Monster             |\n";
-    cout << "| 6  | Sort Menu                  |\n";
-    cout << "| 7  | Search Menu                |\n";
-    cout << "| 8  | Battle (Coming Soon)       |\n";
+    cout << "| 1  | Battle                     |\n";
+    cout << "| 2  | Active Team                |\n";
+    cout << "| 3  | Gacha Monster              |\n";
+    cout << "| 4  | Lihat Deck                 |\n";
+    cout << "| 5  | Monster List               |\n";
+    cout << "| 6  | Sacrifice Monster          |\n";
+    cout << "| 7  | Delete Monster             |\n";
+    cout << "| 8  | Sort Deck                  |\n";
+    cout << "| 9  | Search Deck                |\n";
     cout << "| 0  | Logout                     |\n";
     cout << "|____|____________________________|\n";
     cout << "Pilih: ";
@@ -29,32 +31,60 @@ void menuUser(User users[], Monster monsters[], int &jumlah_monster, int current
 
     switch(pilih)
     {
-        case 1: gachaMonster(users, monsters, jumlah_monster, current_user); break;
-        case 2:
-            {
-                CLEAR_SCREEN;
-
-                if(jumlah_monster == 0)
-                    tampilPesan("Belum ada monster!");
-                else
-                    tampilMonsterList(monsters, jumlah_monster);
-
-                tungguEnter();
-                break;
-            }
-        case 3: tampilUserDeck(users, current_user); break;
-        case 4: sacrificeMonster(users, current_user); break;
-        case 5: deleteMonsterUser(users, current_user); break;
-        case 6: menuSort(users, current_user); break;
-        case 7: menuSearch(users, current_user); break;
-        case 8:
-            tampilPesan("Fitur battle akan datang di update selanjutnya!");
+        case 1:
+            battleMenu(users,monsters, jumlah_monster, current_user, jumlah_user);
             break;
-        case 0: logout(state); break;
-        default: tampilPesan("Menu tidak valid!");
+
+        case 2:
+            pilihActiveTeam(users, current_user);
+            break;
+
+        case 3:
+            gachaMonster(users,monsters, jumlah_monster, current_user, jumlah_user);
+            break;
+
+        case 4:
+            tampilUserDeck(users, current_user);
+            break;
+
+        case 5:
+        {
+            CLEAR_SCREEN;
+
+            if(jumlah_monster == 0)
+                tampilPesan("Belum ada monster!");
+            else
+                tampilMonsterList(monsters, jumlah_monster);
+
+            tungguEnter();
+
+            break;
+        }
+
+        case 6:
+            sacrificeMonster(users,current_user,jumlah_user);
+            break;
+
+        case 7:
+            deleteMonsterUser(users, current_user, jumlah_user);
+            break;
+
+        case 8:
+            menuSort(users, current_user);
+            break;
+
+        case 9:
+            menuSearch(users, current_user);
+            break;
+
+        case 0:
+            logout(state);
+            break;
+
+        default:
+            tampilPesan("Menu tidak valid!");
     }
 }
-
 
 
 // void gachaMonster(User users[], Monster monsters[],
@@ -206,8 +236,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
 }
 
 
-void gachaMonster(User users[], Monster monsters[],
-                  int jumlah_monster, int current_user)
+void gachaMonster(User users[], Monster monsters[], int jumlah_monster, int current_user, int jumlah_user)
 {
     if(jumlah_monster == 0)
     {
@@ -219,8 +248,13 @@ void gachaMonster(User users[], Monster monsters[],
 
     int jumlah_gacha;
 
-    cout << "\n========== GACHA MONSTER ==========\n";
-    cout << "Harga 1x Gacha : 100 Gold\n";
+    cout << "\n _______________________________________________________________\n";
+    cout << "|                                                               |\n";
+    cout << "|                       MENU GACHA MONSTER                      |\n";
+    cout << "|                                                               |\n";
+    cout << "|                                                               |\n";
+    cout << "|                    Harga 1x Gacha : 100 Gold                  |\n";
+    cout << "|_______________________________________________________________|\n";
     cout << "Gold Kamu      : "
          << users[current_user].gold
          << "\n";
@@ -297,6 +331,8 @@ void gachaMonster(User users[], Monster monsters[],
     cout << "Gold tersisa : "
          << users[current_user].gold
          << endl;
+    saveUserCSV(users, jumlah_user);
+    saveDeckCSV(users, jumlah_user);
 
     tungguEnter();
 }
@@ -362,7 +398,7 @@ void tampilUserDeckRekursif(UserMonster monsters[], int index, int jumlah)
 }
 
 
-void sacrificeMonster(User users[], int current_user)
+void sacrificeMonster(User users[], int current_user, int jumlah_user)
 {
     if(users[current_user].deck.jumlah < 2)
     {
@@ -428,13 +464,21 @@ void sacrificeMonster(User users[], int current_user)
 
     users[current_user].deck.jumlah--;
 
+    for(int i = 0; i < 3; i++)
+    {
+        users[current_user].active_team[i] = -1;
+    }
+
+    saveUserCSV(users, jumlah_user);
+    saveDeckCSV(users, jumlah_user);
+
     cout << "Monster korban berhasil dikorbankan\n";
 
     tungguEnter();
 }
 
 
-void deleteMonsterUser(User users[], int current_user)
+void deleteMonsterUser(User users[],int current_user,int jumlah_user)
 {
     if(users[current_user].deck.jumlah == 0)
     {
@@ -475,6 +519,14 @@ void deleteMonsterUser(User users[], int current_user)
 
     cout << "+50 gold diterima\n";
     cout << "Gold sekarang: " << users[current_user].gold << "\n";
+
+    for(int i = 0; i < 3; i++)
+    {
+        users[current_user].active_team[i] = -1;
+    }
+
+    saveUserCSV(users, jumlah_user);
+    saveDeckCSV(users, jumlah_user);
 
     tungguEnter();
 }
@@ -546,16 +598,6 @@ int binarySearchID(UserMonster *monsters, int jumlah, int target_id)
     return -1;
 }
 
-int sequentialSearchNama(UserMonster *monsters, int jumlah, string nama)
-{
-    for(int i = 0; i < jumlah; i++)
-    {
-        if(monsters[i].nama == nama)
-            return i;
-    }
-    return -1;
-}
-
 void menuSort(User users[], int current_user)
 {
     CLEAR_SCREEN;
@@ -578,18 +620,15 @@ void menuSort(User users[], int current_user)
     switch(pilih)
     {
         case 1:
-            sortDeckNamaAscending(users[current_user].deck.monsters,
-                                  users[current_user].deck.jumlah);
+            sortDeckNamaAscending(users[current_user].deck.monsters, users[current_user].deck.jumlah);
             break;
 
         case 2:
-            sortDeckHPDescending(users[current_user].deck.monsters,
-                                 users[current_user].deck.jumlah);
+            sortDeckHPDescending(users[current_user].deck.monsters, users[current_user].deck.jumlah);
             break;
 
         case 3:
-            sortDeckIDAscending(users[current_user].deck.monsters,
-                                users[current_user].deck.jumlah);
+            sortDeckIDAscending(users[current_user].deck.monsters, users[current_user].deck.jumlah);
             break;
 
         default:
@@ -599,7 +638,6 @@ void menuSort(User users[], int current_user)
 
     tampilUserDeck(users, current_user);
 
-    tungguEnter();
 }
 
 void menuSearch(User users[], int current_user)
@@ -778,8 +816,105 @@ void tampilHasilSearchNama(UserMonster monsters[], int jumlah, string nama)
 }
 
 
+void tampilActiveTeam(User users[], int current_user)
+{
+    cout << "\n ____________________________________________________________________________________________________\n";
+    cout << "|                                                                                                    |\n";
+    cout << "|                                      ACTIVE TEAM MONSTER                                           |\n";
+    cout << "|____________________________________________________________________________________________________|\n";
 
+    for(int i = 0; i < 3; i++)
+    {
+        int idx = users[current_user].active_team[i];
 
+        cout << i + 1 << ". ";
+
+        if(idx == -1)
+        {
+            cout << "[KOSONG]\n";
+        }
+        else
+        {
+            cout
+            << users[current_user]
+               .deck.monsters[idx]
+               .nama
+
+            << " (HP: "
+
+            << users[current_user]
+               .deck.monsters[idx]
+               .hp
+
+            << ")\n";
+        }
+    }
+}
+
+void pilihActiveTeam(User users[], int current_user)
+{
+    if(users[current_user].deck.jumlah < 3)
+    {
+        tampilPesan("Minimal membutuhkan 3 monster!");
+        return;
+    }
+
+    tampilUserDeck(users, current_user);
+
+    int pilihan[3];
+
+    cout << "\n ________________________________________________\n";
+    cout << "|                                                |\n";
+    cout << "|           PILIH ACTIVE TEAM (3 MONSTER)        |\n"; 
+    cout << "|                                                |\n";
+    cout << "|________________________________________________|\n";
+
+    for(int i = 0; i < 3; i++)
+    {
+        cout << "Pilih monster slot "
+             << i + 1
+             << " : ";
+
+        cin >> pilihan[i];
+
+        pilihan[i]--;
+
+        if(cin.fail())
+        {
+            tampilPesan("Input tidak valid!");
+            return;
+        }
+
+        if(pilihan[i] < 0 ||
+           pilihan[i] >= users[current_user].deck.jumlah)
+        {
+            tampilPesan("Index monster tidak valid!");
+            return;
+        }
+
+        for(int j = 0; j < i; j++)
+        {
+            if(pilihan[i] == pilihan[j])
+            {
+                tampilPesan("Monster tidak boleh sama!");
+                return;
+            }
+        }
+    }
+
+    for(int i = 0; i < 3; i++)
+    {
+        users[current_user].active_team[i] = pilihan[i];
+    }
+
+    CLEAR_SCREEN;
+
+    cout << "Active team berhasil disimpan!\n";
+
+    tampilActiveTeam(users, current_user);
+
+    tungguEnter();
+}
 
 // AJIS
 

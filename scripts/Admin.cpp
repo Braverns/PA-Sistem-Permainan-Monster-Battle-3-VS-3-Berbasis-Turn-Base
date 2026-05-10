@@ -100,6 +100,7 @@ void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id
     monsters[jumlah_monster] = m;
 
     jumlah_monster++;
+    saveMonsterCSV(monsters, jumlah_monster);
 
     tampilPesan("Monster berhasil dibuat");
 }
@@ -239,6 +240,7 @@ void updateMonster(Monster monsters[], int jumlah_monster)
             cin >> monsters[i].type.tipe;
 
             cout << "Monster berhasil diupdate\n";
+            saveMonsterCSV(monsters, jumlah_monster);
         }
     }
 
@@ -289,6 +291,7 @@ void deleteMonster(Monster monsters[], int *jumlah_monster)
     }
 
     (*jumlah_monster)--;
+    saveMonsterCSV(monsters, *jumlah_monster);
 
     tampilPesan("Monster berhasil dihapus");
 }

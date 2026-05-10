@@ -94,6 +94,11 @@ void daftarUser(User users[], int &jumlah_user, int &state)
         users[jumlah_user].gold = 1000;
         users[jumlah_user].deck.jumlah = 0;
 
+        for(int i = 0; i < 3; i++)
+        {
+            users[jumlah_user].active_team[i] = -1;
+        }
+
         if(jumlah_user > 0)
         {
             users[jumlah_user - 1].next = &users[jumlah_user];
@@ -102,6 +107,7 @@ void daftarUser(User users[], int &jumlah_user, int &state)
         users[jumlah_user].next = NULL;
 
         jumlah_user++;
+        saveUserCSV(users, jumlah_user);
 
         tampilPesan("User berhasil dibuat");
     }
