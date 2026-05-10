@@ -331,7 +331,6 @@ void gachaMonster(User users[], Monster monsters[], int jumlah_monster, int curr
     cout << "Gold tersisa : "
          << users[current_user].gold
          << endl;
-         
     saveUserCSV(users, jumlah_user);
     saveDeckCSV(users, jumlah_user);
 

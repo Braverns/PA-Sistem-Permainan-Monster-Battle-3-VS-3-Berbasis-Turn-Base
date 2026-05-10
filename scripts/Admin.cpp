@@ -15,6 +15,7 @@ void menuAdmin(User users[], Monster monsters[],int &jumlah_monster, int &next_m
     cout << "| 2 | Read Monster List          |\n";
     cout << "| 3 | Update Monster             |\n";
     cout << "| 4 | Delete Monster             |\n";
+    cout << "| 5 | Read User                  |\n";
     cout << "| 0 | Logout                     |\n";
     cout << "|___|____________________________|\n";
     cout << "Pilih: ";
