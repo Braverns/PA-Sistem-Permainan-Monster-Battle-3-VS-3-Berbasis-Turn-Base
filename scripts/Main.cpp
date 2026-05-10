@@ -1,6 +1,8 @@
 #include "global.h"
 
-// g++ *.cpp -o game
+// run with: g++ scripts/*.cpp -o game lalu  ./game
+
+
 
 int main()
 {
