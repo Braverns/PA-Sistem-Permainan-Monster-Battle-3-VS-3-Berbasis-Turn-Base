@@ -95,6 +95,8 @@ int main()
     }
 
     saveMonsterCSV(monsters, jumlah_monster);
+    saveUserCSV(users, jumlah_user);
+    saveDeckCSV(users, jumlah_user);
 
     tampilPesan("Terima kasih telah bermain Battle Monster!");
     return 0;
