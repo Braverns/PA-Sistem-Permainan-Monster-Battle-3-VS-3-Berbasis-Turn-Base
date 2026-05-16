@@ -37,7 +37,6 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_mon
         }
 
         cout << "|_________________________________|\n";
-
         cout << "\nGunakan UP/DOWN dan ENTER\n";
 
         char tombol = _getch();
@@ -72,37 +71,23 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_mon
             switch(cursor)
             {
                 case 0:
-                    createMonster(
-                        monsters,
-                        jumlah_monster,
-                        next_monster_id
-                    );
+                    createMonster(monsters, jumlah_monster, next_monster_id);
                     break;
 
                 case 1:
                     CLEAR_SCREEN;
 
-                    tampilMonsterList(
-                        monsters,
-                        jumlah_monster,
-                        ""
-                    );
+                    tampilMonsterList( monsters, jumlah_monster, "");
 
                     tungguClear();
                     break;
 
                 case 2:
-                    updateMonster(
-                        monsters,
-                        jumlah_monster
-                    );
+                    updateMonster(monsters, jumlah_monster);
                     break;
 
                 case 3:
-                    deleteMonster(
-                        monsters,
-                        &jumlah_monster
-                    );
+                    deleteMonster( monsters, &jumlah_monster);
                     break;
 
                 case 4:
@@ -110,9 +95,7 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_mon
                     break;
 
                 case 5:
-                    tampilPesan(
-                        "Feature belum dibuat!"
-                    );
+                    tampilPesan("Feature belum dibuat!");
                     break;
 
                 case 6:
@@ -150,7 +133,6 @@ void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id
     cout << "   |\n";
     cout << "|                                                  |";
     cin.clear();
-
 
     cout << "\n| [ Nama Monster ]\n";
     cout << "|> ";
@@ -215,8 +197,7 @@ void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id
         return;
     }
 
-    m.status.id =
-    next_monster_id;
+    m.status.id =next_monster_id;
     next_monster_id++;
     monsters[jumlah_monster] = m;
     jumlah_monster++;
@@ -306,7 +287,6 @@ void tampilMonsterList(Monster monsters[], int jumlah_monster)
 void tampilMonsterList(Monster monsters[], int jumlah_monster, string judul)
 {
     cout << "\n" << judul << "\n";
-
     tampilMonsterList(monsters, jumlah_monster);
 }
 
@@ -331,9 +311,8 @@ void updateMonster( Monster monsters[], int jumlah_monster)
         if(monsters[i].status.id == id)
         {
             ditemukan = true;
-
+            
             cout << "\nUPDATE MONSTER\n\n";
-
             cout << "Nama Baru    : ";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 

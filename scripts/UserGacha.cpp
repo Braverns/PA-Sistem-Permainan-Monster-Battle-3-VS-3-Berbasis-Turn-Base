@@ -42,11 +42,7 @@ int getMonsterByRarity(Monster monsters[], int jumlah_monster, string rarity)
 }
 
 
-void randomSkillMonster(
-    UserMonster &monster,
-    Skill skills[],
-    int jumlah_skill
-)
+void randomSkillMonster(UserMonster &monster, Skill skills[], int jumlah_skill)
 {
     int kandidat[100];
     int jumlah_kandidat = 0;
@@ -76,9 +72,7 @@ void randomSkillMonster(
 
     for(int i = 0; i < 3; i++)
     {
-        int random_index =
-        kandidat[rand() % jumlah_kandidat];
-
+        int random_index = kandidat[rand() % jumlah_kandidat];
         monster.skills[i] = skills[random_index];
     }
 }
@@ -89,17 +83,11 @@ void buatKartuMonster(UserMonster monster, string kartu[])
     kartu[0] =
     " ____________________ ";
 
-    string nama =
-    monster.nama;
+    string nama = monster.nama;
 
-    int padding =
-    20 - nama.length();
-
-    int kiri =
-    padding / 2;
-
-    int kanan =
-    padding - kiri;
+    int padding = 20 - nama.length();
+    int kiri = padding / 2;
+    int kanan = padding - kiri;
 
     kartu[1] = "|";
 
@@ -113,13 +101,9 @@ void buatKartuMonster(UserMonster monster, string kartu[])
 
     kartu[1] += "|";
 
+    kartu[2] = "|____________________|";
 
-    kartu[2] =
-    "|____________________|";
-
-    kartu[3] =
-    "|HP  : " +
-    to_string(monster.hp);
+    kartu[3] = "|HP  : " + to_string(monster.hp);
 
     while(kartu[3].length() < 21)
         kartu[3] += " ";
@@ -127,9 +111,7 @@ void buatKartuMonster(UserMonster monster, string kartu[])
     kartu[3] += "|";
 
 
-    kartu[4] =
-    "|ATK : " +
-    to_string(monster.attack);
+    kartu[4] = "|ATK : " + to_string(monster.attack);
 
     while(kartu[4].length() < 21)
         kartu[4] += " ";
@@ -137,79 +119,56 @@ void buatKartuMonster(UserMonster monster, string kartu[])
     kartu[4] += "|";
 
 
-    kartu[5] =
-    "|DEF : " +
-    to_string(monster.defense);
+    kartu[5] = "|DEF : " + to_string(monster.defense);
 
     while(kartu[5].length() < 21)
         kartu[5] += " ";
 
     kartu[5] += "|";
 
-    kartu[6] =
-    "|SPD : " +
-    to_string(monster.speed);
+    kartu[6] = "|SPD : " + to_string(monster.speed);
 
     while(kartu[6].length() < 21)
         kartu[6] += " ";
 
     kartu[6] += "|";
 
-
-    kartu[7] =
-    "|S1  : " +
-    monster.skills[0].nama;
+    kartu[7] = "|S1  : " + monster.skills[0].nama;
 
     while(kartu[7].length() < 21)
         kartu[7] += " ";
 
     kartu[7] += "|";
 
-
-    kartu[8] =
-    "|S2  : " +
-    monster.skills[1].nama;
+    kartu[8] = "|S2  : " + monster.skills[1].nama;
 
     while(kartu[8].length() < 21)
         kartu[8] += " ";
 
     kartu[8] += "|";
 
-
-    kartu[9] =
-    "|S3  : " +
-    monster.skills[2].nama;
+    kartu[9] = "|S3  : " + monster.skills[2].nama;
 
     while(kartu[9].length() < 21)
         kartu[9] += " ";
 
     kartu[9] += "|";
 
-    kartu[10] =
-    "|TP  : " +
-    monster.type;
+    kartu[10] = "|TP  : " + monster.type;
 
     while(kartu[10].length() < 21)
         kartu[10] += " ";
 
     kartu[10] += "|";
 
-
     kartu[11] =
     "|____________________|";
 
 
-    string rarity =
-    monster.rarity;
-
-    padding =
-    20 - rarity.length();
-
-    kiri =
-    padding / 2;
-
-    kanan =
-    padding - kiri;
+    string rarity = monster.rarity;
+    padding = 20 - rarity.length();
+    kiri = padding / 2;
+    kanan = padding - kiri;
 
     kartu[12] = "|";
 
@@ -224,8 +183,7 @@ void buatKartuMonster(UserMonster monster, string kartu[])
     kartu[12] += "|";
 
 
-    kartu[13] =
-    "|____________________|";
+    kartu[13] = "|____________________|";
 }
 
 
@@ -243,9 +201,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
             for(int i = baris; i < akhir; i++)
             {
                 string kartu[14];
-
                 buatKartuMonster(monsters[i], kartu);
-
                 cout << kartu[line] << " ";
             }
 
@@ -323,31 +279,20 @@ void gachaMonster(User users[], Monster monsters[], Skill skills[],
         UserMonster um;
 
         um.monster_id = m.status.id;
-
         um.nama = m.status.nama;
-
         um.hp = m.status.hp;
-
         um.attack = m.status.attack;
-
         um.defense = m.status.defense;
-
         um.speed = m.status.speed;
-
         um.type = m.type.tipe;
-
         um.rarity = m.rarity.rarity;
-
         randomSkillMonster(um, skills, jumlah_skill);
-
         hasil_gacha[i] = um;
 
         int deck_index =users[current_user].deck.jumlah;
 
         users[current_user].deck.monsters[deck_index] = um;
-
         users[current_user].deck.jumlah++;
-
         users[current_user].gold -= 100;
     }
 

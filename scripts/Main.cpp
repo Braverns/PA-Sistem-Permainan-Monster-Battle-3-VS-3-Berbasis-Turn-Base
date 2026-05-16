@@ -8,13 +8,9 @@
 int main()
 {
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-
     CONSOLE_CURSOR_INFO cursorInfo;
-
     GetConsoleCursorInfo(hOut,&cursorInfo);
-
     cursorInfo.bVisible = false;
-
     SetConsoleCursorInfo(hOut, &cursorInfo);
 
     srand(time(0));
@@ -37,13 +33,11 @@ int main()
 
     if(jumlah_monster > 0)
     {
-        next_monster_id =
-        monsters[jumlah_monster - 1].status.id + 1;
+        next_monster_id = monsters[jumlah_monster - 1].status.id + 1;
     }
 
     // LOAD DATABASE
     loadUserCSV(users, jumlah_user);
-
     loadDeckCSV(users, skills, jumlah_user, jumlah_skill);
 
     // Kalau belum ada user
