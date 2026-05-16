@@ -2,45 +2,89 @@
 
 void menuHome(int &state, bool &program_jalan)
 {
-    CLEAR_SCREEN;
-    int pilih;
-    
+    int cursor = 0;
 
-    cout << "\n_________________________________\n";
-    cout << "|             HOME              |\n";
-    cout << "|_______________________________|\n";
-    cout << "| 1 | Login                     |\n";
-    cout << "| 2 | Daftar                    |\n";
-    cout << "| 3 | Exit                      |\n";
-    cout << "|___|___________________________|\n";
-    cout << "Pilih: ";
-
-    try {
-        cin >> pilih;
-        if(cin.fail())
-            throw "Input harus berupa angka!";
-    }
-    catch(const char* msg) {
-        tampilPesan(msg);
-        return;
-    }
-
-    switch(pilih)
+    string menu[4] =
     {
-        case 1:
-            state = 1;
-            break;
+        "Login",
+        "Daftar",
+        "Setting",
+        "Exit"
+    };
 
-        case 2:
-            state = 2;
-            break;
+    while(true)
+    {
+        CLEAR_SCREEN;
 
-        case 3:
-            program_jalan = false;
-            break;
+        cout << "\n __________________________________\n";
+        cout << "|                                  |\n";
+        cout << "|         BATTLE MONSTER           |\n";
+        cout << "|__________________________________|\n";
 
-        default:
-            tampilPesan("Pilihan tidak valid!");
+        for(int i = 0; i < 4; i++)
+        {
+            cout << "| ";
+
+            if(cursor == i)
+                cout << ">> ";
+            else
+                cout << "   ";
+
+            cout << left << setw(28) << menu[i]  << "  |\n";
+        }
+
+        cout << "|__________________________________|\n";
+
+        cout << "\nGunakan UP/DOWN dan ENTER\n";
+
+        char tombol = _getch();
+
+        // ARROW
+        if(tombol == -32)
+        {
+            tombol = _getch();
+
+            // ATAS
+            if(tombol == 72)
+            {
+                cursor--;
+
+                if(cursor < 0)
+                    cursor = 3;
+            }
+
+            // BAWAH
+            else if(tombol == 80)
+            {
+                cursor++;
+
+                if(cursor > 3)
+                    cursor = 0;
+            }
+        }
+
+        // ENTER
+        else if(tombol == 13)
+        {
+            switch(cursor)
+            {
+                case 0:
+                    state = 1;
+                    return;
+
+                case 1:
+                    state = 2;
+                    return;
+
+                case 2:
+                    menuSetting();
+                    break;
+
+                case 3:
+                    program_jalan = false;
+                    return;
+            }
+        }
     }
 }
 

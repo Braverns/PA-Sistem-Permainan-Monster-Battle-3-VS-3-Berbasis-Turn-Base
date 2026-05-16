@@ -1,16 +1,31 @@
 #include "global.h"
 
-// run with: g++ scripts/*.cpp -o game lalu  ./game
-
+// run with: 
+//          • g++ scripts/*.cpp -o game -lwinmm 
+//          • ./game
 
 
 int main()
 {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    CONSOLE_CURSOR_INFO cursorInfo;
+
+    GetConsoleCursorInfo(hOut,&cursorInfo);
+
+    cursorInfo.bVisible = false;
+
+    SetConsoleCursorInfo(hOut, &cursorInfo);
+
     srand(time(0));
+
+    playBGM(L"music/bgm1.wav");
 
     User users[100];
     Monster monsters[100];
-
+    Skill skills[100];
+    int jumlah_skill = 0;
+    
     int jumlah_user = 0;
     int jumlah_monster = 0;
 
@@ -18,7 +33,7 @@ int main()
 
 
     loadMonsterCSV(monsters, jumlah_monster);
-
+    loadSkillCSV(skills, jumlah_skill);
 
     if(jumlah_monster > 0)
     {
@@ -29,7 +44,7 @@ int main()
     // LOAD DATABASE
     loadUserCSV(users, jumlah_user);
 
-    loadDeckCSV(users, jumlah_user);
+    loadDeckCSV(users, skills, jumlah_user, jumlah_skill);
 
     // Kalau belum ada user
     if(jumlah_user == 0)
@@ -83,13 +98,13 @@ int main()
 
             case 3:
             {
-                menuAdmin(users, monsters, jumlah_monster, next_monster_id, state);
+                menuAdmin(users, monsters, skills, jumlah_monster, jumlah_skill, next_monster_id, state);
                 break;
             }
 
             case 4:
             {
-                menuUser(users, monsters, jumlah_monster, jumlah_user, current_user, state);
+                menuUser(users, monsters, skills, jumlah_monster, jumlah_skill, jumlah_user, current_user, state);
                 break;
             }
 

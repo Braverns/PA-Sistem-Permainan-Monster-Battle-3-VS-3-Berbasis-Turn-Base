@@ -55,6 +55,9 @@ void loadMonsterCSV(Monster monsters[], int &jumlah)
             // Type
             getline(ss, m.type.tipe, ',');
 
+            // Rarity
+            getline(ss, m.rarity.rarity, ',');
+
             monsters[jumlah] = m;
 
             jumlah++;
@@ -68,8 +71,6 @@ void loadMonsterCSV(Monster monsters[], int &jumlah)
     file.close();
 }
 
-
-
 void saveMonsterCSV(Monster monsters[], int jumlah)
 {
     ofstream file("data/monster.csv");
@@ -80,7 +81,7 @@ void saveMonsterCSV(Monster monsters[], int jumlah)
         return;
     }
 
-    file << "id,nama,hp,attack,defense,speed,type\n";
+    file << "id,nama,hp,attack,defense,speed,type,rarity\n";
 
     for(int i = 0; i < jumlah; i++)
     {
@@ -91,7 +92,8 @@ void saveMonsterCSV(Monster monsters[], int jumlah)
         << monsters[i].status.attack << ","
         << monsters[i].status.defense << ","
         << monsters[i].status.speed << ","
-        << monsters[i].type.tipe
+        << monsters[i].type.tipe << ","
+        << monsters[i].rarity.rarity
         << "\n";
     }
 
@@ -143,12 +145,17 @@ void loadUserCSV(User users[], int &jumlah)
             getline(ss, temp, ',');
             u.gold = stoi(temp);
 
-            u.deck.jumlah = 0;
+            // ACTIVE TEAM
+            getline(ss, temp, ',');
+            u.active_team[0] = stoi(temp);
 
-            for(int i = 0; i < 3; i++)
-            {
-                u.active_team[i] = -1;
-            }
+            getline(ss, temp, ',');
+            u.active_team[1] = stoi(temp);
+
+            getline(ss, temp, ',');
+            u.active_team[2] = stoi(temp);
+
+            u.deck.jumlah = 0;
 
             u.next = NULL;
 
@@ -185,7 +192,7 @@ void saveUserCSV(User users[], int jumlah)
         return;
     }
 
-    file << "id,username,password,role,gold\n";
+    file << "id,username,password,role,gold,team1,team2,team3\n";
 
     for(int i = 0; i < jumlah; i++)
     {
@@ -194,13 +201,15 @@ void saveUserCSV(User users[], int jumlah)
         << users[i].username << ","
         << users[i].password << ","
         << users[i].role << ","
-        << users[i].gold
+        << users[i].gold << ","
+        << users[i].active_team[0] << ","
+        << users[i].active_team[1] << ","
+        << users[i].active_team[2]
         << "\n";
     }
 
     file.close();
 }
-
 
 void saveDeckCSV(User users[], int jumlah_user)
 {
@@ -212,7 +221,8 @@ void saveDeckCSV(User users[], int jumlah_user)
         return;
     }
 
-    file << "user_id,monster_id,nama,hp,attack,defense,speed,type\n";
+    file << "user_id,monster_id,nama,hp,attack,defense,speed,type,rarity,"
+          << "skill1_id,skill2_id,skill3_id\n";
 
     for(int i = 0; i < jumlah_user; i++)
     {
@@ -231,7 +241,11 @@ void saveDeckCSV(User users[], int jumlah_user)
             << m.attack << ","
             << m.defense << ","
             << m.speed << ","
-            << m.type
+            << m.type << ","
+            << m.rarity << ","
+            << m.skills[0].id << ","
+            << m.skills[1].id << ","
+            << m.skills[2].id
             << "\n";
         }
     }
@@ -239,7 +253,32 @@ void saveDeckCSV(User users[], int jumlah_user)
     file.close();
 }
 
-void loadDeckCSV(User users[], int jumlah_user)
+Skill cariSkillByID(
+    Skill skills[],
+    int jumlah_skill,
+    int id
+)
+{
+    for(int i = 0; i < jumlah_skill; i++)
+    {
+        if(skills[i].id == id)
+        {
+            return skills[i];
+        }
+    }
+
+    Skill kosong;
+
+    kosong.id = -1;
+    kosong.nama = "Unknown";
+    kosong.element = "None";
+    kosong.tipe = "None";
+    kosong.power = 0;
+
+    return kosong;
+}
+
+void loadDeckCSV(User users[], Skill skills[], int jumlah_user, int jumlah_skill)
 {
     ifstream file("data/deck.csv");
 
@@ -250,7 +289,6 @@ void loadDeckCSV(User users[], int jumlah_user)
     }
 
     string line;
-
     getline(file, line);
 
     while(getline(file, line))
@@ -260,43 +298,39 @@ void loadDeckCSV(User users[], int jumlah_user)
 
         try
         {
+            int skill1;
+            int skill2;
+            int skill3;
             stringstream ss(line);
-
             string temp;
-
             int user_id;
-
             UserMonster m;
 
-            // USER ID
             getline(ss, temp, ',');
             user_id = stoi(temp);
-
-            // MONSTER ID
             getline(ss, temp, ',');
             m.monster_id = stoi(temp);
-
-            // NAMA
             getline(ss, m.nama, ',');
-
-            // HP
             getline(ss, temp, ',');
             m.hp = stoi(temp);
-
-            // ATTACK
             getline(ss, temp, ',');
             m.attack = stoi(temp);
-
-            // DEFENSE
             getline(ss, temp, ',');
             m.defense = stoi(temp);
-
-            // SPEED
             getline(ss, temp, ',');
             m.speed = stoi(temp);
+            getline(ss, m.type, ',');
+            getline(ss, m.rarity, ',');
+            getline(ss, temp, ',');
+            skill1 = stoi(temp);
+            getline(ss, temp, ',');
+            skill2 = stoi(temp);
+            getline(ss, temp, ',');
+            skill3 = stoi(temp);
 
-            // TYPE
-            getline(ss, m.type);
+            m.skills[0] = cariSkillByID(skills, jumlah_skill, skill1);
+            m.skills[1] = cariSkillByID(skills, jumlah_skill, skill2);
+            m.skills[2] = cariSkillByID(skills, jumlah_skill, skill3);
 
             // cari user
             for(int i = 0; i < jumlah_user; i++)
@@ -323,6 +357,99 @@ void loadDeckCSV(User users[], int jumlah_user)
         {
             continue;
         }
+    }
+
+    file.close();
+}
+
+void loadSkillCSV(
+    Skill skills[],
+    int &jumlah
+)
+{
+    ifstream file("data/skill.csv");
+
+    if(!file.is_open())
+    {
+        cout << "skill.csv tidak ditemukan!\n";
+        return;
+    }
+
+    string line;
+
+    getline(file, line);
+
+    jumlah = 0;
+
+    while(getline(file, line)
+          && jumlah < 100)
+    {
+        if(line.empty())
+            continue;
+
+        try
+        {
+            stringstream ss(line);
+
+            string temp;
+
+            Skill s;
+
+            // ID
+            getline(ss, temp, ',');
+            s.id = stoi(temp);
+
+            // Nama
+            getline(ss, s.nama, ',');
+
+            // Element
+            getline(ss, s.element, ',');
+
+            // Tipe
+            getline(ss, s.tipe, ',');
+
+            // Power
+            getline(ss, temp, ',');
+            s.power = stoi(temp);
+
+            skills[jumlah] = s;
+
+            jumlah++;
+        }
+        catch(...)
+        {
+            continue;
+        }
+    }
+
+    file.close();
+}
+
+void saveSkillCSV(
+    Skill skills[],
+    int jumlah
+)
+{
+    ofstream file("data/skill.csv");
+
+    if(!file.is_open())
+    {
+        cout << "Gagal membuka skill.csv!\n";
+        return;
+    }
+
+    file
+    << "id,nama,element,tipe,power\n";
+
+    for(int i = 0; i < jumlah; i++)
+    {
+        file
+        << skills[i].id << ","
+        << skills[i].nama << ","
+        << skills[i].element << ","
+        << skills[i].tipe << ","
+        << skills[i].power
+        << "\n";
     }
 
     file.close();
