@@ -1,0 +1,41 @@
+id,nama,element,tipe,power
+1,Fire Slash,Fire,Damage,40
+2,Fire Ball,Fire,Damage,60
+3,Inferno,Fire,Damage,80
+4,Lava Burst,Fire,Damage,50
+5,Magma Crash,Fire,Damage,70
+6,Blaze Rush,Fire,Damage,55
+7,Volcano Smash,Fire,Damage,90
+8,Flame Claw,Fire,Damage,45
+9,Water Splash,Water,Damage,35
+10,Aqua Tail,Water,Damage,50
+11,Tsunami,Water,Damage,80
+12,Ocean Blast,Water,Damage,70
+13,Hydro Bite,Water,Damage,45
+14,Sea Prison,Water,Damage,60
+15,Aqua Nova,Water,Damage,95
+16,Whirlpool,Water,Damage,55
+17,Stone Horn,Earth,Damage,40
+18,Earth Crash,Earth,Damage,60
+19,Gaia Breaker,Earth,Damage,85
+20,Root Whip,Earth,Damage,35
+21,Nature Grip,Earth,Damage,50
+22,Terra Impact,Earth,Damage,75
+23,Earth Quake,Earth,Damage,95
+24,Rock Spike,Earth,Damage,55
+25,Wind Slash,Wind,Damage,35
+26,Air Blade,Wind,Damage,50
+27,Storm Rush,Wind,Damage,70
+28,Hurricane Wing,Wind,Damage,80
+29,Tornado Slash,Wind,Damage,90
+30,Sky Dive,Wind,Damage,60
+31,Zephyr Strike,Wind,Damage,45
+32,Wind Cutter,Wind,Damage,55
+33,Rock Punch,Rock,Damage,40
+34,Stone Wall,Rock,Damage,55
+35,Mountain Crash,Rock,Damage,80
+36,Boulder Smash,Rock,Damage,70
+37,Crystal Punch,Rock,Damage,45
+38,Shard Storm,Rock,Damage,60
+39,Golem Crusher,Rock,Damage,90
+40,Rock Throw,Rock,Damage,35
