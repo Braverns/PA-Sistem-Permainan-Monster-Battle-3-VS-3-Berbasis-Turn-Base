@@ -37,10 +37,7 @@ int tampilUserDeckInput(User users[], int current_user)
         tampilUserDeckRekursifInput(users[current_user].deck.monsters, 0, users[current_user].deck.jumlah, pilih);
 
         cout << "|______|________________________|_________|_________|_________|_________|_________________|___________|\n";
-
-        cout << "Gold : "
-             << users[current_user].gold
-             << endl;
+        cout << "Gold : " << users[current_user].gold << endl;
 
         cout << "\n _________________________________________________\n";
         cout << "|                 CONTROL MENU                   |\n";
@@ -64,9 +61,7 @@ int tampilUserDeckInput(User users[], int current_user)
 
                 if(pilih < 0)
                 {
-                    pilih =
-                    users[current_user]
-                    .deck.jumlah - 1;
+                    pilih = users[current_user].deck.jumlah - 1;
                 }
             }
 
@@ -75,9 +70,7 @@ int tampilUserDeckInput(User users[], int current_user)
             {
                 pilih++;
 
-                if(pilih >=
-                   users[current_user]
-                   .deck.jumlah)
+                if(pilih >= users[current_user].deck.jumlah)
                 {
                     pilih = 0;
                 }
@@ -100,12 +93,7 @@ int tampilUserDeckInput(User users[], int current_user)
 
 
 
-void tampilUserDeckRekursifInput(
-    UserMonster monsters[],
-    int index,
-    int jumlah,
-    int pilih
-)
+void tampilUserDeckRekursifInput(UserMonster monsters[], int index, int jumlah, int pilih)
 {
     if(index >= jumlah)
         return;
@@ -134,12 +122,7 @@ void tampilUserDeckRekursifInput(
         << setw(11) << monsters[index].rarity
         << "|\n";
 
-    tampilUserDeckRekursifInput(
-        monsters,
-        index + 1,
-        jumlah,
-        pilih
-    );
+    tampilUserDeckRekursifInput(monsters, index + 1, jumlah, pilih);
 }
 
 void tampilUserDeck(User users[], int current_user)
@@ -164,11 +147,7 @@ void tampilUserDeck(User users[], int current_user)
 
     cout << "|------|------------------------|---------|---------|---------|---------|-----------------|-----------|\n";
 
-    tampilUserDeckRekursif(
-        users[current_user].deck.monsters,
-        0,
-        users[current_user].deck.jumlah
-    );
+    tampilUserDeckRekursif(users[current_user].deck.monsters, 0, users[current_user].deck.jumlah);
                  
     cout << "|______|________________________|_________|_________|_________|_________|_________________|___________|\n";
     cout << "Gold : " << users[current_user].gold << endl;
@@ -232,7 +211,6 @@ void copyDeck(UserMonster sumber[], UserMonster tujuan[], int jumlah)
 void filterType(UserMonster monsters[], int &jumlah, string type)
 {
     UserMonster temp[30];
-
     int idx = 0;
 
     for(int i = 0; i < jumlah; i++)
@@ -258,17 +236,11 @@ void sortDeckAttackDescending(UserMonster monsters[], int jumlah)
     {
         for(int j = 0; j < jumlah - i - 1; j++)
         {
-            if(monsters[j].attack <
-               monsters[j+1].attack)
+            if(monsters[j].attack < monsters[j+1].attack)
             {
-                UserMonster temp =
-                monsters[j];
-
-                monsters[j] =
-                monsters[j+1];
-
-                monsters[j+1] =
-                temp;
+                UserMonster temp = monsters[j];
+                monsters[j] = monsters[j+1];
+                monsters[j+1] = temp;
             }
         }
     }
@@ -280,17 +252,11 @@ void sortDeckDefenseDescending(UserMonster monsters[], int jumlah)
     {
         for(int j = 0; j < jumlah - i - 1; j++)
         {
-            if(monsters[j].defense <
-               monsters[j+1].defense)
+            if(monsters[j].defense < monsters[j+1].defense)
             {
-                UserMonster temp =
-                monsters[j];
-
-                monsters[j] =
-                monsters[j+1];
-
-                monsters[j+1] =
-                temp;
+                UserMonster temp = monsters[j];
+                monsters[j] = monsters[j+1];
+                monsters[j+1] = temp;
             }
         }
     }
@@ -302,17 +268,11 @@ void sortDeckSpeedDescending(UserMonster monsters[], int jumlah)
     {
         for(int j = 0; j < jumlah - i - 1; j++)
         {
-            if(monsters[j].speed <
-               monsters[j+1].speed)
+            if(monsters[j].speed < monsters[j+1].speed)
             {
-                UserMonster temp =
-                monsters[j];
-
-                monsters[j] =
-                monsters[j+1];
-
-                monsters[j+1] =
-                temp;
+                UserMonster temp = monsters[j];
+                monsters[j] = monsters[j+1];
+                monsters[j+1] = temp;
             }
         }
     }
@@ -360,7 +320,6 @@ void menuLihatDeck(User users[], int current_user)
     };
 
     int type_cursor = 0;
-
     bool pilih_type_mode = false;
     int cursor = 0;
 
@@ -493,15 +452,11 @@ void menuLihatDeck(User users[], int current_user)
         {
             if(selected_type != "")
             {
-                active_filter +=
-                "+ Type(" +
-                selected_type +
-                ")";
+                active_filter += "+ Type(" + selected_type + ")";
             }
             else
             {
-                active_filter +=
-                "+ Type(?)";
+                active_filter += "+ Type(?)";
             }
         }
 
@@ -569,9 +524,7 @@ void menuLihatDeck(User users[], int current_user)
             if(pilih_type_mode)
             {
                 selected_type = type_list[type_cursor];
-
                 pilih_type_mode = false;
-
                 continue;
             }
 
@@ -766,7 +719,6 @@ void menuLihatDeck(User users[], int current_user)
             tampilUserDeckRekursif(hasil, 0, jumlah);
 
             cout << "|______|________________________|_________|_________|_________|_________|_________________|___________|\n";
-
             cout << "\nTotal Monster : " << jumlah << endl;
 
             tungguEnter();

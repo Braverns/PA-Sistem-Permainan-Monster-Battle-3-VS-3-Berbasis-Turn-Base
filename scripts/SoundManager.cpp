@@ -14,7 +14,7 @@ void stopBGM()
 
 void playSFX(const wchar_t path[])
 {
-    wstring command =L"play \"" + wstring(path) + L"\"";
+    wstring command = L"play \"" + wstring(path) + L"\"";
 
     mciSendStringW(command.c_str(), NULL, 0, NULL);
 }
@@ -29,8 +29,7 @@ void setVolume(int volume)
 
     current_volume = volume;
 
-    DWORD win_volume =
-    (65535 * volume) / 100;
+    DWORD win_volume = (65535 * volume) / 100;
 
     DWORD final_volume =(win_volume & 0xFFFF) | (win_volume << 16);
 

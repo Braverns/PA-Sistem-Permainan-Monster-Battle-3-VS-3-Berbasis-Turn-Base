@@ -60,7 +60,6 @@ void menuUser(User users[],Monster monsters[],Skill skills[],
                 tampilMonsterList(monsters, jumlah_monster);
 
             tungguEnter();
-
             break;
         }
 
@@ -98,9 +97,7 @@ void sacrificeMonster(User users[], int current_user, int jumlah_user)
     if(users[current_user].deck.jumlah < 2)
     {
         cout << "Minimal butuh 2 monster untuk sacrifice\n";
-
         tungguEnter();
-
         return;
     }
 
@@ -170,7 +167,6 @@ void sacrificeMonster(User users[], int current_user, int jumlah_user)
     saveDeckCSV(users, jumlah_user);
 
     cout << "Monster korban berhasil dikorbankan\n";
-
     tungguEnter();
 }
 

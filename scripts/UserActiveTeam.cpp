@@ -1,9 +1,6 @@
 #include "global.h"
 
-void tampilActiveTeam(
-    User users[],
-    int current_user
-)
+void tampilActiveTeam(User users[], int current_user)
 {
     cout << "\n _____________________________________________________________________________________________________________________\n";
     cout << "|                                                                                                                     |\n";
@@ -12,9 +9,7 @@ void tampilActiveTeam(
 
     for(int i = 0; i < 3; i++)
     {
-        int idx =
-        users[current_user]
-        .active_team[i];
+        int idx = users[current_user].active_team[i];
 
         cout << i + 1 << ". ";
 
@@ -24,23 +19,8 @@ void tampilActiveTeam(
         }
         else
         {
-            UserMonster m =
-            users[current_user]
-            .deck.monsters[idx];
-
-            cout
-            << m.nama
-
-            << " | HP: "
-            << m.hp
-
-            << " | Type: "
-            << m.type
-
-            << " | Rarity: "
-            << m.rarity
-
-            << endl;
+            UserMonster m = users[current_user].deck.monsters[idx];
+            cout << m.nama << " | HP: " << m.hp << " | Type: " << m.type << " | Rarity: " << m.rarity  << endl;
         }
     }
 }
@@ -64,9 +44,7 @@ void pilihActiveTeam(User users[], int current_user, int jumlah_user)
 
     for(int i = 0; i < 3; i++)
     {
-        cout << "\nPilih monster untuk slot "
-            << i + 1;
-
+        cout << "\nPilih monster untuk slot " << i + 1;
         tungguEnter();
 
         pilihan[i] = tampilUserDeckInput(users, current_user);
@@ -83,8 +61,7 @@ void pilihActiveTeam(User users[], int current_user, int jumlah_user)
             return;
         }
 
-        if(pilihan[i] < 0 ||
-           pilihan[i] >= users[current_user].deck.jumlah)
+        if(pilihan[i] < 0 || pilihan[i] >= users[current_user].deck.jumlah)
         {
             tampilPesan("Index monster tidak valid!");
             return;
@@ -106,12 +83,9 @@ void pilihActiveTeam(User users[], int current_user, int jumlah_user)
     }
 
     saveUserCSV(users, jumlah_user);
-
+    saveDeckCSV(users, jumlah_user);
     CLEAR_SCREEN;
-
     cout << "Active team berhasil disimpan!\n";
-
     tampilActiveTeam(users, current_user);
-
     tungguEnter();
 }

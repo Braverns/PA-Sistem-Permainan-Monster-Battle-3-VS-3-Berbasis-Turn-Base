@@ -1,9 +1,6 @@
 #include "global.h"
 
-void menuSkill(
-    Skill skills[],
-    int &jumlah_skill
-)
+void menuSkill(Skill skills[], int &jumlah_skill)
 {
     int cursor = 0;
 
@@ -33,15 +30,10 @@ void menuSkill(
             else
                 cout << "   ";
 
-            cout
-            << left
-            << setw(28)
-            << menu[i]
-            << " |\n";
+            cout << left << setw(28) << menu[i] << " |\n";
         }
 
         cout << "|_________________________________|\n";
-
         cout << "\nGunakan UP/DOWN dan ENTER\n";
 
         char tombol = _getch();
@@ -76,35 +68,21 @@ void menuSkill(
             switch(cursor)
             {
                 case 0:
-                    createSkill(
-                        skills,
-                        jumlah_skill
-                    );
+                    createSkill(skills, jumlah_skill);
                     break;
 
                 case 1:
                     CLEAR_SCREEN;
-
-                    tampilSkillList(
-                        skills,
-                        jumlah_skill
-                    );
-
+                    tampilSkillList(skills, jumlah_skill);
                     tungguEnter();
                     break;
 
                 case 2:
-                    updateSkill(
-                        skills,
-                        jumlah_skill
-                    );
+                    updateSkill(skills, jumlah_skill);
                     break;
 
                 case 3:
-                    deleteSkill(
-                        skills,
-                        jumlah_skill
-                    );
+                    deleteSkill(skills, jumlah_skill);
                     break;
 
                 case 4:
@@ -115,16 +93,11 @@ void menuSkill(
 }
 
 
-void createSkill(
-    Skill skills[],
-    int &jumlah_skill
-)
+void createSkill(Skill skills[], int &jumlah_skill)
 {
     if(jumlah_skill >= 100)
     {
-        tampilPesan(
-            "Database skill penuh!"
-        );
+        tampilPesan("Database skill penuh!");
         return;
     }
 
@@ -137,15 +110,8 @@ void createSkill(
     cout << "|_________________________________|\n";
 
     s.id = jumlah_skill + 1;
-
-    cout << "\nID Skill : "
-         << s.id
-         << endl;
-
-    cin.ignore(
-        numeric_limits<streamsize>::max(),
-        '\n'
-    );
+    cout << "\nID Skill : " << s.id << endl;
+    cin.ignore(numeric_limits<streamsize>::max(),'\n' );
 
     cout << "\nNama Skill : ";
     getline(cin, s.nama);
@@ -161,31 +127,20 @@ void createSkill(
 
     if(cin.fail())
     {
-        tampilPesan(
-            "Input tidak valid!"
-        );
+        tampilPesan("Input tidak valid!");
         return;
     }
 
     skills[jumlah_skill] = s;
-
     jumlah_skill++;
 
-    saveSkillCSV(
-        skills,
-        jumlah_skill
-    );
+    saveSkillCSV(skills, jumlah_skill);
 
-    tampilPesan(
-        "Skill berhasil dibuat!"
-    );
+    tampilPesan("Skill berhasil dibuat!");
 }
 
 
-void tampilSkillList(
-    Skill skills[],
-    int jumlah_skill
-)
+void tampilSkillList(Skill skills[], int jumlah_skill)
 {
     cout << "\n ______________________________________________________________________\n";
     cout << "|                                                                      |\n";
@@ -235,23 +190,15 @@ void tampilSkillList(
 // UPDATE SKILL
 // =====================================
 
-void updateSkill(
-    Skill skills[],
-    int jumlah_skill
-)
+void updateSkill(Skill skills[], int jumlah_skill)
 {
     if(jumlah_skill == 0)
     {
-        tampilPesan(
-            "Belum ada skill!"
-        );
+        tampilPesan("Belum ada skill!");
         return;
     }
 
-    tampilSkillList(
-        skills,
-        jumlah_skill
-    );
+    tampilSkillList(skills, jumlah_skill);
 
     int id;
     bool ditemukan = false;
@@ -265,10 +212,7 @@ void updateSkill(
         {
             ditemukan = true;
 
-            cin.ignore(
-                numeric_limits<streamsize>::max(),
-                '\n'
-            );
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
 
             cout << "\nNama Baru : ";
             getline(cin, skills[i].nama);
@@ -282,48 +226,36 @@ void updateSkill(
             cout << "Power Baru : ";
             cin >> skills[i].power;
 
-            saveSkillCSV(
-                skills,
-                jumlah_skill
-            );
+            if(cin.fail())
+            {
+                tampilPesan("Input tidak valid!");
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                return;
+            }
 
-            tampilPesan(
-                "Skill berhasil diupdate!"
-            );
-
+            saveSkillCSV(skills, jumlah_skill);
+            tampilPesan("Skill berhasil diupdate!");
             return;
         }
     }
 
     if(!ditemukan)
     {
-        tampilPesan(
-            "Skill tidak ditemukan!"
-        );
+        tampilPesan("Skill tidak ditemukan!");
     }
 }
 
-// =====================================
-// DELETE SKILL
-// =====================================
 
-void deleteSkill(
-    Skill skills[],
-    int &jumlah_skill
-)
+void deleteSkill(Skill skills[], int &jumlah_skill)
 {
     if(jumlah_skill == 0)
     {
-        tampilPesan(
-            "Belum ada skill!"
-        );
+        tampilPesan("Belum ada skill!");
         return;
     }
 
-    tampilSkillList(
-        skills,
-        jumlah_skill
-    );
+    tampilSkillList(skills, jumlah_skill);
 
     int id;
     int index = -1;
@@ -341,28 +273,18 @@ void deleteSkill(
 
     if(index == -1)
     {
-        tampilPesan(
-            "Skill tidak ditemukan!"
-        );
+        tampilPesan("Skill tidak ditemukan!");
         return;
     }
 
-    for(int i = index;
-        i < jumlah_skill - 1;
-        i++)
+    for(int i = index; i < jumlah_skill - 1;i++)
     {
         skills[i] = skills[i + 1];
     }
 
     jumlah_skill--;
 
-    saveSkillCSV(
-        skills,
-        jumlah_skill
-    );
-
-    tampilPesan(
-        "Skill berhasil dihapus!"
-    );
+    saveSkillCSV(skills, jumlah_skill);
+    tampilPesan("Skill berhasil dihapus!");
 }
 
