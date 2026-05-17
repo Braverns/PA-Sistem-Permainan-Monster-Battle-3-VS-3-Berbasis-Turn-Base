@@ -1,11 +1,11 @@
 #include "global.h"
 
-void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_monster,
-    int &jumlah_skill, int &next_monster_id, int &state)
+void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_user,
+    int &jumlah_monster, int &jumlah_skill, int &next_monster_id, int &state)
 {
     int cursor = 0;
 
-    string menu[7] =
+    string menu[8] =
     {
         "Create Monster",
         "Read Monster List",
@@ -13,6 +13,7 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_mon
         "Delete Monster",
         "Kelola Skill",
         "Read User",
+        "Delete User",
         "Logout"
     };
 
@@ -24,7 +25,7 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_mon
         cout << "|           MENU ADMIN            |\n";
         cout << "|_________________________________|\n";
 
-        for(int i = 0; i < 7; i++)
+        for(int i = 0; i < 8; i++)
         {
             cout << "| ";
 
@@ -60,7 +61,7 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_mon
             {
                 cursor++;
 
-                if(cursor > 6)
+                if(cursor > 7)
                     cursor = 0;
             }
         }
@@ -95,12 +96,20 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_mon
                     break;
 
                 case 5:
-                    tampilPesan("Feature belum dibuat!");
+                CLEAR_SCREEN;
+
+                tampilDaftarUser(users, jumlah_user);
+
+                tungguClear();
                     break;
 
                 case 6:
-                    logout(state);
-                    return;
+                deleteUser(users, jumlah_user);
+                break;
+
+                case 7:
+                logout(state);
+                return;
             }
         }
     }
@@ -416,3 +425,92 @@ void deleteMonster(Monster monsters[], int *jumlah_monster)
 
     tampilPesan("Monster berhasil dihapus");
 }
+
+void tampilDaftarUser(User users[], int jumlah_user)
+{
+    cout << "\n ============================================================\n";
+    cout << "|                        DAFTAR USER                         |\n";
+    cout << "|============================================================|\n";
+
+    cout << left
+         << setw(6)  << "| ID"
+         << setw(25) << "| Username"
+         << setw(15) << "| Role"
+         << setw(15) << "| Gold"
+         << "|\n";
+
+    cout << "|-----|------------------------|--------------|--------------|\n";
+
+    for(int i = 0; i < jumlah_user; i++)
+    {
+        cout << left
+             << setw(6)  << ("| " + to_string(users[i].id))
+             << setw(25) << ("| " + users[i].username)
+             << setw(15) << ("| " + users[i].role)
+             << setw(15) << ("| " + to_string(users[i].gold))
+             << "|\n";
+    }
+
+    cout << "|_____|________________________|______________|______________|\n";
+}
+
+void deleteUser(User users[], int &jumlah_user)
+{
+    CLEAR_SCREEN;
+    if(jumlah_user <= 1)
+    {
+        tampilPesan("Tidak ada user yang bisa dihapus!");
+        return;
+    }
+
+    tampilDaftarUser(users, jumlah_user);
+
+    int id;
+    int index = -1;
+
+    cout << "\nMasukkan ID user yang ingin dihapus : ";
+    cin >> id;
+
+    for(int i = 0; i < jumlah_user; i++)
+    {
+        if(users[i].id == id)
+        {
+            index = i;
+        }
+    }
+
+    if(index == -1)
+    {
+        tampilPesan("User tidak ditemukan!");
+        return;
+    }
+
+    if(users[index].role == "admin")
+    {
+        tampilPesan("Admin tidak bisa dihapus!");
+        return;
+    }
+
+    for(int i = index; i < jumlah_user - 1; i++)
+    {
+        users[i] = users[i + 1];
+    }
+
+    jumlah_user--;
+
+    for(int i = 0; i < jumlah_user - 1; i++)
+    {
+        users[i].next = &users[i + 1];
+    }
+
+    if(jumlah_user > 0)
+    {
+        users[jumlah_user - 1].next = NULL;
+    }
+
+    saveUserCSV(users, jumlah_user);
+    saveDeckCSV(users, jumlah_user);
+
+    tampilPesan("User berhasil dihapus!");
+}
+
