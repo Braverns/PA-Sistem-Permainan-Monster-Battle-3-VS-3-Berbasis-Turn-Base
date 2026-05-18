@@ -126,6 +126,17 @@ struct Rarity
 // ADMIN
 void menuAdmin(User users[], Monster monsters[], Skill skills[],
     int &jumlah_user, int &jumlah_monster, int &jumlah_skill, int &next_monster_id, int &state);
+void tampilDaftarUser(User users[], int jumlah_user);
+void deleteUser(User users[], int &jumlah_user);
+void menuKelolaUser(User users[], int &jumlah_user);
+void menuSearchUser(User users[], int jumlah_user);
+void tampilDetailUser(User user);
+void tampilHasilSearchUserID(User users[], int jumlah_user, int id);
+void tampilHasilSearchUserNama(User users[], int jumlah_user, string nama);
+
+
+// ADMIN MONSTER
+void menuKelolaMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id);
 void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id);
 void tampilMonsterList(Monster monsters[], int jumlah_monster);
 void tampilMonsterList(Monster monsters[], int jumlah_monster, string judul);
@@ -160,6 +171,7 @@ bool loginUser(User users[], int jumlah_user, int &current_user, int &state, boo
 void menuTidakValid();
 void logout(int &state);
 void tampilPesan(string pesan);
+void tampilPesan2(string pesan);
 void tungguEnter();
 void tungguClear();
 void tunggu();
@@ -169,6 +181,12 @@ void setColor(int color);
 void resetColor();
 int getRarityColor(string rarity);
 void menuSetting();
+string inputClean(string label);
+int inputAngka(string label);
+void validasiDaftarUser(const string& username, const string& password);
+void validasiLogin(const string& username, const string& password);
+void validasiCreateMonster(const string& nama_str, const string& hp_str, const string& attack_str, const string& defense_str, const string& speed_str, const string& type_str, const string& rarity_str);
+void validasiUserGacha(const string& jumlah_str);
 
 // USER
 void menuUser(User users[], Monster monsters[], Skill skills[],
@@ -179,7 +197,8 @@ void deleteMonsterUser(User users[],int current_user,int jumlah_user);
 // USER ACTIVE TEAM
 void pilihActiveTeam(User users[], int current_user, int jumlah_user);
 void tampilActiveTeam(User users[], int current_user);
-
+int activeDeckInput(User users[], int current_user, int slot_ke, int pilihan[]);
+void rekursifActiveTeamInput(UserMonster monsters[], int index, int jumlah, int pilih);
 
 
 // USER DECK

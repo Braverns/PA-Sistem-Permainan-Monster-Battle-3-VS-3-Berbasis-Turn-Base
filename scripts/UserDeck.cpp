@@ -146,13 +146,13 @@ void tampilUserDeck(User users[], int current_user)
         << endl;
 
     cout << "|------|------------------------|---------|---------|---------|---------|-----------------|-----------|\n";
-
+                     
     tampilUserDeckRekursif(users[current_user].deck.monsters, 0, users[current_user].deck.jumlah);
                  
     cout << "|______|________________________|_________|_________|_________|_________|_________________|___________|\n";
     cout << "Gold : " << users[current_user].gold << endl;
 
-    tungguEnter();
+    tunggu();
 }
 
 
@@ -721,7 +721,7 @@ void menuLihatDeck(User users[], int current_user)
             cout << "|______|________________________|_________|_________|_________|_________|_________________|___________|\n";
             cout << "\nTotal Monster : " << jumlah << endl;
 
-            tungguEnter();
+            tunggu();
         }
 
         // ESC

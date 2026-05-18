@@ -1,90 +1,135 @@
 #include "global.h"
 
 
-void menuUser(User users[],Monster monsters[],Skill skills[],
-    int jumlah_monster,int jumlah_skill,int jumlah_user,int current_user,int &state)
+void menuUser(User users[], Monster monsters[], Skill skills[],
+    int jumlah_monster, int jumlah_skill, int jumlah_user, int current_user, int &state)
 {
-    CLEAR_SCREEN;
-    int pilih;
+    int cursor = 0;
 
-    cout << "\n___________________________________\n";
-    cout << "|            MENU USER            |\n";
-    cout << "|_________________________________|\n";
-    cout << "| 1  | Battle                     |\n";
-    cout << "| 2  | Active Team                |\n";
-    cout << "| 3  | Gacha Monster              |\n";
-    cout << "| 4  | Lihat Deck                 |\n";
-    cout << "| 5  | Monster List               |\n";
-    cout << "| 6  | Sacrifice Monster          |\n";
-    cout << "| 7  | Delete Monster             |\n";
-    cout << "| 8  | Sort Deck                  |\n";
-    cout << "| 9  | Search Deck                |\n";
-    cout << "| 0  | Logout                     |\n";
-    cout << "|____|____________________________|\n";
-    cout << "Pilih: ";
-
-    cin >> pilih;
-    if(cin.fail())
+    string menu[10] =
     {
-        tampilPesan("Menu tidak valid!");
-        return;
-    }
+        "Battle",
+        "Active Team",
+        "Gacha Monster",
+        "Lihat Deck",
+        "Monster List",
+        "Sacrifice Monster",
+        "Delete Monster",
+        "Sort Deck",
+        "Search Deck",
+        "Logout"
+    };
 
-    switch(pilih)
+    while(true)
     {
-        case 1:
-            battleMenu(users, monsters, skills, jumlah_monster, jumlah_skill, current_user, jumlah_user);
-            break;
+        CLEAR_SCREEN;
 
-        case 2:
-            pilihActiveTeam(users, current_user, jumlah_user);
-            break;
+        cout << "\n __________________________________\n";
+        cout << "|            MENU USER            |\n";
+        cout << "|_________________________________|\n";
 
-        case 3:
-            gachaMonster(users, monsters, skills, jumlah_monster, jumlah_skill, current_user, jumlah_user);
-            break;
-
-        case 4:
+        for(int i = 0; i < 10; i++)
         {
-            menuLihatDeck(users, current_user);
-            break;
-        }
+            cout << "| ";
 
-        case 5:
-        {
-            CLEAR_SCREEN;
-
-            if(jumlah_monster == 0)
-                tampilPesan("Belum ada monster!");
+            if(cursor == i)
+                cout << ">> ";
             else
-                tampilMonsterList(monsters, jumlah_monster);
+                cout << "   ";
 
-            tungguEnter();
-            break;
+            cout << left << setw(28) << menu[i] << " |\n";
         }
 
-        case 6:
-            sacrificeMonster(users,current_user,jumlah_user);
-            break;
+        cout << "|_________________________________|\n";
+        cout << "\nGunakan UP/DOWN dan ENTER\n";
 
-        case 7:
-            deleteMonsterUser(users, current_user, jumlah_user);
-            break;
+        char tombol = _getch();
 
-        case 8:
-            menuSort(users, current_user);
-            break;
+        // ARROW
+        if(tombol == -32)
+        {
+            tombol = _getch();
 
-        case 9:
-            menuSearch(users, current_user);
-            break;
+            // UP
+            if(tombol == 72)
+            {
+                playSFX(L"music/cursor3.wav");
 
-        case 0:
-            logout(state);
-            break;
+                cursor--;
 
-        default:
-            tampilPesan("Menu tidak valid!");
+                if(cursor < 0)
+                    cursor = 9;
+            }
+
+            // DOWN
+            else if(tombol == 80)
+            {
+                playSFX(L"music/cursor3.wav");
+
+                cursor++;
+
+                if(cursor > 9)
+                    cursor = 0;
+            }
+        }
+
+        // ENTER
+        else if(tombol == 13)
+        {
+            switch(cursor)
+            {
+                case 0:
+                    battleMenu(users, monsters, skills, jumlah_monster, jumlah_skill, current_user, jumlah_user);
+                    break;
+
+                case 1:
+                    pilihActiveTeam(users, current_user, jumlah_user);
+                    break;
+
+                case 2:
+                    gachaMonster(users, monsters, skills, jumlah_monster, jumlah_skill, current_user, jumlah_user);
+                    break;
+
+                case 3:
+                    menuLihatDeck(users, current_user);
+                    break;
+
+                case 4:
+                {
+                    CLEAR_SCREEN;
+
+                    if(jumlah_monster == 0)
+                        tampilPesan("Belum ada monster!");
+                    else
+                    {
+                        tampilMonsterList(monsters, jumlah_monster);
+                        tunggu();
+                    }
+
+                    break;
+                }
+
+                case 5:
+                    sacrificeMonster(users, current_user, jumlah_user);
+                    break;
+
+                case 6:
+                    deleteMonsterUser(users, current_user, jumlah_user);
+                    break;
+
+                case 7:
+                    menuSort(users, current_user);
+                    break;
+
+                case 8:
+                    menuSearch(users, current_user);
+                    break;
+
+                case 9:
+                    logout(state);
+                    return;
+            }
+        }
     }
 }
 
@@ -97,7 +142,7 @@ void sacrificeMonster(User users[], int current_user, int jumlah_user)
     if(users[current_user].deck.jumlah < 2)
     {
         cout << "Minimal butuh 2 monster untuk sacrifice\n";
-        tungguEnter();
+        tunggu();
         return;
     }
 
@@ -129,27 +174,37 @@ void sacrificeMonster(User users[], int current_user, int jumlah_user)
     cout << "\nPilih atribut yang ingin ditingkatkan:\n";
     cout << "1. HP\n";
     cout << "2. Attack\n";
+    cout << "3. Defense\n";
+    cout << "4. Speed\n";
 
     int pilih;
+    pilih = inputAngka("Pilihan: ");
 
-    cout << "Pilih: ";
-    cin >> pilih;
-
-    if(pilih == 1)
-    {
-        users[current_user].deck.monsters[target].hp += 1;
-        cout << "HP berhasil ditingkatkan\n";
-    }
-    else if(pilih == 2)
-    {
-        users[current_user].deck.monsters[target].attack += 1;
-        cout << "Attack berhasil ditingkatkan\n";
-    }
-    else
-    {
-        tampilPesan("Pilihan tidak valid!");
-        return;
-    }
+        if(pilih == 1)
+        {
+            users[current_user].deck.monsters[target].hp += 1;
+            cout << "HP berhasil ditingkatkan\n";
+        }
+        else if(pilih == 2)
+        {
+            users[current_user].deck.monsters[target].attack += 1;
+            cout << "Attack berhasil ditingkatkan\n";
+        }
+        else if(pilih == 3)
+        {
+            users[current_user].deck.monsters[target].defense += 1;
+            cout << "Defense berhasil ditingkatkan\n";
+        }
+        else if(pilih == 4)
+        {
+            users[current_user].deck.monsters[target].speed += 1;
+            cout << "Speed berhasil ditingkatkan\n";
+        }
+        else
+        {
+            tampilPesan("Pilihan tidak valid!");
+            return;
+        }
 
     for(int i = korban; i < users[current_user].deck.jumlah - 1; i++)
     {
@@ -217,7 +272,7 @@ void deleteMonsterUser(User users[],int current_user,int jumlah_user)
     saveUserCSV(users, jumlah_user);
     saveDeckCSV(users, jumlah_user);
 
-    tungguEnter();
+    tunggu();
 }
 
 

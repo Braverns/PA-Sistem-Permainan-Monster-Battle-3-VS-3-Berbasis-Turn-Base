@@ -1,4 +1,5 @@
 #include "global.h"
+#include <cctype>
 
 void menuHome(int &state, bool &program_jalan)
 {
@@ -47,6 +48,8 @@ void menuHome(int &state, bool &program_jalan)
             // ATAS
             if(tombol == 72)
             {
+                playSFX(L"music/cursor3.wav");
+
                 cursor--;
 
                 if(cursor < 0)
@@ -56,6 +59,8 @@ void menuHome(int &state, bool &program_jalan)
             // BAWAH
             else if(tombol == 80)
             {
+                playSFX(L"music/cursor3.wav");
+
                 cursor++;
 
                 if(cursor > 3)
@@ -98,138 +103,138 @@ void daftarUser(User users[], int &jumlah_user, int &state)
     cout << "|   HALAMAN DAFTAR   |\n";
     cout << "|____________________|\n";
 
-    if(jumlah_user >= 100)
-    {
-        tampilPesan("Database user penuh!");
+    try {
+        if(jumlah_user >= 100)
+        {
+            tampilPesan("Database user penuh!");
+            state = 0;
+            return;
+        }
+
+        string username;
+        string password;
+    
+        username = inputClean("Username : ");
+        password = inputClean("Password : ");
+        validasiDaftarUser(username, password);
+    
+        bool username_ada = false;
+    
+        for(int i = 0; i < jumlah_user; i++)
+        {
+            if(users[i].username == username)
+            {
+                username_ada = true;
+            }
+        }
+    
+        if(username_ada)
+        {
+            tampilPesan("Username sudah dipakai!");
+        }
+        else
+        {
+            users[jumlah_user].id = jumlah_user;
+            users[jumlah_user].username = username;
+            users[jumlah_user].password = password;
+            users[jumlah_user].role = "user";
+    
+            users[jumlah_user].gold = 1000;
+            users[jumlah_user].deck.jumlah = 0;
+    
+            for(int i = 0; i < 3; i++)
+            {
+                users[jumlah_user].active_team[i] = -1;
+            }
+    
+            if(jumlah_user > 0)
+            {
+                users[jumlah_user - 1].next = &users[jumlah_user];
+            }
+    
+            users[jumlah_user].next = NULL;
+    
+            jumlah_user++;
+            saveUserCSV(users, jumlah_user);
+    
+            tampilPesan("User berhasil dibuat");
+        }
+
         state = 0;
-        return;
+
+    } catch (const invalid_argument& e) {
+        tampilPesan(e.what());
+        state = 2;
     }
-
-    string username;
-    string password;
-
-    cout << "Username baru : ";
-    cin >> username;
-
-    cout << "Password baru : ";
-    cin >> password;
-
-    bool username_ada = false;
-
-    for(int i = 0; i < jumlah_user; i++)
-    {
-        if(users[i].username == username)
-        {
-            username_ada = true;
-        }
-    }
-
-    if(username_ada)
-    {
-        tampilPesan("Username sudah dipakai!");
-    }
-    else
-    {
-        users[jumlah_user].id = jumlah_user;
-        users[jumlah_user].username = username;
-        users[jumlah_user].password = password;
-        users[jumlah_user].role = "user";
-
-        users[jumlah_user].gold = 1000;
-        users[jumlah_user].deck.jumlah = 0;
-
-        for(int i = 0; i < 3; i++)
-        {
-            users[jumlah_user].active_team[i] = -1;
-        }
-
-        if(jumlah_user > 0)
-        {
-            users[jumlah_user - 1].next = &users[jumlah_user];
-        }
-
-        users[jumlah_user].next = NULL;
-
-        jumlah_user++;
-        saveUserCSV(users, jumlah_user);
-
-        tampilPesan("User berhasil dibuat");
-    }
-
-    state = 0;
-
 }
-
 
 bool loginUser(User users[], int jumlah_user, int &current_user, int &state, bool &program_jalan)
 {
     CLEAR_SCREEN;
-
+ 
     int percobaan = 0;
     bool login_berhasil = false;
-
+ 
     while(percobaan < 3 && !login_berhasil)
     {
+        CLEAR_SCREEN;
+ 
         cout << "\n______________________\n";
         cout << "|   HALAMAN LOGIN    |\n";
         cout << "|____________________|\n";
-
-        string username;
-        string password;
-
-        cout << "Username : ";
-        cin >> username;
-
-        cout << "Password : ";
-        cin >> password;
-
-        User* user_sekarang = &users[0];
-        int index = 0;
-
-        while(user_sekarang != NULL)
+        cout << "Percobaan ke-" << percobaan + 1 << " dari 3\n";
+ 
+        try
         {
-            if(user_sekarang->username == username &&
-               user_sekarang->password == password)
+            string username;
+            string password;
+ 
+            username = inputClean("Username : ");
+            password = inputClean("Password : ");
+            validasiLogin(username, password);
+ 
+            User* user_sekarang = &users[0];
+            int index = 0;
+ 
+            while(user_sekarang != NULL)
             {
-                login_berhasil = true;
-                percobaan = 0;
-                current_user = index;
-
-                if(user_sekarang->role == "admin")
-                    state = 3;
-                else
-                    state = 4;
-
-                break;
+                if(user_sekarang->username == username &&
+                   user_sekarang->password == password)
+                {
+                    login_berhasil = true;
+                    current_user   = index;
+ 
+                    if(user_sekarang->role == "admin")
+                        state = 3;
+                    else
+                        state = 4;
+ 
+                    break;
+                }
+ 
+                user_sekarang = user_sekarang->next;
+                index++;
             }
-
-            user_sekarang = user_sekarang->next;
-            index++;
+            if(!login_berhasil)
+            {
+                percobaan++;
+                tampilPesan("Username atau password salah! Sisa percobaan: " + to_string(3 - percobaan));
+            }
         }
-
-        if(!login_berhasil)
+        catch(const invalid_argument& e)
         {
-            percobaan++;
-            tampilPesan("Username atau password salah! Sisa percobaan: " + to_string(3 - percobaan));
+            tampilPesan(e.what());
         }
     }
-
+ 
     if(!login_berhasil)
     {
         tampilPesan("Login gagal 3 kali");
         program_jalan = false;
     }
-
+ 
     return login_berhasil;
 }
-
-
-
-
-
-
-// AJIS
-
 
 
 
