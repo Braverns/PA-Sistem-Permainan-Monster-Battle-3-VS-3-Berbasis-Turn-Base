@@ -17,7 +17,7 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[],
     {
         CLEAR_SCREEN;
 
-        cout << "\n __________________________________\n";
+        cout << "\n _________________________________\n";
         cout << "|           MENU ADMIN            |\n";
         cout << "|_________________________________|\n";
 
@@ -46,6 +46,8 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[],
             // UP
             if(tombol == 72)
             {
+                playSFX(L"music/cursor3.wav");
+
                 cursor--;
 
                 if(cursor < 0)
@@ -55,9 +57,12 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[],
             // DOWN
             else if(tombol == 80)
             {
+
+                playSFX(L"music/cursor3.wav");
+
                 cursor++;
 
-                if(cursor > 3)
+            if(cursor > 3)
                     cursor = 0;
             }
         }

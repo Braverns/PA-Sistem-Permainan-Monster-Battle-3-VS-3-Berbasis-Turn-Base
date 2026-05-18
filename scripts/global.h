@@ -142,6 +142,16 @@ void tampilMonsterList(Monster monsters[], int jumlah_monster);
 void tampilMonsterList(Monster monsters[], int jumlah_monster, string judul);
 void updateMonster(Monster monsters[], int jumlah_monster);
 void deleteMonster(Monster monsters[], int *jumlah_monster);
+void tampilDaftarUser(User users[], int jumlah_user);
+void deleteUser(User users[], int &jumlah_user);
+void menuKelolaMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id);
+void menuKelolaUser(User users[], int &jumlah_user);
+void menuSearchUser(User users[], int jumlah_user);
+void searchUserByID(User users[], int jumlah_user);
+void searchUserByNama(User users[], int jumlah_user);
+void tampilDetailUser(User user);
+void tampilHasilSearchUserID(User users[], int jumlah_user, int id);
+void tampilHasilSearchUserNama(User users[], int jumlah_user, string nama);
 
 
 // SKILL
