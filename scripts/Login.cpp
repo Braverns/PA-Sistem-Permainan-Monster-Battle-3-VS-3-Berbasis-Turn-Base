@@ -47,6 +47,8 @@ void menuHome(int &state, bool &program_jalan)
             // ATAS
             if(tombol == 72)
             {
+                playSFX(L"music/cursor3.wav");
+
                 cursor--;
 
                 if(cursor < 0)
@@ -56,6 +58,8 @@ void menuHome(int &state, bool &program_jalan)
             // BAWAH
             else if(tombol == 80)
             {
+                playSFX(L"music/cursor3.wav");
+
                 cursor++;
 
                 if(cursor > 3)
