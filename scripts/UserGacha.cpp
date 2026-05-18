@@ -233,38 +233,33 @@ void gachaMonster(User users[], Monster monsters[], Skill skills[],
     cout << "|_______________________________________________________________|\n";
 
     cout << "Gold Kamu : " << users[current_user].gold << "\n";
-    cout << "\nJumlah gacha (0-10): ";
-    cin >> jumlah_gacha;
-
-    if(cin.fail())
-    {
-        tampilPesan("Input tidak valid!");
-        return;
+    cout << "pilih 0 untuk membatalkan gacha\n";
+    try {
+        jumlah_gacha = inputAngka("Masukkan jumlah gacha (1-10): ");
+        validasiUserGacha(to_string(jumlah_gacha));
+    
+        if(jumlah_gacha == 0)
+        {
+            tampilPesan("Gacha dibatalkan!");
+            return;
+        }
+    
+        int total_harga = jumlah_gacha * 100;
+    
+        if(users[current_user].gold < total_harga)
+        {
+            tampilPesan("Gold tidak cukup!");
+            return;
+        }
+    
+        if(users[current_user].deck.jumlah + jumlah_gacha > 30)
+        {
+            tampilPesan("Deck monster tidak cukup!");
+            return;
+        }
     }
-
-    if(jumlah_gacha == 0)
-    {
-        tampilPesan("Gacha dibatalkan!");
-        return;
-    }
-
-    if(jumlah_gacha < 0 || jumlah_gacha > 10)
-    {
-        tampilPesan("Jumlah gacha harus 0-10!");
-        return;
-    }
-
-    int total_harga = jumlah_gacha * 100;
-
-    if(users[current_user].gold < total_harga)
-    {
-        tampilPesan("Gold tidak cukup!");
-        return;
-    }
-
-    if(users[current_user].deck.jumlah + jumlah_gacha > 30)
-    {
-        tampilPesan("Deck monster tidak cukup!");
+    catch(const invalid_argument& e) {
+        tampilPesan(e.what());
         return;
     }
 
@@ -303,5 +298,5 @@ void gachaMonster(User users[], Monster monsters[], Skill skills[],
     saveUserCSV(users, jumlah_user);
     saveDeckCSV(users, jumlah_user);
 
-    tungguEnter();
+    tunggu();
 }

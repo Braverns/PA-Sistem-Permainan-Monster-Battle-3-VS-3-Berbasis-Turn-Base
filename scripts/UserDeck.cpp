@@ -721,7 +721,7 @@ void menuLihatDeck(User users[], int current_user)
             cout << "|______|________________________|_________|_________|_________|_________|_________________|___________|\n";
             cout << "\nTotal Monster : " << jumlah << endl;
 
-            tungguEnter();
+            tunggu();
         }
 
         // ESC
