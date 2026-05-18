@@ -124,8 +124,8 @@ struct Rarity
 };
 
 // ADMIN
-void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_user,
-    int &jumlah_monster, int &jumlah_skill, int &next_monster_id, int &state);
+void menuAdmin(User users[], Monster monsters[], Skill skills[],
+    int &jumlah_user, int &jumlah_monster, int &jumlah_skill, int &next_monster_id, int &state);
 void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id);
 void tampilMonsterList(Monster monsters[], int jumlah_monster);
 void tampilMonsterList(Monster monsters[], int jumlah_monster, string judul);
@@ -133,6 +133,8 @@ void updateMonster(Monster monsters[], int jumlah_monster);
 void deleteMonster(Monster monsters[], int *jumlah_monster);
 void tampilDaftarUser(User users[], int jumlah_user);
 void deleteUser(User users[], int &jumlah_user);
+void menuKelolaMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id);
+void menuKelolaUser(User users[], int &jumlah_user);
 
 
 // SKILL
@@ -152,6 +154,7 @@ bool loginUser(User users[], int jumlah_user, int &current_user, int &state, boo
 void menuTidakValid();
 void logout(int &state);
 void tampilPesan(string pesan);
+void tampilPesan2(string pesan);
 void tungguEnter();
 void tungguClear();
 void tunggu();
@@ -162,8 +165,10 @@ void resetColor();
 int getRarityColor(string rarity);
 void menuSetting();
 string inputClean(string label);
+int inputAngka(string label);
 void validasiDaftarUser(const string& username, const string& password);
 void validasiLogin(const string& username, const string& password);
+void validasiCreateMonster(const string& nama_str, const string& hp_str, const string& attack_str, const string& defense_str, const string& speed_str, const string& type_str, const string& rarity_str);
 
 // USER
 void menuUser(User users[], Monster monsters[], Skill skills[],
@@ -212,6 +217,7 @@ int pilihSkill(BattleMonster player[], BattleMonster enemy[], UserMonster monste
 float getTypeMultiplier(string attack_type, string target_type);
 int hitungDamage(UserMonster attacker, UserMonster target, Skill skill);
 void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker);
+void printBattleTextLine(string text);
 
 
 // SEARCH & SORT

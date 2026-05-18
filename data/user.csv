@@ -1,3 +1,5 @@
 id,username,password,role,gold,team1,team2,team3
 0,admin,123,admin,0,-1,-1,-1
-
+1,ajis,123456,user,1000,-1,-1,-1
+2,muja,123456,user,1000,-1,-1,-1
+3,ulung,123456,user,1000,-1,-1,-1

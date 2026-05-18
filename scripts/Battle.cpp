@@ -362,7 +362,7 @@ int pilihTarget( BattleMonster player[], BattleMonster enemy[], string attacker_
 
         cout << "\n ___________________________________\n";
         cout << "| ";
-        cout << left << setw(33) << (attacker_name + " MENYERANG");
+        cout << left << setw(34) << (attacker_name + " MENYERANG");
         cout << "|\n";
         cout << "|___________________________________|\n";
 
@@ -637,26 +637,21 @@ bool playerAttack(BattleMonster player[], BattleMonster enemy[], int attacker)
         tampilBattleUI(player, enemy);
 
         cout << "\n _______________________________________________________________\n";
-        cout << "| ";
-        string teks = player[attacker].data.nama + " MENYERANG " +enemy[target].data.nama;
-        cout << left << setw(61) << teks;
-        cout << "|\n";
-        cout << "|                                                               |\n";
+        string teks = player[attacker].data.nama + " MENYERANG " + enemy[target].data.nama;
+        printBattleTextLine(teks);
+        printBattleTextLine("");
 
         if(multiplier > 1.0f)
         {
-            cout << "|                     SUPER EFEKTIF                             |\n";
+            printBattleTextLine("SUPER EFEKTIF");
         }
         else
         {
-            cout << "|                                                               |\n";
+            printBattleTextLine("");
         }
 
         string dmg = to_string(damage) + " DAMAGE";
-        cout << "|";
-        cout << setw(35) << " ";
-        cout << left << setw(28) << dmg;
-        cout << "|\n";
+        printBattleTextLine(dmg);
         cout << "|_______________________________________________________________|\n";
 
         if(!enemy[target].hidup)
@@ -698,26 +693,22 @@ void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker)
     tampilBattleUI(player, enemy);
 
     cout << "\n _______________________________________________________________\n";
-    cout << "| ";
+
     string teks = enemy[attacker].data.nama + " MENYERANG " + player[target].data.nama;
-    cout << left << setw(61)<< teks;
-    cout << "|\n";
-    cout << "|                                                               |\n";
+    printBattleTextLine(teks);
+    printBattleTextLine("");
 
     if(multiplier > 1.0f)
     {
-        cout << "|                     SUPER EFEKTIF                             |\n";
+        printBattleTextLine("SUPER EFEKTIF");
     }
     else
     {
-        cout << "|                                                               |\n";
+        printBattleTextLine("");
     }
 
     string dmg = to_string(damage) + " DAMAGE";
-    cout << "|";
-    cout << setw(35) << " ";
-    cout << left << setw(28) << dmg;
-    cout << "|\n";
+    printBattleTextLine(dmg);
     cout << "|_______________________________________________________________|\n";
 
     if(!player[target].hidup)
@@ -728,3 +719,27 @@ void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker)
     Sleep(3000);
 }
 
+void printBattleTextLine(string text)
+{
+    int width = 63;
+
+    int padding = width - text.length();
+
+    if(padding < 0)
+        padding = 0;
+
+    int kiri = padding / 2;
+    int kanan = padding - kiri;
+
+    cout << "|";
+
+    for(int i = 0; i < kiri; i++)
+        cout << " ";
+
+    cout << text;
+
+    for(int i = 0; i < kanan; i++)
+        cout << " ";
+
+    cout << "|\n";
+}
