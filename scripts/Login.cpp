@@ -2,51 +2,89 @@
 
 void menuHome(int &state, bool &program_jalan)
 {
-    CLEAR_SCREEN;
-    int pilih;
+    int cursor = 0;
 
-    cout << "\n_________________________________\n";
-    cout << "|             HOME              |\n";
-    cout << "|_______________________________|\n";
-    cout << "| 1 | Login                     |\n";
-    cout << "| 2 | Daftar                    |\n";
-    cout << "| 3 | Exit                      |\n";
-    cout << "|___|___________________________|\n";
-    cout << "Pilih: ";
-
-    try {
-        cin >> pilih;
-        if(cin.fail())
-            throw "Input harus berupa angka!";
-    }
-    catch(const char* msg) {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << msg << endl;
-
-        cout << "\nTekan ENTER untuk kembali...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
-        return;
-    }
-
-    switch(pilih)
+    string menu[4] =
     {
-        case 1:
-            state = 1;
-            break;
+        "Login",
+        "Daftar",
+        "Setting",
+        "Exit"
+    };
 
-        case 2:
-            state = 2;
-            break;
+    while(true)
+    {
+        CLEAR_SCREEN;
 
-        case 3:
-            program_jalan = false;
-            break;
+        cout << "\n __________________________________\n";
+        cout << "|                                  |\n";
+        cout << "|         BATTLE MONSTER           |\n";
+        cout << "|__________________________________|\n";
 
-        default:
-            cout << "Pilihan tidak valid!\n";
+        for(int i = 0; i < 4; i++)
+        {
+            cout << "| ";
+
+            if(cursor == i)
+                cout << ">> ";
+            else
+                cout << "   ";
+
+            cout << left << setw(28) << menu[i]  << "  |\n";
+        }
+
+        cout << "|__________________________________|\n";
+
+        cout << "\nGunakan UP/DOWN dan ENTER\n";
+
+        char tombol = _getch();
+
+        // ARROW
+        if(tombol == -32)
+        {
+            tombol = _getch();
+
+            // ATAS
+            if(tombol == 72)
+            {
+                cursor--;
+
+                if(cursor < 0)
+                    cursor = 3;
+            }
+
+            // BAWAH
+            else if(tombol == 80)
+            {
+                cursor++;
+
+                if(cursor > 3)
+                    cursor = 0;
+            }
+        }
+
+        // ENTER
+        else if(tombol == 13)
+        {
+            switch(cursor)
+            {
+                case 0:
+                    state = 1;
+                    return;
+
+                case 1:
+                    state = 2;
+                    return;
+
+                case 2:
+                    menuSetting();
+                    break;
+
+                case 3:
+                    program_jalan = false;
+                    return;
+            }
+        }
     }
 }
 
@@ -62,7 +100,7 @@ void daftarUser(User users[], int &jumlah_user, int &state)
 
     if(jumlah_user >= 100)
     {
-        cout << "Database user penuh!\n";
+        tampilPesan("Database user penuh!");
         state = 0;
         return;
     }
@@ -88,7 +126,7 @@ void daftarUser(User users[], int &jumlah_user, int &state)
 
     if(username_ada)
     {
-        cout << "Username sudah dipakai!\n";
+        tampilPesan("Username sudah dipakai!");
     }
     else
     {
@@ -100,6 +138,11 @@ void daftarUser(User users[], int &jumlah_user, int &state)
         users[jumlah_user].gold = 1000;
         users[jumlah_user].deck.jumlah = 0;
 
+        for(int i = 0; i < 3; i++)
+        {
+            users[jumlah_user].active_team[i] = -1;
+        }
+
         if(jumlah_user > 0)
         {
             users[jumlah_user - 1].next = &users[jumlah_user];
@@ -108,15 +151,13 @@ void daftarUser(User users[], int &jumlah_user, int &state)
         users[jumlah_user].next = NULL;
 
         jumlah_user++;
+        saveUserCSV(users, jumlah_user);
 
-        cout << "User berhasil dibuat\n";
+        tampilPesan("User berhasil dibuat");
     }
 
     state = 0;
 
-    cout << "\nTekan ENTER untuk melanjutkan...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
 }
 
 
@@ -169,21 +210,34 @@ bool loginUser(User users[], int jumlah_user, int &current_user, int &state, boo
         if(!login_berhasil)
         {
             percobaan++;
-            cout << "Username atau password salah\n";
-            cout << "Sisa percobaan: " << 3 - percobaan << endl;
+            tampilPesan("Username atau password salah! Sisa percobaan: " + to_string(3 - percobaan));
         }
     }
 
     if(!login_berhasil)
     {
-        cout << "\nLogin gagal 3 kali\n";
+        tampilPesan("Login gagal 3 kali");
         program_jalan = false;
     }
-
-    cout << "\nTekan ENTER untuk melanjutkan...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
 
     return login_berhasil;
 }
 
+
+
+
+
+
+// AJIS
+
+
+
+
+
+
+
+
+
+
+
+// ULUNG

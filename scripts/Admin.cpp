@@ -1,82 +1,117 @@
 #include "global.h"
 
-
-
-void menuAdmin(User users[], Monster monsters[],int &jumlah_monster, int &next_monster_id, int &state)
+void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_user,
+    int &jumlah_monster, int &jumlah_skill, int &next_monster_id, int &state)
 {
-    CLEAR_SCREEN;
+    int cursor = 0;
 
-    int pilih;
-
-    cout << "\n__________________________________\n";
-    cout << "|           MENU ADMIN           |\n";
-    cout << "|________________________________|\n";
-    cout << "| 1 | Create Monster             |\n";
-    cout << "| 2 | Read Monster List          |\n";
-    cout << "| 3 | Update Monster             |\n";
-    cout << "| 4 | Delete Monster             |\n";
-    cout << "| 5 | Read Permintaan User       |\n";
-    cout << "| 6 | Logout                     |\n";
-    cout << "|___|____________________________|\n";
-    cout << "Pilih: ";
-
-    cin >> pilih;
-
-    if(cin.fail())
+    string menu[8] =
     {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Input harus angka!\n";
+        "Create Monster",
+        "Read Monster List",
+        "Update Monster",
+        "Delete Monster",
+        "Kelola Skill",
+        "Read User",
+        "Delete User",
+        "Logout"
+    };
 
-        cout << "\nTekan ENTER untuk melanjutkan...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
-        return;
-    }
-
-    switch(pilih)
+    while(true)
     {
+        CLEAR_SCREEN;
 
-        case 1:
-            createMonster(monsters, jumlah_monster, next_monster_id);
-            break;
+        cout << "\n __________________________________\n";
+        cout << "|           MENU ADMIN            |\n";
+        cout << "|_________________________________|\n";
 
-        case 2:
-            if(jumlah_monster == 0)
+        for(int i = 0; i < 8; i++)
+        {
+            cout << "| ";
+
+            if(cursor == i)
+                cout << ">> ";
+            else
+                cout << "   ";
+
+            cout << left << setw(28) << menu[i] << " |\n";
+        }
+
+        cout << "|_________________________________|\n";
+        cout << "\nGunakan UP/DOWN dan ENTER\n";
+
+        char tombol = _getch();
+
+        // ARROW
+        if(tombol == -32)
+        {
+            tombol = _getch();
+
+            // ATAS
+            if(tombol == 72)
             {
-                cout << "Belum ada monster\n";
+                cursor--;
 
-                cout << "\nTekan ENTER untuk melanjutkan...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin.get();
-
-                break;
+                if(cursor < 0)
+                    cursor = 6;
             }
 
-            tampilMonsterList(monsters, jumlah_monster, "DATABASE MONSTER");
+            // BAWAH
+            else if(tombol == 80)
+            {
+                cursor++;
 
-            cout << "\nTekan ENTER untuk melanjutkan...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cin.get();
+                if(cursor > 7)
+                    cursor = 0;
+            }
+        }
 
-            break;
+        // ENTER
+        else if(tombol == 13)
+        {
+            switch(cursor)
+            {
+                case 0:
+                    createMonster(monsters, jumlah_monster, next_monster_id);
+                    break;
 
-        case 3:
-            updateMonster(monsters, jumlah_monster);
-            break;
+                case 1:
+                    CLEAR_SCREEN;
 
-        case 4:
-            deleteMonster(monsters, &jumlah_monster);
-            break;
+                    tampilMonsterList( monsters, jumlah_monster, "");
 
-        // case 5
-        case 6:
-            logout(state);
-            break;
+                    tungguClear();
+                    break;
 
-        default:
-            menuTidakValid();
+                case 2:
+                    updateMonster(monsters, jumlah_monster);
+                    break;
+
+                case 3:
+                    deleteMonster( monsters, &jumlah_monster);
+                    break;
+
+                case 4:
+                    menuSkill(skills, jumlah_skill);
+                    break;
+
+                case 5:
+                CLEAR_SCREEN;
+
+                tampilDaftarUser(users, jumlah_user);
+
+                tungguClear();
+                    break;
+
+                case 6:
+                deleteUser(users, jumlah_user);
+                break;
+
+                case 7:
+                logout(state);
+                return;
+            }
+        }
     }
 }
 
@@ -84,135 +119,191 @@ void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id
 {
     if(jumlah_monster >= 100)
     {
-        cout << "Database monster penuh!\n";
-
-        cout << "\nTekan ENTER untuk melanjutkan...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan("Database monster penuh!");
         return;
     }
 
     Monster m;
 
-    cout << "\nCREATE MONSTER\n\n";
+    CLEAR_SCREEN;
 
-    cout << "Nama monster   : ";
-    cin.ignore();
-    getline(cin, m.status.nama);
+    cout << "\n __________________________________________________\n";
+    cout << "|                                                  |\n";
+    cout << "|                 CREATE MONSTER                   |\n";
+    cout << "|__________________________________________________|\n";
 
-    cout << "HP monster     : ";
+    cout << "| ID Monster : " << next_monster_id;
+
+    int sisa = 33 - to_string(next_monster_id).length();
+
+    for(int i = 0; i < sisa; i++)
+        cout << " ";
+
+    cout << "   |\n";
+    cout << "|                                                  |";
+    cin.clear();
+
+    cout << "\n| [ Nama Monster ]\n";
+    cout << "|> ";
+    getline(cin >> ws, m.status.nama);
+
+    cout << "| [ HP Monster ]\n";
+    cout << "|> ";
     cin >> m.status.hp;
 
-    cout << "Attack monster : ";
+    cout << "| [ Attack Monster ]\n";
+    cout << "|> ";
     cin >> m.status.attack;
 
-    cout << "Type monster   : ";
+    cout << "| [ Defense Monster ]\n";
+    cout << "|> ";
+    cin >> m.status.defense;
+
+    cout << "| [ Speed Monster ]\n";
+    cout << "|> ";
+    cin >> m.status.speed;
+
+    cout << "| [ Type Monster ]\n";
+    cout << "|> ";
     cin >> m.type.tipe;
 
-    m.status.id = next_monster_id;
+
+    cout << "| [ Rarity Monster ]\n";
+    cout << "| 1. Common\n";
+    cout << "| 2. Rare\n";
+    cout << "| 3. Epic\n";
+    cout << "|> ";
+
+    int pilih_rarity;
+
+    cin >> pilih_rarity;
+
+    if(pilih_rarity == 1)
+        m.rarity.rarity = "Common";
+
+    else if(pilih_rarity == 2)
+        m.rarity.rarity = "Rare";
+
+    else if(pilih_rarity == 3)
+        m.rarity.rarity = "Epic";
+
+    else
+    {
+        tampilPesan("Pilihan rarity tidak valid!");
+        return;
+    }
+
+
+    if(cin.fail())
+    {
+        tampilPesan("Input angka tidak valid!");
+        return;
+    }
+
+    if(m.status.nama == "")
+    {
+        tampilPesan("Nama monster tidak boleh kosong!");
+        return;
+    }
+
+    m.status.id =next_monster_id;
     next_monster_id++;
-
     monsters[jumlah_monster] = m;
-
     jumlah_monster++;
 
-    cout << "Monster berhasil dibuat\n";
+    saveMonsterCSV(monsters, jumlah_monster );
 
-    cout << "\nTekan ENTER untuk melanjutkan...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
+    CLEAR_SCREEN;
+
+
+    cout << "\n _________________________________________________\n";
+    cout << "|                                                 |\n";
+    cout << "|           MONSTER BERHASIL DIBUAT               |\n";
+    cout << "|_________________________________________________|\n";
+    cout << "| " << left << setw(47) << ("Nama    : " + m.status.nama) << " |\n";
+    cout << "| " << left << setw(47) << ("HP      : " + to_string(m.status.hp)) << " |\n";
+    cout << "| " << left << setw(47) << ("Attack  : " + to_string(m.status.attack)) << " |\n";
+    cout << "| " << left << setw(47) << ("Defense : " + to_string(m.status.defense)) << " |\n";
+    cout << "| " << left << setw(47) << ("Speed   : " + to_string(m.status.speed)) << " |\n";
+    cout << "| " << left << setw(47) << ("Type    : " + m.type.tipe) << " |\n";
+    cout << "| " << left << setw(47) << ("Rarity  : " + m.rarity.rarity)  << " |\n";
+    cout << "|_________________________________________________|\n";
+    cout << endl;
+    tungguEnter();
 }
 
 void tampilMonsterList(Monster monsters[], int jumlah_monster)
 {
-    cout << "\n__________________________________________________________________________\n";
-    cout << "|                                                                        |\n";
-    cout << "|                               MONSTER LIST                             |\n";
-    cout << "|________________________________________________________________________|\n";
+    cout << "\n ___________________________________________________________________________________________________________\n";
+    cout << "|                                                                                                           |\n";
+    cout << "|                                               MONSTER LIST                                                |\n";
+    cout << "|___________________________________________________________________________________________________________|\n";
 
-    cout << left 
+    cout << left
          << setw(5)  << "|ID"
-         << setw(25) << "Nama"
-         << setw(11) << "HP"
-         << setw(11) << "ATK"
-         << setw(21) << "Type"
+         << setw(25) << "|Nama"
+         << setw(11) << "|HP"
+         << setw(11) << "|ATK"
+         << setw(11) << "|DEF"
+         << setw(11) << "|SPD"
+         << setw(22) << "|Type"
+         << setw(12) << "|Rarity"
          << "|"
          << endl;
 
-    cout << "|------------------------------------------------------------------------|\n";
+    cout << "|----|------------------------|----------|----------|----------|----------|---------------------|-----------|\n";
 
     for(int i = 0; i < jumlah_monster; i++)
     {
         cout << "|"
-             << left << setw(4)  << monsters[i].status.id
-             << ""
-             << setw(25) << monsters[i].status.nama
-             << ""
-             << setw(11) << monsters[i].status.hp
-             << ""
-             << setw(11) << monsters[i].status.attack
-             << ""
-             << setw(21) << monsters[i].type.tipe
+             << left << setw(4)
+             << monsters[i].status.id
+
+             << "|"
+             << setw(24)
+             << monsters[i].status.nama
+
+             << "|"
+             << setw(10)
+             << monsters[i].status.hp
+
+             << "|"
+             << setw(10)
+             << monsters[i].status.attack
+
+             << "|"
+             << setw(10)
+             << monsters[i].status.defense
+
+             << "|"
+             << setw(10)
+             << monsters[i].status.speed
+
+             << "|"
+             << setw(21)
+             << monsters[i].type.tipe
+
+             << "|"
+             << setw(11)
+             << monsters[i].rarity.rarity
+
              << "|\n";
     }
 
-    cout << "|________________________________________________________________________|\n";
+    cout << "|____|________________________|__________|__________|__________|__________|_____________________|___________|\n";
 }
-
-
 
 void tampilMonsterList(Monster monsters[], int jumlah_monster, string judul)
 {
     cout << "\n" << judul << "\n";
-
-    cout << "\n__________________________________________________________________________\n";
-    cout << "|                                                                        |\n";
-    cout << "|                               MONSTER LIST                             |\n";
-    cout << "|________________________________________________________________________|\n";
-
-    cout << left 
-         << setw(5)  << "|ID"
-         << setw(25) << "Nama"
-         << setw(11) << "HP"
-         << setw(11) << "ATK"
-         << setw(21) << "Type"
-         << "|"
-         << endl;
-
-    cout << "|------------------------------------------------------------------------|\n";
-
-    for(int i = 0; i < jumlah_monster; i++)
-    {
-        cout << "|"
-             << left << setw(4)  << monsters[i].status.id
-             << ""
-             << setw(25) << monsters[i].status.nama
-             << ""
-             << setw(11) << monsters[i].status.hp
-             << ""
-             << setw(11) << monsters[i].status.attack
-             << ""
-             << setw(21) << monsters[i].type.tipe
-             << "|\n";
-    }
-
-    cout << "|________________________________________________________________________|\n";
+    tampilMonsterList(monsters, jumlah_monster);
 }
 
-
-
-
-void updateMonster(Monster monsters[], int jumlah_monster)
+void updateMonster( Monster monsters[], int jumlah_monster)
 {
     if(jumlah_monster == 0)
     {
-        cout << "Belum ada monster\n";
-
-        cout << "\nTekan ENTER untuk melanjutkan...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan("Belum ada monster untuk diupdate!");
         return;
     }
 
@@ -229,47 +320,74 @@ void updateMonster(Monster monsters[], int jumlah_monster)
         if(monsters[i].status.id == id)
         {
             ditemukan = true;
-
+            
             cout << "\nUPDATE MONSTER\n\n";
+            cout << "Nama Baru    : ";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            cout << "Nama baru   : ";
-            cin >> monsters[i].status.nama;
+            getline(cin, monsters[i].status.nama);
 
-            cout << "HP baru     : ";
+            cout << "HP Baru      : ";
             cin >> monsters[i].status.hp;
 
-            cout << "Attack baru : ";
+            cout << "Attack Baru  : ";
             cin >> monsters[i].status.attack;
 
-            cout << "Type baru   : ";
+            cout << "Defense Baru : ";
+            cin >> monsters[i].status.defense;
+
+            cout << "Speed Baru   : ";
+            cin >> monsters[i].status.speed;
+
+            cout << "Type Baru    : ";
             cin >> monsters[i].type.tipe;
 
-            cout << "Monster berhasil diupdate\n";
+
+            cout << "\nPilih Rarity Baru\n";
+            cout << "1. Common\n";
+            cout << "2. Rare\n";
+            cout << "3. Epic\n";
+            cout << "Pilih : ";
+
+            int pilih_rarity;
+
+            cin >> pilih_rarity;
+
+            if(pilih_rarity == 1)
+                monsters[i].rarity.rarity = "Common";
+
+            else if(pilih_rarity == 2)
+                monsters[i].rarity.rarity = "Rare";
+
+            else if(pilih_rarity == 3)
+                monsters[i].rarity.rarity = "Epic";
+
+            else
+            {
+                tampilPesan("Pilihan rarity tidak valid!");
+                return;
+            }
+
+            cout << "\nMonster berhasil diupdate\n";
+
+            saveMonsterCSV(monsters, jumlah_monster);
         }
     }
 
     if(!ditemukan)
     {
-        cout << "ID monster tidak ditemukan\n";
+        tampilPesan("ID monster tidak ditemukan!");
+        return;
     }
 
-    cout << "\nTekan ENTER untuk melanjutkan...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
+    tungguEnter();
 }
-
-
 
 void deleteMonster(Monster monsters[], int *jumlah_monster)
 {
     if(*jumlah_monster == 0)
     {
-        cout << "Belum ada monster\n";
-
-        cout << "\nTekan ENTER untuk melanjutkan...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan("Belum ada monster untuk dihapus!");
         return;
     }
 
@@ -279,6 +397,7 @@ void deleteMonster(Monster monsters[], int *jumlah_monster)
     int index = -1;
 
     cout << "\nMasukkan ID monster yang ingin dihapus: ";
+
     cin >> id;
 
     for(int i = 0; i < *jumlah_monster; i++)
@@ -291,27 +410,107 @@ void deleteMonster(Monster monsters[], int *jumlah_monster)
 
     if(index == -1)
     {
-        cout << "Monster tidak ditemukan\n";
-
-        cout << "\nTekan ENTER untuk melanjutkan...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cin.get();
-
+        tampilPesan("ID monster tidak ditemukan!");
         return;
     }
 
-    for(int i = index; i < *jumlah_monster - 1; i++)
+    for(int i = index; i < *jumlah_monster - 1;i++)
     {
         monsters[i] = monsters[i + 1];
     }
 
     (*jumlah_monster)--;
 
-    cout << "Monster berhasil dihapus\n";
+    saveMonsterCSV(monsters, *jumlah_monster);
 
-    cout << "\nTekan ENTER untuk melanjutkan...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
+    tampilPesan("Monster berhasil dihapus");
 }
 
+void tampilDaftarUser(User users[], int jumlah_user)
+{
+    cout << "\n ============================================================\n";
+    cout << "|                        DAFTAR USER                         |\n";
+    cout << "|============================================================|\n";
+
+    cout << left
+         << setw(6)  << "| ID"
+         << setw(25) << "| Username"
+         << setw(15) << "| Role"
+         << setw(15) << "| Gold"
+         << "|\n";
+
+    cout << "|-----|------------------------|--------------|--------------|\n";
+
+    for(int i = 0; i < jumlah_user; i++)
+    {
+        cout << left
+             << setw(6)  << ("| " + to_string(users[i].id))
+             << setw(25) << ("| " + users[i].username)
+             << setw(15) << ("| " + users[i].role)
+             << setw(15) << ("| " + to_string(users[i].gold))
+             << "|\n";
+    }
+
+    cout << "|_____|________________________|______________|______________|\n";
+}
+
+void deleteUser(User users[], int &jumlah_user)
+{
+    CLEAR_SCREEN;
+    if(jumlah_user <= 1)
+    {
+        tampilPesan("Tidak ada user yang bisa dihapus!");
+        return;
+    }
+
+    tampilDaftarUser(users, jumlah_user);
+
+    int id;
+    int index = -1;
+
+    cout << "\nMasukkan ID user yang ingin dihapus : ";
+    cin >> id;
+
+    for(int i = 0; i < jumlah_user; i++)
+    {
+        if(users[i].id == id)
+        {
+            index = i;
+        }
+    }
+
+    if(index == -1)
+    {
+        tampilPesan("User tidak ditemukan!");
+        return;
+    }
+
+    if(users[index].role == "admin")
+    {
+        tampilPesan("Admin tidak bisa dihapus!");
+        return;
+    }
+
+    for(int i = index; i < jumlah_user - 1; i++)
+    {
+        users[i] = users[i + 1];
+    }
+
+    jumlah_user--;
+
+    for(int i = 0; i < jumlah_user - 1; i++)
+    {
+        users[i].next = &users[i + 1];
+    }
+
+    if(jumlah_user > 0)
+    {
+        users[jumlah_user - 1].next = NULL;
+    }
+
+    saveUserCSV(users, jumlah_user);
+    saveDeckCSV(users, jumlah_user);
+
+    tampilPesan("User berhasil dihapus!");
+}
 
