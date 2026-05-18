@@ -210,6 +210,7 @@ bool semuaMonsterMati(BattleMonster team[])
 
 void tampilBattleUI(BattleMonster player[], BattleMonster enemy[])
 {
+    setColor(12);
     cout << "\n _________________________________________________________________\n";
     cout << "|                              ENEMY                              |\n";
     cout << "|_________________________________________________________________|\n";
@@ -282,6 +283,14 @@ void tampilBattleUI(BattleMonster player[], BattleMonster enemy[])
     }
 
     cout << "|\n";
+    resetColor();
+    setColor(10);
+    for(int i = 0; i < 3; i++)
+    {
+        cout << "|_____________________";
+    }
+
+    cout << "|\n";
 
     for(int row = 0; row < 5; row++)
     {
@@ -346,6 +355,7 @@ void tampilBattleUI(BattleMonster player[], BattleMonster enemy[])
     cout << "|_____________________|_____________________|_____________________|\n";
     cout << "|                              PLAYER                             |\n";
     cout << "|_________________________________________________________________|\n";
+    resetColor();
 }
 
 
@@ -361,8 +371,27 @@ int pilihTarget( BattleMonster player[], BattleMonster enemy[], string attacker_
         tampilBattleUI(player, enemy);
 
         cout << "\n ___________________________________\n";
-        cout << "| ";
-        cout << left << setw(34) << (attacker_name + " MENYERANG");
+
+        string teks = attacker_name + " MENYERANG";
+        int width = 35;
+        int padding = width - teks.length();
+
+        if(padding < 0)
+            padding = 0;
+
+        int kiri = padding / 2;
+        int kanan = padding - kiri;
+
+        cout << "|";
+
+        for(int i = 0; i < kiri; i++)
+            cout << " ";
+
+        cout << teks;
+
+        for(int i = 0; i < kanan; i++)
+            cout << " ";
+
         cout << "|\n";
         cout << "|___________________________________|\n";
 
@@ -376,7 +405,7 @@ int pilihTarget( BattleMonster player[], BattleMonster enemy[], string attacker_
                 cout << "   ";
 
             cout << left << setw(30) << enemy[i].data.nama;
-            cout << "|\n";
+            cout << " |\n";
         }
 
         cout << "|___________________________________|\n";
@@ -441,11 +470,12 @@ int pilihSkill(BattleMonster player[], BattleMonster enemy[], UserMonster monste
 
         tampilBattleUI(player, enemy);
 
-        cout << "\n _________________________________________________\n";
-        cout << "|                     SKILL                       |\n";
-        cout << "|_________________________________________________|\n";
-        cout << "| NAME           | ELEMENT | TIPE   | POWER      |\n";
-        cout << "|________________|_________|_________|____________|\n";
+        cout << "\n ________________________________________________________________\n";
+        cout << "|                                                                |\n";
+        cout << "|                          SKILL LIST                            |\n";
+        cout << "|________________________________________________________________|\n";
+        cout << "| No | NAME                   | ELEMENT      | TIPE         | POWER     |\n";
+        cout << "|____|________________________|______________|______________|___________|\n";
 
         for(int i = 0; i < 3; i++)
         {
@@ -454,30 +484,35 @@ int pilihSkill(BattleMonster player[], BattleMonster enemy[], UserMonster monste
             cout << "| ";
 
             if(cursor == i)
-                cout << ">> ";
+            {
+                cout << ">>";
+            }
             else
-                cout << "   ";
+            {
+                cout << "  ";
+            }
 
-            cout << left
-            << setw(13)
-            << s.nama
+            cout << " | ";
 
-            << "| "
-            << setw(8)
-            << s.element
+            cout << left << setw(18)
+                 << s.nama
 
-            << "| "
-            << setw(8)
-            << s.tipe
+                 << "| "
+                 << setw(12)
+                 << s.element
 
-            << "| "
-            << setw(10)
-            << s.power
+                 << "| "
+                 << setw(12)
+                 << s.tipe
 
-            << "|\n";
+                 << "| "
+                 << setw(10)
+                 << s.power
+
+                 << "|\n";
         }
 
-        cout << "|_________________________________________________|\n";
+        cout << "|____|___________________|_____________|_____________|___________|\n";
 
         cout << "\n ________________________\n";
         cout << "|      CONTROL MENU      |\n";
@@ -488,6 +523,7 @@ int pilihSkill(BattleMonster player[], BattleMonster enemy[], UserMonster monste
 
         char tombol = _getch();
 
+        // ARROW
         if(tombol == -32)
         {
             tombol = _getch();
