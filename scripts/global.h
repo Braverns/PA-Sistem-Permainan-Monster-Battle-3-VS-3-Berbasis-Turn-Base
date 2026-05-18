@@ -173,7 +173,8 @@ void deleteMonsterUser(User users[],int current_user,int jumlah_user);
 // USER ACTIVE TEAM
 void pilihActiveTeam(User users[], int current_user, int jumlah_user);
 void tampilActiveTeam(User users[], int current_user);
-
+int activeDeckInput(User users[], int current_user, int slot_ke, int pilihan[]);
+void rekursifActiveTeamInput(UserMonster monsters[], int index, int jumlah, int pilih);
 
 
 // USER DECK
