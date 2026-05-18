@@ -210,6 +210,7 @@ bool semuaMonsterMati(BattleMonster team[])
 
 void tampilBattleUI(BattleMonster player[], BattleMonster enemy[])
 {
+    setColor(12);
     cout << "\n _________________________________________________________________\n";
     cout << "|                              ENEMY                              |\n";
     cout << "|_________________________________________________________________|\n";
@@ -282,6 +283,14 @@ void tampilBattleUI(BattleMonster player[], BattleMonster enemy[])
     }
 
     cout << "|\n";
+    resetColor();
+    setColor(10);
+    for(int i = 0; i < 3; i++)
+    {
+        cout << "|_____________________";
+    }
+
+    cout << "|\n";
 
     for(int row = 0; row < 5; row++)
     {
@@ -346,6 +355,7 @@ void tampilBattleUI(BattleMonster player[], BattleMonster enemy[])
     cout << "|_____________________|_____________________|_____________________|\n";
     cout << "|                              PLAYER                             |\n";
     cout << "|_________________________________________________________________|\n";
+    resetColor();
 }
 
 
@@ -464,8 +474,8 @@ int pilihSkill(BattleMonster player[], BattleMonster enemy[], UserMonster monste
         cout << "|                                                                |\n";
         cout << "|                          SKILL LIST                            |\n";
         cout << "|________________________________________________________________|\n";
-        cout << "| No | NAME              | ELEMENT     | TIPE        | POWER     |\n";
-        cout << "|____|___________________|_____________|_____________|___________|\n";
+        cout << "| No | NAME                   | ELEMENT      | TIPE         | POWER     |\n";
+        cout << "|____|________________________|______________|______________|___________|\n";
 
         for(int i = 0; i < 3; i++)
         {
