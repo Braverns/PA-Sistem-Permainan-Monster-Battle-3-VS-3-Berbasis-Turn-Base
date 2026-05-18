@@ -1,14 +1,4 @@
 user_id,monster_id,nama,hp,attack,defense,speed,type,rarity,skill1_id,skill2_id,skill3_id
-1,12,Terrahorn,900,240,180,100,Earth,Rare,17,22,24
-1,18,Stormpuff,500,250,80,300,Wind,Common,32,28,26
-1,18,Stormpuff,500,250,80,300,Wind,Common,30,30,25
-1,15,Gaiasaur,1000,260,170,120,Earth,Epic,23,21,21
-1,8,Tidalfin,550,220,130,260,Water,Common,9,9,13
-1,13,Rootbound,750,220,150,160,Earth,Common,20,22,21
-1,10,Coralite,650,180,160,140,Water,Rare,12,10,12
-1,18,Stormpuff,500,250,80,300,Wind,Common,29,29,29
-1,20,Roggy,900,200,500,100,Rock,Rare,39,33,40
-1,6,Cinderfox,380,300,60,400,Fire,Common,6,5,8
 2,18,Stormpuff,500,250,80,300,Wind,Common,29,26,28
 2,10,Coralite,650,180,160,140,Water,Rare,11,11,15
 2,20,Roggy,900,200,500,100,Rock,Rare,40,40,36
