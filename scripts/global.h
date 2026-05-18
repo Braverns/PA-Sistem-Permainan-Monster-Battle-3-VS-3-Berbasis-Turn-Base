@@ -154,6 +154,7 @@ bool loginUser(User users[], int jumlah_user, int &current_user, int &state, boo
 void menuTidakValid();
 void logout(int &state);
 void tampilPesan(string pesan);
+void tampilPesan2(string pesan);
 void tungguEnter();
 void tungguClear();
 void tunggu();
@@ -163,6 +164,11 @@ void setColor(int color);
 void resetColor();
 int getRarityColor(string rarity);
 void menuSetting();
+string inputClean(string label);
+int inputAngka(string label);
+void validasiDaftarUser(const string& username, const string& password);
+void validasiLogin(const string& username, const string& password);
+void validasiCreateMonster(const string& nama_str, const string& hp_str, const string& attack_str, const string& defense_str, const string& speed_str, const string& type_str, const string& rarity_str);
 
 // USER
 void menuUser(User users[], Monster monsters[], Skill skills[],
