@@ -211,6 +211,7 @@ int pilihSkill(BattleMonster player[], BattleMonster enemy[], UserMonster monste
 float getTypeMultiplier(string attack_type, string target_type);
 int hitungDamage(UserMonster attacker, UserMonster target, Skill skill);
 void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker);
+void printBattleTextLine(string text);
 
 
 // SEARCH & SORT
