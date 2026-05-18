@@ -161,6 +161,9 @@ void setColor(int color);
 void resetColor();
 int getRarityColor(string rarity);
 void menuSetting();
+string inputClean(string label);
+void validasiDaftarUser(const string& username, const string& password);
+void validasiLogin(const string& username, const string& password);
 
 // USER
 void menuUser(User users[], Monster monsters[], Skill skills[],

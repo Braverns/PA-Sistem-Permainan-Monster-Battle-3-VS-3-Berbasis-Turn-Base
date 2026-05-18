@@ -194,6 +194,97 @@ void menuSetting()
     }
 }
 
+string inputClean(string label)
+{
+    string input = "";
+    char ch;
+
+    cout << label;
+
+    while(true)
+    {
+        ch = _getch();
+
+        // ENTER
+        if(ch == 13)
+        {
+            // kosong -> ignore
+            if(input.empty())
+            {
+                continue;
+            }
+
+            cout << endl;
+            return input;
+        }
+
+        // BACKSPACE
+        else if(ch == 8)
+        {
+            if(!input.empty())
+            {
+                input.pop_back();
+
+                cout << "\b \b";
+            }
+        }
+
+        // SPASI AWAL DIBLOK
+        else if(ch == ' ')
+        {
+            if(input.empty())
+            {
+                continue;
+            }
+
+            input += ch;
+            cout << ch;
+        }
+
+        // CHARACTER NORMAL
+        else if(isprint(ch))
+        {
+            input += ch;
+            cout << ch;
+        }
+    }
+}
+
+void validasiDaftarUser(const string& username, const string& password)
+{
+    if (username.empty() || password.empty())
+    {
+        throw invalid_argument("Username dan password tidak boleh kosong!");
+    }
+
+    for (int i = 0; i < (int)username.length(); i++)
+    {
+        if (username[i] == ' ')
+        {
+            throw invalid_argument("Username tidak boleh mengandung spasi!");
+        }
+    }
+
+    for (int i = 0; i < (int)password.length(); i++)
+    {
+        if (password[i] == ' ')
+        {
+            throw invalid_argument("Password tidak boleh mengandung spasi!");
+        }
+    }
+
+    if ((int)password.length() < 6)
+    {
+    throw invalid_argument("Password minimal 6 karakter!");
+    }
+}
+
+void validasiLogin(const string& username, const string& password)
+{
+    if(username.empty() || password.empty())
+        throw invalid_argument("Username dan password tidak boleh kosong!");
+}
+
 
 // AJIS
 
