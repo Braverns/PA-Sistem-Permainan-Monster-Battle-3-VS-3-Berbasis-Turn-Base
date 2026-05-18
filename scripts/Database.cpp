@@ -117,6 +117,8 @@ void loadUserCSV(User users[], int &jumlah)
             getline(ss, temp, ',');
             u.gold = stoi(temp);
             getline(ss, temp, ',');
+            u.next_deck_id = stoi(temp);
+            getline(ss, temp, ',');
             u.active_team[0] = stoi(temp);
             getline(ss, temp, ',');
             u.active_team[1] = stoi(temp);
@@ -158,7 +160,7 @@ void saveUserCSV(User users[], int jumlah)
         return;
     }
 
-    file << "id,username,password,role,gold,team1,team2,team3\n";
+    file << "id,username,password,role,gold,next_deck_id,team1,team2,team3\n";
 
     for(int i = 0; i < jumlah; i++)
     {
@@ -168,6 +170,7 @@ void saveUserCSV(User users[], int jumlah)
         << users[i].password << ","
         << users[i].role << ","
         << users[i].gold << ","
+        << users[i].next_deck_id << ","
         << users[i].active_team[0] << ","
         << users[i].active_team[1] << ","
         << users[i].active_team[2]
@@ -187,7 +190,7 @@ void saveDeckCSV(User users[], int jumlah_user)
         return;
     }
 
-    file << "user_id,monster_id,nama,hp,attack,defense,speed,type,rarity," << "skill1_id,skill2_id,skill3_id\n";
+    file << "user_id,deck_id,monster_id,nama,hp,attack,defense,speed,type,rarity," << "skill1_id,skill2_id,skill3_id\n";
 
     for(int i = 0; i < jumlah_user; i++)
     {
@@ -197,6 +200,7 @@ void saveDeckCSV(User users[], int jumlah_user)
 
             file
             << users[i].id << ","
+            << m.deck_id << ","
             << m.monster_id << ","
             << m.nama << ","
             << m.hp << ","
@@ -267,6 +271,8 @@ void loadDeckCSV(User users[], Skill skills[], int jumlah_user, int jumlah_skill
             getline(ss, temp, ',');
             user_id = stoi(temp);
             getline(ss, temp, ',');
+            m.deck_id = stoi(temp);
+            getline(ss, temp, ',');
             m.monster_id = stoi(temp);
             getline(ss, m.nama, ',');
             getline(ss, temp, ',');
@@ -301,6 +307,10 @@ void loadDeckCSV(User users[], Skill skills[], int jumlah_user, int jumlah_skill
                     {
                         users[i].deck.monsters[idx] = m;
                         users[i].deck.jumlah++;
+                        if(m.deck_id >= users[i].next_deck_id)
+                        {
+                            users[i].next_deck_id = m.deck_id + 1;
+                        }
                     }
                 }
             }

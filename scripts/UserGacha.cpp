@@ -273,6 +273,9 @@ void gachaMonster(User users[], Monster monsters[], Skill skills[],
         Monster m = monsters[random_index];
         UserMonster um;
 
+        um.deck_id = users[current_user].next_deck_id;
+        users[current_user].next_deck_id++;
+
         um.monster_id = m.status.id;
         um.nama = m.status.nama;
         um.hp = m.status.hp;

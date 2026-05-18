@@ -60,6 +60,7 @@ struct Monster
 
 struct UserMonster
 {
+    int deck_id;
     int monster_id; 
 
     string nama;
@@ -95,6 +96,8 @@ struct User
     string password;
     string role;
     int gold;
+    
+    int next_deck_id;
 
     User* next;
 

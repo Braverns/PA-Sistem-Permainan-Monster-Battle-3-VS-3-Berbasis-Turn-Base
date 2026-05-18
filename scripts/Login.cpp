@@ -140,6 +140,7 @@ void daftarUser(User users[], int &jumlah_user, int &state)
             users[jumlah_user].role = "user";
     
             users[jumlah_user].gold = 1000;
+            users[jumlah_user].next_deck_id = 1;
             users[jumlah_user].deck.jumlah = 0;
     
             for(int i = 0; i < 3; i++)
