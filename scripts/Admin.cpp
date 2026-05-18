@@ -1,19 +1,15 @@
 #include "global.h"
 
-void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_user,
-    int &jumlah_monster, int &jumlah_skill, int &next_monster_id, int &state)
+void menuAdmin(User users[], Monster monsters[], Skill skills[],
+    int &jumlah_user, int &jumlah_monster, int &jumlah_skill, int &next_monster_id, int &state)
 {
     int cursor = 0;
 
-    string menu[8] =
+    string menu[4] =
     {
-        "Create Monster",
-        "Read Monster List",
-        "Update Monster",
-        "Delete Monster",
+        "Kelola Monster",
         "Kelola Skill",
-        "Read User",
-        "Delete User",
+        "Kelola User",
         "Logout"
     };
 
@@ -21,11 +17,11 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_use
     {
         CLEAR_SCREEN;
 
-        cout << "\n __________________________________\n";
+        cout << "\n _________________________________\n";
         cout << "|           MENU ADMIN            |\n";
         cout << "|_________________________________|\n";
 
-        for(int i = 0; i < 8; i++)
+        for(int i = 0; i < 4; i++)
         {
             cout << "| ";
 
@@ -47,21 +43,26 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_use
         {
             tombol = _getch();
 
-            // ATAS
+            // UP
             if(tombol == 72)
             {
+                playSFX(L"music/cursor3.wav");
+
                 cursor--;
 
                 if(cursor < 0)
-                    cursor = 6;
+                    cursor = 3;
             }
 
-            // BAWAH
+            // DOWN
             else if(tombol == 80)
             {
+
+                playSFX(L"music/cursor3.wav");
+
                 cursor++;
 
-                if(cursor > 7)
+            if(cursor > 3)
                     cursor = 0;
             }
         }
@@ -72,391 +73,436 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_use
             switch(cursor)
             {
                 case 0:
-                    createMonster(monsters, jumlah_monster, next_monster_id);
+                    menuKelolaMonster(
+                        monsters,
+                        jumlah_monster,
+                        next_monster_id
+                    );
                     break;
 
                 case 1:
-                    CLEAR_SCREEN;
-
-                    tampilMonsterList( monsters, jumlah_monster, "");
-
-                    tungguClear();
-                    break;
-
-                case 2:
-                    updateMonster(monsters, jumlah_monster);
-                    break;
-
-                case 3:
-                    deleteMonster( monsters, &jumlah_monster);
-                    break;
-
-                case 4:
                     menuSkill(skills, jumlah_skill);
                     break;
 
-                case 5:
-                CLEAR_SCREEN;
-
-                tampilDaftarUser(users, jumlah_user);
-
-                tungguClear();
+                case 2:
+                    menuKelolaUser(
+                        users,
+                        jumlah_user
+                    );
                     break;
 
-                case 6:
-                deleteUser(users, jumlah_user);
-                break;
-
-                case 7:
-                logout(state);
-                return;
+                case 3:
+                    logout(state);
+                    return;
             }
         }
     }
 }
 
-void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id)
+void menuKelolaUser(User users[], int &jumlah_user)
 {
-    if(jumlah_monster >= 100)
+    int cursor = 0;
+
+    string menu[4] =
     {
-        tampilPesan("Database monster penuh!");
-        return;
-    }
+    "Read User",
+    "Search User",
+    "Delete User",
+    "Kembali"
+    };
 
-    Monster m;
-
-    CLEAR_SCREEN;
-
-    cout << "\n __________________________________________________\n";
-    cout << "|                                                  |\n";
-    cout << "|                 CREATE MONSTER                   |\n";
-    cout << "|__________________________________________________|\n";
-
-    cout << "| ID Monster : " << next_monster_id;
-
-    int sisa = 33 - to_string(next_monster_id).length();
-
-    for(int i = 0; i < sisa; i++)
-        cout << " ";
-
-    cout << "   |\n";
-    cout << "|                                                  |";
-    cin.clear();
-
-    cout << "\n| [ Nama Monster ]\n";
-    cout << "|> ";
-    getline(cin >> ws, m.status.nama);
-
-    cout << "| [ HP Monster ]\n";
-    cout << "|> ";
-    cin >> m.status.hp;
-
-    cout << "| [ Attack Monster ]\n";
-    cout << "|> ";
-    cin >> m.status.attack;
-
-    cout << "| [ Defense Monster ]\n";
-    cout << "|> ";
-    cin >> m.status.defense;
-
-    cout << "| [ Speed Monster ]\n";
-    cout << "|> ";
-    cin >> m.status.speed;
-
-    cout << "| [ Type Monster ]\n";
-    cout << "|> ";
-    cin >> m.type.tipe;
-
-
-    cout << "| [ Rarity Monster ]\n";
-    cout << "| 1. Common\n";
-    cout << "| 2. Rare\n";
-    cout << "| 3. Epic\n";
-    cout << "|> ";
-
-    int pilih_rarity;
-
-    cin >> pilih_rarity;
-
-    if(pilih_rarity == 1)
-        m.rarity.rarity = "Common";
-
-    else if(pilih_rarity == 2)
-        m.rarity.rarity = "Rare";
-
-    else if(pilih_rarity == 3)
-        m.rarity.rarity = "Epic";
-
-    else
+    while(true)
     {
-        tampilPesan("Pilihan rarity tidak valid!");
-        return;
+        CLEAR_SCREEN;
+
+        cout << "\n _________________________________\n";
+        cout << "|           KELOLA USER           |\n";
+        cout << "|_________________________________|\n";
+
+        for(int i = 0; i < 4; i++)
+        {
+            cout << "| ";
+
+            if(cursor == i)
+                cout << ">> ";
+            else
+                cout << "   ";
+
+            cout << left << setw(28) << menu[i] << " |\n";
+        }
+
+        cout << "|_________________________________|\n";
+
+        char tombol = _getch();
+
+        if(tombol == -32)
+        {
+            tombol = _getch();
+
+            if(tombol == 72)
+            {
+                cursor--;
+
+                if(cursor < 0)
+                    cursor = 3;
+            }
+
+            else if(tombol == 80)
+            {
+                cursor++;
+
+                if(cursor > 3)
+                    cursor = 0;
+            }
+        }
+
+        else if(tombol == 13)
+        {
+            switch(cursor)
+            {
+                case 0:
+                    CLEAR_SCREEN;
+                    tampilDaftarUser(users, jumlah_user);
+                    tungguClear();
+                    break;
+
+                case 1:
+                    menuSearchUser(users, jumlah_user);
+                    break;
+
+                case 2:
+                    deleteUser(users, jumlah_user);
+                    break;
+
+                case 3:
+                    return;
+            }
+        }
     }
-
-
-    if(cin.fail())
-    {
-        tampilPesan("Input angka tidak valid!");
-        return;
-    }
-
-    if(m.status.nama == "")
-    {
-        tampilPesan("Nama monster tidak boleh kosong!");
-        return;
-    }
-
-    m.status.id =next_monster_id;
-    next_monster_id++;
-    monsters[jumlah_monster] = m;
-    jumlah_monster++;
-
-    saveMonsterCSV(monsters, jumlah_monster );
-
-    CLEAR_SCREEN;
-
-
-    cout << "\n _________________________________________________\n";
-    cout << "|                                                 |\n";
-    cout << "|           MONSTER BERHASIL DIBUAT               |\n";
-    cout << "|_________________________________________________|\n";
-    cout << "| " << left << setw(47) << ("Nama    : " + m.status.nama) << " |\n";
-    cout << "| " << left << setw(47) << ("HP      : " + to_string(m.status.hp)) << " |\n";
-    cout << "| " << left << setw(47) << ("Attack  : " + to_string(m.status.attack)) << " |\n";
-    cout << "| " << left << setw(47) << ("Defense : " + to_string(m.status.defense)) << " |\n";
-    cout << "| " << left << setw(47) << ("Speed   : " + to_string(m.status.speed)) << " |\n";
-    cout << "| " << left << setw(47) << ("Type    : " + m.type.tipe) << " |\n";
-    cout << "| " << left << setw(47) << ("Rarity  : " + m.rarity.rarity)  << " |\n";
-    cout << "|_________________________________________________|\n";
-    cout << endl;
-    tungguEnter();
 }
 
-void tampilMonsterList(Monster monsters[], int jumlah_monster)
+void tampilDaftarUser(User users[], int jumlah_user)
 {
-    cout << "\n ___________________________________________________________________________________________________________\n";
-    cout << "|                                                                                                           |\n";
-    cout << "|                                               MONSTER LIST                                                |\n";
-    cout << "|___________________________________________________________________________________________________________|\n";
+cout << "\n _________________________________________________________________\n";
+cout << "|                           DAFTAR USER                           |\n";
+cout << "|_________________________________________________________________|\n";
 
     cout << left
-         << setw(5)  << "|ID"
-         << setw(25) << "|Nama"
-         << setw(11) << "|HP"
-         << setw(11) << "|ATK"
-         << setw(11) << "|DEF"
-         << setw(11) << "|SPD"
-         << setw(22) << "|Type"
-         << setw(12) << "|Rarity"
-         << "|"
-         << endl;
+         << setw(6)  << "| ID"
+         << setw(25) << "| Username"
+         << setw(15) << "| Gold"
+         << setw(20) << "| Jumlah Monster"
+         << "|\n";
 
-    cout << "|----|------------------------|----------|----------|----------|----------|---------------------|-----------|\n";
+    cout << "|-----|------------------------|--------------|-------------------|\n";
 
-    for(int i = 0; i < jumlah_monster; i++)
+    for(int i = 0; i < jumlah_user; i++)
     {
-        cout << "|"
-             << left << setw(4)
-             << monsters[i].status.id
+        // SKIP ADMIN
+        if(users[i].role == "admin")
+            continue;
 
-             << "|"
-             << setw(24)
-             << monsters[i].status.nama
-
-             << "|"
-             << setw(10)
-             << monsters[i].status.hp
-
-             << "|"
-             << setw(10)
-             << monsters[i].status.attack
-
-             << "|"
-             << setw(10)
-             << monsters[i].status.defense
-
-             << "|"
-             << setw(10)
-             << monsters[i].status.speed
-
-             << "|"
-             << setw(21)
-             << monsters[i].type.tipe
-
-             << "|"
-             << setw(11)
-             << monsters[i].rarity.rarity
-
+        cout << left
+             << setw(6)  << ("| " + to_string(users[i].id))
+             << setw(25) << ("| " + users[i].username)
+             << setw(15) << ("| " + to_string(users[i].gold))
+             << setw(20) << ("| " + to_string(users[i].deck.jumlah))
              << "|\n";
     }
 
-    cout << "|____|________________________|__________|__________|__________|__________|_____________________|___________|\n";
+    cout << "|_____|________________________|______________|___________________|\n";
 }
 
-void tampilMonsterList(Monster monsters[], int jumlah_monster, string judul)
+void menuSearchUser(User users[], int jumlah_user)
 {
-    cout << "\n" << judul << "\n";
-    tampilMonsterList(monsters, jumlah_monster);
-}
+    CLEAR_SCREEN;
 
-void updateMonster( Monster monsters[], int jumlah_monster)
-{
-    if(jumlah_monster == 0)
+    int pilih;
+
+    cout << "\n=== MENU SEARCH USER ===\n";
+    cout << "1. Cari berdasarkan ID\n";
+    cout << "2. Cari berdasarkan Username\n";
+    cout << "Pilih: ";
+    cin >> pilih;
+
+    if(cin.fail())
     {
-        tampilPesan("Belum ada monster untuk diupdate!");
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        tampilPesan("Menu tidak valid!");
         return;
     }
 
-    tampilMonsterList(monsters, jumlah_monster);
-
-    int id;
-    bool ditemukan = false;
-
-    cout << "\nMasukkan ID monster yang ingin diupdate: ";
-    cin >> id;
-
-    for(int i = 0; i < jumlah_monster; i++)
+    // SEARCH BY ID
+    if(pilih == 1)
     {
-        if(monsters[i].status.id == id)
+        CLEAR_SCREEN;
+
+        tampilDaftarUser(users, jumlah_user);
+
+        int id;
+
+        cout << "\nMasukkan ID User : ";
+        cin >> id;
+
+        if(cin.fail())
         {
-            ditemukan = true;
-            
-            cout << "\nUPDATE MONSTER\n\n";
-            cout << "Nama Baru    : ";
+            cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            getline(cin, monsters[i].status.nama);
+            tampilPesan("Input ID tidak valid!");
+            return;
+        }
 
-            cout << "HP Baru      : ";
-            cin >> monsters[i].status.hp;
+        CLEAR_SCREEN;
 
-            cout << "Attack Baru  : ";
-            cin >> monsters[i].status.attack;
+        tampilHasilSearchUserID(users, jumlah_user, id);
+        tungguEnter();
+    }
 
-            cout << "Defense Baru : ";
-            cin >> monsters[i].status.defense;
+    // SEARCH BY USERNAME
+    else if(pilih == 2)
+    {
+        CLEAR_SCREEN;
 
-            cout << "Speed Baru   : ";
-            cin >> monsters[i].status.speed;
+        tampilDaftarUser(users, jumlah_user);
 
-            cout << "Type Baru    : ";
-            cin >> monsters[i].type.tipe;
+        string nama;
 
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            cout << "\nPilih Rarity Baru\n";
-            cout << "1. Common\n";
-            cout << "2. Rare\n";
-            cout << "3. Epic\n";
-            cout << "Pilih : ";
+        cout << "\nMasukkan Username : ";
+        getline(cin, nama);
 
-            int pilih_rarity;
+        CLEAR_SCREEN;
 
-            cin >> pilih_rarity;
+        tampilHasilSearchUserNama(users, jumlah_user, nama);
+        tungguEnter();
+    }
 
-            if(pilih_rarity == 1)
-                monsters[i].rarity.rarity = "Common";
+    else
+    {
+        tampilPesan("Menu tidak valid!");
+    }
+}
 
-            else if(pilih_rarity == 2)
-                monsters[i].rarity.rarity = "Rare";
+void tampilHasilSearchUserID(User users[], int jumlah_user, int id)
+{
+    bool ditemukan = false;
 
-            else if(pilih_rarity == 3)
-                monsters[i].rarity.rarity = "Epic";
-
-            else
-            {
-                tampilPesan("Pilihan rarity tidak valid!");
-                return;
-            }
-
-            cout << "\nMonster berhasil diupdate\n";
-
-            saveMonsterCSV(monsters, jumlah_monster);
+    for(int i = 0; i < jumlah_user; i++)
+    {
+        if(users[i].id == id && users[i].role != "admin")
+        {
+            tampilDetailUser(users[i]);
+            ditemukan = true;
+            break;
         }
     }
 
     if(!ditemukan)
     {
-        tampilPesan("ID monster tidak ditemukan!");
-        return;
+        cout << "\n _______________________________________\n";
+        cout << "|                                       |\n";
+        cout << "|       USER TIDAK DITEMUKAN            |\n";
+        cout << "|_______________________________________|\n";
     }
-
-    tungguEnter();
 }
 
-void deleteMonster(Monster monsters[], int *jumlah_monster)
+void tampilHasilSearchUserNama(User users[], int jumlah_user, string nama)
 {
-    if(*jumlah_monster == 0)
-    {
-        tampilPesan("Belum ada monster untuk dihapus!");
-        return;
-    }
-
-    tampilMonsterList(monsters, *jumlah_monster);
-
-    int id;
-    int index = -1;
-
-    cout << "\nMasukkan ID monster yang ingin dihapus: ";
-
-    cin >> id;
-
-    for(int i = 0; i < *jumlah_monster; i++)
-    {
-        if(monsters[i].status.id == id)
-        {
-            index = i;
-        }
-    }
-
-    if(index == -1)
-    {
-        tampilPesan("ID monster tidak ditemukan!");
-        return;
-    }
-
-    for(int i = index; i < *jumlah_monster - 1;i++)
-    {
-        monsters[i] = monsters[i + 1];
-    }
-
-    (*jumlah_monster)--;
-
-    saveMonsterCSV(monsters, *jumlah_monster);
-
-    tampilPesan("Monster berhasil dihapus");
-}
-
-void tampilDaftarUser(User users[], int jumlah_user)
-{
-    cout << "\n ============================================================\n";
-    cout << "|                        DAFTAR USER                         |\n";
-    cout << "|============================================================|\n";
-
-    cout << left
-         << setw(6)  << "| ID"
-         << setw(25) << "| Username"
-         << setw(15) << "| Role"
-         << setw(15) << "| Gold"
-         << "|\n";
-
-    cout << "|-----|------------------------|--------------|--------------|\n";
+    bool ditemukan = false;
 
     for(int i = 0; i < jumlah_user; i++)
     {
-        cout << left
-             << setw(6)  << ("| " + to_string(users[i].id))
-             << setw(25) << ("| " + users[i].username)
-             << setw(15) << ("| " + users[i].role)
-             << setw(15) << ("| " + to_string(users[i].gold))
-             << "|\n";
+        if(users[i].username == nama && users[i].role != "admin")
+        {
+            tampilDetailUser(users[i]);
+            ditemukan = true;
+            break;
+        }
     }
 
-    cout << "|_____|________________________|______________|______________|\n";
+    if(!ditemukan)
+    {
+        cout << "\n _______________________________________\n";
+        cout << "|                                       |\n";
+        cout << "|       USER TIDAK DITEMUKAN            |\n";
+        cout << "|_______________________________________|\n";
+    }
+}
+
+void tampilDetailUser(User user)
+{
+    cout << "\n ____________________________________________________________________________________________\n";
+    cout << "|                                                                                            |\n";
+
+    // USERNAME
+    string nama = user.username;
+
+    int kiri = (92 - nama.length()) / 2;
+    int kanan = 92 - nama.length() - kiri;
+
+    cout << "|" 
+         << string(kiri, ' ')
+         << nama
+         << string(kanan, ' ')
+         << "|\n";
+
+    cout << "|____________________________________________________________________________________________|\n";
+
+    // GOLD & MONSTER
+    cout << "|                                                                                            |\n";
+
+    cout << "| GOLD   : "
+         << left << setw(82)
+         << user.gold
+         << "|\n";
+
+    cout << "| MONSTER: "
+         << left << setw(82)
+         << user.deck.jumlah
+         << "|\n";
+
+    cout << "|____________________________________________________________________________________________|\n";
+
+    // HEADER DECK
+    string deck = "DECK";
+
+    int dk_kiri = (92 - deck.length()) / 2;
+    int dk_kanan = 92 - deck.length() - dk_kiri;
+
+    cout << "|"
+         << string(dk_kiri, ' ')
+         << deck
+         << string(dk_kanan, ' ')
+         << "|\n";
+
+    cout << "|____________________________________________________________________________________________|\n";
+
+    // ACTIVE TEAM
+    UserMonster active[3];
+    bool ada[3] = {false, false, false};
+
+    for(int i = 0; i < 3; i++)
+    {
+        int idx = user.active_team[i];
+
+        if(idx != -1 && idx < user.deck.jumlah)
+        {
+            active[i] = user.deck.monsters[idx];
+            ada[i] = true;
+        }
+    }
+
+    // HP
+    cout << "| ";
+
+    for(int i = 0; i < 3; i++)
+    {
+        if(ada[i])
+            cout << left << setw(29) << ("HP  : " + to_string(active[i].hp));
+        else
+            cout << left << setw(29) << "HP  : -";
+
+        cout << "| ";
+    }
+
+    cout << "\n";
+
+    // ATK
+    cout << "| ";
+
+    for(int i = 0; i < 3; i++)
+    {
+        if(ada[i])
+            cout << left << setw(29) << ("ATK : " + to_string(active[i].attack));
+        else
+            cout << left << setw(29) << "ATK : -";
+
+        cout << "| ";
+    }
+
+    cout << "\n";
+
+    // DEF
+    cout << "| ";
+
+    for(int i = 0; i < 3; i++)
+    {
+        if(ada[i])
+            cout << left << setw(29) << ("DEF : " + to_string(active[i].defense));
+        else
+            cout << left << setw(29) << "DEF : -";
+
+        cout << "| ";
+    }
+
+    cout << "\n";
+
+    // SPD
+    cout << "| ";
+
+    for(int i = 0; i < 3; i++)
+    {
+        if(ada[i])
+            cout << left << setw(29) << ("SPD : " + to_string(active[i].speed));
+        else
+            cout << left << setw(29) << "SPD : -";
+
+        cout << "| ";
+    }
+
+    cout << "\n";
+
+    // TYPE
+    cout << "| ";
+
+    for(int i = 0; i < 3; i++)
+    {
+        if(ada[i])
+            cout << left << setw(29) << ("TP  : " + active[i].type);
+        else
+            cout << left << setw(29) << "TP  : -";
+
+        cout << "| ";
+    }
+
+    cout << "\n";
+
+    cout << "|______________________________|______________________________|______________________________|\n";
+
+    // MONSTER
+    cout << "|";
+
+    for(int i = 0; i < 3; i++)
+    {
+        string monster;
+
+        if(ada[i])
+            monster = active[i].nama;
+        else
+            monster = "[ EMPTY ]";
+
+        int kiri_mon = (30 - monster.length()) / 2;
+        int kanan_mon = 30 - monster.length() - kiri_mon;
+
+        cout << string(kiri_mon, ' ')
+             << monster
+             << string(kanan_mon, ' ')
+             << "|";
+    }
+
+    cout << "\n";
+
+    cout << "|______________________________|______________________________|______________________________|\n";
 }
 
 void deleteUser(User users[], int &jumlah_user)
 {
     CLEAR_SCREEN;
+
     if(jumlah_user <= 1)
     {
         tampilPesan("Tidak ada user yang bisa dihapus!");
@@ -468,14 +514,28 @@ void deleteUser(User users[], int &jumlah_user)
     int id;
     int index = -1;
 
-    cout << "\nMasukkan ID user yang ingin dihapus : ";
+    cout << "\n ____________________________________________\n";
+    cout << "|                 DELETE USER                |\n";
+    cout << "|____________________________________________|\n";
+
+    cout << "Masukkan ID user : ";
     cin >> id;
+
+    if(cin.fail())
+    {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        tampilPesan("ID harus berupa angka!");
+        return;
+    }
 
     for(int i = 0; i < jumlah_user; i++)
     {
         if(users[i].id == id)
         {
             index = i;
+            break;
         }
     }
 
@@ -491,26 +551,122 @@ void deleteUser(User users[], int &jumlah_user)
         return;
     }
 
-    for(int i = index; i < jumlah_user - 1; i++)
+int cursor = 0;
+
+string pilihan[2] =
+{
+    "YA",
+    "TIDAK"
+};
+
+while(true)
+{
+    CLEAR_SCREEN;
+
+    cout << "\n ____________________________________________________________\n";
+    cout << "|                                                            |\n";
+    cout << "|                  KONFIRMASI DELETE USER                    |\n";
+    cout << "|____________________________________________________________|\n";
+    cout << "|                                                            |\n";
+    cout << "| Username : " << left << setw(48) << users[index].username << "|\n";
+    cout << "| Gold     : " << left << setw(48) << users[index].gold << "|\n";
+    cout << "| Monster  : " << left << setw(48) << users[index].deck.jumlah << "|\n";
+    cout << "|____________________________________________________________|\n";
+
+    cout << "\n __________________________________\n";
+    cout << "|                                  |\n";
+    cout << "|     YAKIN HAPUS USER INI?        |\n";
+    cout << "|__________________________________|\n";
+
+    for(int i = 0; i < 2; i++)
     {
-        users[i] = users[i + 1];
+        cout << "| ";
+
+        if(cursor == i)
+            cout << ">> ";
+        else
+            cout << "   ";
+
+        cout << left << setw(30) << pilihan[i] << "|\n";
     }
 
-    jumlah_user--;
+    cout << "|__________________________________|\n";
+    cout << "\nGunakan UP/DOWN dan ENTER\n";
 
-    for(int i = 0; i < jumlah_user - 1; i++)
+    char tombol = _getch();
+
+    // ARROW
+    if(tombol == -32)
     {
-        users[i].next = &users[i + 1];
+        tombol = _getch();
+
+        // UP
+        if(tombol == 72)
+        {
+            playSFX(L"music/cursor3.wav");
+
+            cursor--;
+
+            if(cursor < 0)
+                cursor = 1;
+        }
+
+        // DOWN
+        else if(tombol == 80)
+        {
+            playSFX(L"music/cursor3.wav");
+
+            cursor++;
+
+            if(cursor > 1)
+                cursor = 0;
+        }
     }
 
-    if(jumlah_user > 0)
+    // ENTER
+    else if(tombol == 13)
     {
-        users[jumlah_user - 1].next = NULL;
+        switch(cursor)
+        {
+            case 0: 
+            {
+                for(int i = index; i < jumlah_user - 1; i++)
+                {
+                    users[i] = users[i + 1];
+                }
+
+                jumlah_user--;
+
+                for(int i = 0; i < jumlah_user - 1; i++)
+                {
+                    users[i].next = &users[i + 1];
+                }
+
+                if(jumlah_user > 0)
+                {
+                    users[jumlah_user - 1].next = NULL;
+                }
+
+                saveUserCSV(users, jumlah_user);
+                saveDeckCSV(users, jumlah_user);
+
+                tampilPesan("User berhasil dihapus!");
+                return;
+            }
+
+            case 1: // TIDAK
+            {
+                tampilPesan("Delete user dibatalkan!");
+                return;
+            }
+        }
     }
 
-    saveUserCSV(users, jumlah_user);
-    saveDeckCSV(users, jumlah_user);
-
-    tampilPesan("User berhasil dihapus!");
+    // ESC 
+    else if(tombol == 27)
+    {
+        tampilPesan("Delete user dibatalkan!");
+        return;
+    }
 }
-
+}

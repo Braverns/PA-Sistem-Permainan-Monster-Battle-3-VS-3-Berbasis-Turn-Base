@@ -124,8 +124,8 @@ struct Rarity
 };
 
 // ADMIN
-void menuAdmin(User users[], Monster monsters[], Skill skills[], int &jumlah_user,
-    int &jumlah_monster, int &jumlah_skill, int &next_monster_id, int &state);
+void menuAdmin(User users[], Monster monsters[], Skill skills[],
+    int &jumlah_user, int &jumlah_monster, int &jumlah_skill, int &next_monster_id, int &state);
 void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id);
 void tampilMonsterList(Monster monsters[], int jumlah_monster);
 void tampilMonsterList(Monster monsters[], int jumlah_monster, string judul);
@@ -133,6 +133,14 @@ void updateMonster(Monster monsters[], int jumlah_monster);
 void deleteMonster(Monster monsters[], int *jumlah_monster);
 void tampilDaftarUser(User users[], int jumlah_user);
 void deleteUser(User users[], int &jumlah_user);
+void menuKelolaMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id);
+void menuKelolaUser(User users[], int &jumlah_user);
+void menuSearchUser(User users[], int jumlah_user);
+void searchUserByID(User users[], int jumlah_user);
+void searchUserByNama(User users[], int jumlah_user);
+void tampilDetailUser(User user);
+void tampilHasilSearchUserID(User users[], int jumlah_user, int id);
+void tampilHasilSearchUserNama(User users[], int jumlah_user, string nama);
 
 
 // SKILL
@@ -209,6 +217,7 @@ int pilihSkill(BattleMonster player[], BattleMonster enemy[], UserMonster monste
 float getTypeMultiplier(string attack_type, string target_type);
 int hitungDamage(UserMonster attacker, UserMonster target, Skill skill);
 void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker);
+void printBattleTextLine(string text);
 
 
 // SEARCH & SORT
