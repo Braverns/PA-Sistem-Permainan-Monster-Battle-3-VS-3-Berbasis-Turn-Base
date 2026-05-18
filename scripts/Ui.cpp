@@ -404,7 +404,15 @@ void validasiCreateMonster(const string& nama_str, const string& hp_str, const s
         throw invalid_argument("Semua field harus diisi!");
 }
 
-
+void validasiUserGacha(const string& jumlah_str)
+{
+    if(jumlah_str.empty())
+        throw invalid_argument("Jumlah tidak boleh kosong!");
+    if(jumlah_str < "0")
+        throw invalid_argument("Jumlah harus lebih dari 0!");
+    if(jumlah_str > "10")
+        throw invalid_argument("Jumlah tidak boleh lebih dari 10!");
+}
 
 
 

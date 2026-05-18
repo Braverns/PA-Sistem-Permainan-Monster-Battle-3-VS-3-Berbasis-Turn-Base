@@ -169,6 +169,7 @@ int inputAngka(string label);
 void validasiDaftarUser(const string& username, const string& password);
 void validasiLogin(const string& username, const string& password);
 void validasiCreateMonster(const string& nama_str, const string& hp_str, const string& attack_str, const string& defense_str, const string& speed_str, const string& type_str, const string& rarity_str);
+void validasiUserGacha(const string& jumlah_str);
 
 // USER
 void menuUser(User users[], Monster monsters[], Skill skills[],

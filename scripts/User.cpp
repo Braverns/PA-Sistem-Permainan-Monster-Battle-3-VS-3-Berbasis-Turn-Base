@@ -103,7 +103,7 @@ void menuUser(User users[], Monster monsters[], Skill skills[],
                     else
                     {
                         tampilMonsterList(monsters, jumlah_monster);
-                        tungguEnter();
+                        tunggu();
                     }
 
                     break;
@@ -142,7 +142,7 @@ void sacrificeMonster(User users[], int current_user, int jumlah_user)
     if(users[current_user].deck.jumlah < 2)
     {
         cout << "Minimal butuh 2 monster untuk sacrifice\n";
-        tungguEnter();
+        tunggu();
         return;
     }
 
@@ -174,27 +174,37 @@ void sacrificeMonster(User users[], int current_user, int jumlah_user)
     cout << "\nPilih atribut yang ingin ditingkatkan:\n";
     cout << "1. HP\n";
     cout << "2. Attack\n";
+    cout << "3. Defense\n";
+    cout << "4. Speed\n";
 
     int pilih;
+    pilih = inputAngka("Pilihan: ");
 
-    cout << "Pilih: ";
-    cin >> pilih;
-
-    if(pilih == 1)
-    {
-        users[current_user].deck.monsters[target].hp += 1;
-        cout << "HP berhasil ditingkatkan\n";
-    }
-    else if(pilih == 2)
-    {
-        users[current_user].deck.monsters[target].attack += 1;
-        cout << "Attack berhasil ditingkatkan\n";
-    }
-    else
-    {
-        tampilPesan("Pilihan tidak valid!");
-        return;
-    }
+        if(pilih == 1)
+        {
+            users[current_user].deck.monsters[target].hp += 1;
+            cout << "HP berhasil ditingkatkan\n";
+        }
+        else if(pilih == 2)
+        {
+            users[current_user].deck.monsters[target].attack += 1;
+            cout << "Attack berhasil ditingkatkan\n";
+        }
+        else if(pilih == 3)
+        {
+            users[current_user].deck.monsters[target].defense += 1;
+            cout << "Defense berhasil ditingkatkan\n";
+        }
+        else if(pilih == 4)
+        {
+            users[current_user].deck.monsters[target].speed += 1;
+            cout << "Speed berhasil ditingkatkan\n";
+        }
+        else
+        {
+            tampilPesan("Pilihan tidak valid!");
+            return;
+        }
 
     for(int i = korban; i < users[current_user].deck.jumlah - 1; i++)
     {
@@ -262,7 +272,7 @@ void deleteMonsterUser(User users[],int current_user,int jumlah_user)
     saveUserCSV(users, jumlah_user);
     saveDeckCSV(users, jumlah_user);
 
-    tungguEnter();
+    tunggu();
 }
 
 
