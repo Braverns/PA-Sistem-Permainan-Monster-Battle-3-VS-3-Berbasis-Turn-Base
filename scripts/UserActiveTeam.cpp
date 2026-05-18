@@ -33,21 +33,16 @@ void pilihActiveTeam(User users[], int current_user, int jumlah_user)
         return;
     }
 
-
-    int pilihan[3];
-
-    cout << "\n ________________________________________________\n";
-    cout << "|                                                |\n";
-    cout << "|           PILIH ACTIVE TEAM (3 MONSTER)        |\n"; 
-    cout << "|                                                |\n";
-    cout << "|________________________________________________|\n";
+    int pilihan[3] = {-1, -1, -1};
 
     for(int i = 0; i < 3; i++)
     {
-        cout << "\nPilih monster untuk slot " << i + 1;
-        tungguEnter();
-
-        pilihan[i] = tampilUserDeckInput(users, current_user);
+        pilihan[i] = activeDeckInput(
+            users,
+            current_user,
+            i + 1,
+            pilihan
+        );
 
         if(pilihan[i] == -1)
         {
@@ -55,25 +50,21 @@ void pilihActiveTeam(User users[], int current_user, int jumlah_user)
             return;
         }
 
-        if(cin.fail())
-        {
-            tampilPesan("Input tidak valid!");
-            return;
-        }
-
-        if(pilihan[i] < 0 || pilihan[i] >= users[current_user].deck.jumlah)
-        {
-            tampilPesan("Index monster tidak valid!");
-            return;
-        }
+        bool sama = false;
 
         for(int j = 0; j < i; j++)
         {
             if(pilihan[i] == pilihan[j])
             {
-                tampilPesan("Monster tidak boleh sama!");
-                return;
+                sama = true;
             }
+        }
+
+        if(sama)
+        {
+            tampilPesan("Monster tidak boleh sama!");
+            i--;
+            continue;
         }
     }
 
@@ -84,8 +75,170 @@ void pilihActiveTeam(User users[], int current_user, int jumlah_user)
 
     saveUserCSV(users, jumlah_user);
     saveDeckCSV(users, jumlah_user);
+
     CLEAR_SCREEN;
-    cout << "Active team berhasil disimpan!\n";
-    tampilActiveTeam(users, current_user);
-    tungguEnter();
+
+    tampilPesan("Active team berhasil disimpan!");
+}
+
+int activeDeckInput(User users[], int current_user, int slot_ke, int pilihan[])
+{
+    
+    if(users[current_user].deck.jumlah == 0)
+    {
+        tampilPesan("Deck kosong!");
+        return -1;
+    }
+    
+    int pilih = 0;
+
+    while(true)
+    {
+        clearArea();
+
+        cout << "\n _____________________________________________________________________________________________________\n";
+        cout << "|                                                                                                     |\n";
+        cout << "|                                         PILIH ACTIVE TEAM SLOT ";
+        cout << slot_ke;
+
+        int sisa = 19;
+
+        if(slot_ke >= 10)
+            sisa--;
+
+        for(int i = 0; i < sisa; i++)
+        {
+            cout << " ";
+        }
+
+        cout << "                 |\n";
+        cout << "|_____________________________________________________________________________________________________|\n";
+
+        cout << left
+             << setw(7)  << "|No"
+             << setw(25) << "|Nama"
+             << setw(10) << "|HP"
+             << setw(10) << "|ATK"
+             << setw(10) << "|DEF"
+             << setw(10) << "|SPD"
+             << setw(18) << "|Type"
+             << setw(12) << "|Rarity"
+             << "|"
+             << endl;
+
+        cout << "|------|------------------------|---------|---------|---------|---------|-----------------|-----------|\n";
+
+        rekursifActiveTeamInput(users[current_user].deck.monsters, 0, users[current_user].deck.jumlah, pilih);
+
+        cout << "|______|________________________|_________|_________|_________|_________|_________________|___________|\n";
+        
+        cout << "\nACTIVE TEAM SAAT INI:\n";
+        for(int i = 0; i < 3; i++)
+        {
+            cout << i + 1 << ". ";
+
+            if(pilihan[i] == -1)
+            {
+                cout << "[KOSONG]";
+            }
+            else
+            {
+                cout << users[current_user]
+                .deck
+                .monsters[pilihan[i]]
+                .nama;
+            }
+
+            if(i + 1 == slot_ke)
+            {
+                cout << "  <== SEDANG DIPILIH";
+            }
+
+            cout << endl;
+        }
+
+        cout << "\n _________________________________________________\n";
+        cout << "|                 CONTROL MENU                   |\n";
+        cout << "|________________________________________________|\n";
+        cout << "| [UP/DOWN] | Pindah Cursor                      |\n";
+        cout << "| [ENTER]   | Pilih Monster                      |\n";
+        cout << "| [ESC]     | Kembali / Batal                    |\n";
+        cout << "|___________|____________________________________|\n";
+        
+        char tombol = _getch();
+
+        // ARROW
+        if(tombol == -32)
+        {
+            tombol = _getch();
+
+            // ATAS
+            if(tombol == 72)
+            {
+                pilih--;
+
+                if(pilih < 0)
+                {
+                    pilih = users[current_user].deck.jumlah - 1;
+                }
+            }
+
+            // BAWAH
+            else if(tombol == 80)
+            {
+                pilih++;
+
+                if(pilih >= users[current_user].deck.jumlah)
+                {
+                    pilih = 0;
+                }
+            }
+        }
+
+        // ENTER
+        else if(tombol == 13)
+        {
+            return pilih;
+        }
+
+        // ESC
+        else if(tombol == 27)
+        {
+            return -1;
+        }
+    }
+}
+
+
+
+void rekursifActiveTeamInput(UserMonster monsters[], int index, int jumlah, int pilih)
+{
+    if(index >= jumlah)
+        return;
+
+    // CURSOR
+    if(index == pilih)
+        cout << "|>>";
+    else
+        cout << "|  ";
+
+    cout << left
+        << setw(4)  << index + 1
+        << "|"
+        << setw(24) << monsters[index].nama
+        << "|"
+        << setw(9) << monsters[index].hp
+        << "|"
+        << setw(9) << monsters[index].attack
+        << "|"
+        << setw(9) << monsters[index].defense
+        << "|"
+        << setw(9) << monsters[index].speed
+        << "|"
+        << setw(17) << monsters[index].type
+        << "|"
+        << setw(11) << monsters[index].rarity
+        << "|\n";
+
+    rekursifActiveTeamInput(monsters, index + 1, jumlah, pilih);
 }
