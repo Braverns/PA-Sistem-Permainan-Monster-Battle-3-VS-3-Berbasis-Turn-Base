@@ -215,6 +215,7 @@ void sacrificeMonster(User users[], int current_user, int jumlah_user)
     }
 
     users[current_user].deck.jumlah--;
+    regenerateDeckID(users[current_user]);
 
     for(int i = 0; i < 3; i++)
     {
@@ -262,6 +263,7 @@ void deleteMonsterUser(User users[],int current_user,int jumlah_user)
     }
 
     users[current_user].deck.jumlah--;
+    regenerateDeckID(users[current_user]);
     users[current_user].gold += 50;
 
     cout << "+50 gold diterima\n";

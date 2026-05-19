@@ -783,3 +783,13 @@ void menuLihatDeck(User users[], int current_user)
     }
 }
 
+
+void regenerateDeckID(User &user)
+{
+    for(int i = 0; i < user.deck.jumlah; i++)
+    {
+        user.deck.monsters[i].deck_id = i + 1;
+    }
+
+    user.next_deck_id = user.deck.jumlah + 1;
+}

@@ -543,8 +543,7 @@ void gachaMonster(User users[], Monster monsters[], Skill skills[],
         Monster m = monsters[random_index];
         UserMonster um;
 
-        um.deck_id = users[current_user].next_deck_id;
-        users[current_user].next_deck_id++;
+        um.deck_id = users[current_user].deck.jumlah + 1;
 
         um.monster_id = m.status.id;
         um.nama = m.status.nama;
@@ -567,7 +566,7 @@ void gachaMonster(User users[], Monster monsters[], Skill skills[],
     CLEAR_SCREEN;
     tampilMultiKartu(hasil_gacha, jumlah_gacha);
     cout << "Gold tersisa : " << users[current_user].gold << endl;
-
+    regenerateDeckID(users[current_user]);
     saveUserCSV(users, jumlah_user);
     saveDeckCSV(users, jumlah_user);
 

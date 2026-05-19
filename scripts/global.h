@@ -222,6 +222,8 @@ void sortDeckAttackDescending(UserMonster monsters[], int jumlah);
 void sortDeckDefenseDescending(UserMonster monsters[], int jumlah);
 void sortDeckSpeedDescending(UserMonster monsters[], int jumlah);
 void resetPrimaryFilter(DeckFilter &filter);
+void regenerateDeckID(User &user);
+
 
 // USER GACHA
 void gachaMonster(User users[], Monster monsters[], Skill skills[],
