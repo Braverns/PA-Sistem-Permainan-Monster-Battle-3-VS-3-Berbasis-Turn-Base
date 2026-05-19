@@ -92,8 +92,7 @@ int main()
 
             case 3:
             {
-                menuAdmin(users, monsters, skills, jumlah_user,
-                          jumlah_monster, jumlah_skill, next_monster_id, state);
+                menuAdmin(users, monsters, skills, jumlah_user, jumlah_monster, jumlah_skill, next_monster_id, state);
                 break;
             }
 

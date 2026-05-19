@@ -330,11 +330,7 @@ void updateMonster(Monster monsters[], int jumlah_monster)
         return;
     }
 
-    int index =
-    pilihMonsterUpdate(
-        monsters,
-        jumlah_monster
-    );
+    int index = pilihMonsterUpdate(monsters, jumlah_monster);
 
     if(index == -1)
     {
@@ -810,12 +806,7 @@ int pilihMonsterUpdate(Monster monsters[], int jumlah_monster)
     }
 }
 
-void tampilMonsterRekursifInput(
-    Monster monsters[],
-    int index,
-    int jumlah,
-    int pilih
-)
+void tampilMonsterRekursifInput(Monster monsters[], int index,int jumlah,int pilih)
 {
     if(index >= jumlah)
         return;
@@ -897,12 +888,7 @@ void tampilMonsterRekursifInput(
 
     cout << "|\n";
 
-    tampilMonsterRekursifInput(
-        monsters,
-        index + 1,
-        jumlah,
-        pilih
-    );
+    tampilMonsterRekursifInput(monsters, index + 1, jumlah, pilih);
 
     resetColor();
 }
