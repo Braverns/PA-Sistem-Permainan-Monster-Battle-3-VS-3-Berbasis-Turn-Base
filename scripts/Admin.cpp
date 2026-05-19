@@ -195,9 +195,9 @@ void menuKelolaUser(User users[], int &jumlah_user)
 
 void tampilDaftarUser(User users[], int jumlah_user)
 {
-cout << "\n _________________________________________________________________\n";
-cout << "|                           DAFTAR USER                           |\n";
-cout << "|_________________________________________________________________|\n";
+    cout << "\n _________________________________________________________________\n";
+    cout << "|                           DAFTAR USER                           |\n";
+    cout << "|_________________________________________________________________|\n";
 
     cout << left
          << setw(6)  << "| ID"
@@ -214,12 +214,36 @@ cout << "|_________________________________________________________________|\n";
         if(users[i].role == "admin")
             continue;
 
-        cout << left
-             << setw(6)  << ("| " + to_string(users[i].id))
-             << setw(25) << ("| " + users[i].username)
-             << setw(15) << ("| " + to_string(users[i].gold))
-             << setw(20) << ("| " + to_string(users[i].deck.jumlah))
-             << "|\n";
+        // ID
+        cout << "| "
+             << left << setw(4)
+             << users[i].id;
+
+        // USERNAME
+        cout << "| ";
+
+        setColor(15);
+        cout << left << setw(23)
+             << users[i].username;
+        resetColor();
+
+        // GOLD
+        cout << "| ";
+
+        setColor(14);
+        cout << left << setw(13)
+             << users[i].gold;
+        resetColor();
+
+        // JUMLAH MONSTER
+        cout << "| ";
+
+        setColor(2);
+        cout << left << setw(18)
+             << users[i].deck.jumlah;
+        resetColor();
+
+        cout << "|\n";
     }
 
     cout << "|_____|________________________|______________|___________________|\n";
@@ -234,8 +258,8 @@ void menuSearchUser(User users[], int jumlah_user)
     cout << "\n=== MENU SEARCH USER ===\n";
     cout << "1. Cari berdasarkan ID\n";
     cout << "2. Cari berdasarkan Username\n";
-    cout << "Pilih: ";
-    cin >> pilih;
+    cout << "0. Kembali\n";
+    pilih = inputAngka("pilihan : ");
 
     if(cin.fail())
     {
@@ -255,8 +279,7 @@ void menuSearchUser(User users[], int jumlah_user)
 
         int id;
 
-        cout << "\nMasukkan ID User : ";
-        cin >> id;
+        id = inputAngka("Masukkan ID User : ");
 
         if(cin.fail())
         {
@@ -270,7 +293,7 @@ void menuSearchUser(User users[], int jumlah_user)
         CLEAR_SCREEN;
 
         tampilHasilSearchUserID(users, jumlah_user, id);
-        tungguEnter();
+        tunggu();
     }
 
     // SEARCH BY USERNAME
@@ -282,15 +305,21 @@ void menuSearchUser(User users[], int jumlah_user)
 
         string nama;
 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        cout << "\nMasukkan Username : ";
-        getline(cin, nama);
-
+        nama = inputClean("Masukkan Username : ");
+        if(nama.empty())
+        {
+            tampilPesan("Input Username tidak valid!");
+            return;
+        }
+    
         CLEAR_SCREEN;
 
         tampilHasilSearchUserNama(users, jumlah_user, nama);
-        tungguEnter();
+        tunggu();
+    }
+    else if(pilih == 0)
+    {
+        return;
     }
 
     else

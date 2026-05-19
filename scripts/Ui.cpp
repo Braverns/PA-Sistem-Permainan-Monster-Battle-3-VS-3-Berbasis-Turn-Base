@@ -225,6 +225,20 @@ int getTypeColor(string rarity)
     return 7;
 }
 
+int getTypeSkillColor(string SkillType)
+{
+    if(SkillType == "Damage")
+    return 4;
+    
+    if(SkillType == "AOE")
+    return 14;
+    
+    if(SkillType == "Heal")
+    return 10;
+    
+    return 7;
+}
+
 void menuSetting()
 {
     while(true)
