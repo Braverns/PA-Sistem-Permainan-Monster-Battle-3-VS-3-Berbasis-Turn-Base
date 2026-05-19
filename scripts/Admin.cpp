@@ -337,6 +337,7 @@ void tampilHasilSearchUserID(User users[], int jumlah_user, int id)
         if(users[i].id == id && users[i].role != "admin")
         {
             tampilDetailUser(users[i]);
+            tampilUserDeck(users, i);
             ditemukan = true;
             break;
         }
@@ -537,7 +538,7 @@ void tampilDetailUser(User user)
 
     cout << "\n";
 
-    cout << "|______________________________|______________________________|______________________________|\n";
+    cout << "|______________________________|______________________________|______________________________|";
     
 }
 
@@ -632,10 +633,10 @@ while(true)
 {
     CLEAR_SCREEN;
 
-    cout << "\n ____________________________________________________________\n";
-    cout << "|                                                            |\n";
-    cout << "|                  KONFIRMASI DELETE USER                    |\n";
-    cout << "|____________________________________________________________|\n";
+    cout << "\n ___________________________________________________________\n";
+    cout << "|                                                           |\n";
+    cout << "|                  KONFIRMASI DELETE USER                   |\n";
+    cout << "|___________________________________________________________|\n";
     cout << "|                                                            |\n";
     cout << "| Username : " << left << setw(48) << users[index].username << "|\n";
     cout << "| Gold     : " << left << setw(48) << users[index].gold << "|\n";
@@ -771,9 +772,9 @@ int tampilUserInput(User users[], int jumlah_user)
 
         cout << "|______|________________________|______________|___________________|\n";
 
-        cout << "\n ________________________________________________\n";
+        cout << "\n _______________________________________________\n";
         cout << "|                 CONTROL MENU                  |\n";
-        cout << "|________________________________________________|\n";
+        cout << "|_______________________________________________|\n";
         cout << "| [UP/DOWN] | Pindah Cursor                     |\n";
         cout << "| [ENTER]   | Delete User                       |\n";
         cout << "| [SPACE]   | Input ID / Username               |\n";
