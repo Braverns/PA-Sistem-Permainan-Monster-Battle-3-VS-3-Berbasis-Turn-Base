@@ -259,7 +259,7 @@ void menuSetting()
         
         if(cin.fail())
         {
-            tampilPesan("Input tidak valid!");
+            tampilPesan2("Input tidak valid!");
             return;
         }
         
@@ -273,7 +273,7 @@ void menuSetting()
                 cin >> volume;
                 
                 setVolume(volume);
-                tampilPesan("Volume berhasil diubah!");
+                tampilPesan2("Volume berhasil diubah!");
                 break;
             }
             
@@ -281,7 +281,7 @@ void menuSetting()
             return;
             
             default:
-            tampilPesan("Menu tidak valid!");
+            tampilPesan2("Menu tidak valid!");
         }
     }
 }

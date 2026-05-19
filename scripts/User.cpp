@@ -89,8 +89,9 @@ void menuUser(User users[], Monster monsters[], Skill skills[],
                     break;
 
                 case 1:
-                    pilihActiveTeam(users, current_user, jumlah_user);
+                    menuActiveTeam(users, current_user, jumlah_user);
                     break;
+                
 
                 case 2:
                     gachaMonster(users, monsters, skills, jumlah_monster, jumlah_skill, current_user, jumlah_user);
