@@ -60,6 +60,7 @@ struct Monster
 
 struct UserMonster
 {
+    int deck_id;
     int monster_id; 
 
     string nama;
@@ -95,6 +96,8 @@ struct User
     string password;
     string role;
     int gold;
+    
+    int next_deck_id;
 
     User* next;
 
@@ -126,6 +129,17 @@ struct Rarity
 // ADMIN
 void menuAdmin(User users[], Monster monsters[], Skill skills[],
     int &jumlah_user, int &jumlah_monster, int &jumlah_skill, int &next_monster_id, int &state);
+void tampilDaftarUser(User users[], int jumlah_user);
+void deleteUser(User users[], int &jumlah_user);
+void menuKelolaUser(User users[], int &jumlah_user);
+void menuSearchUser(User users[], int jumlah_user);
+void tampilDetailUser(User user);
+void tampilHasilSearchUserID(User users[], int jumlah_user, int id);
+void tampilHasilSearchUserNama(User users[], int jumlah_user, string nama);
+
+
+// ADMIN MONSTER
+void menuKelolaMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id);
 void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id);
 void tampilMonsterList(Monster monsters[], int jumlah_monster);
 void tampilMonsterList(Monster monsters[], int jumlah_monster, string judul);
@@ -135,6 +149,12 @@ void tampilDaftarUser(User users[], int jumlah_user);
 void deleteUser(User users[], int &jumlah_user);
 void menuKelolaMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id);
 void menuKelolaUser(User users[], int &jumlah_user);
+void menuSearchUser(User users[], int jumlah_user);
+void searchUserByID(User users[], int jumlah_user);
+void searchUserByNama(User users[], int jumlah_user);
+void tampilDetailUser(User user);
+void tampilHasilSearchUserID(User users[], int jumlah_user, int id);
+void tampilHasilSearchUserNama(User users[], int jumlah_user, string nama);
 
 
 // SKILL
