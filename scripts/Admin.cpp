@@ -210,16 +210,14 @@ void tampilDaftarUser(User users[], int jumlah_user)
 
     for(int i = 0; i < jumlah_user; i++)
     {
-        // SKIP ADMIN
+
         if(users[i].role == "admin")
             continue;
 
-        // ID
         cout << "| "
              << left << setw(4)
              << users[i].id;
 
-        // USERNAME
         cout << "| ";
 
         setColor(15);
@@ -227,7 +225,6 @@ void tampilDaftarUser(User users[], int jumlah_user)
              << users[i].username;
         resetColor();
 
-        // GOLD
         cout << "| ";
 
         setColor(14);
@@ -235,7 +232,6 @@ void tampilDaftarUser(User users[], int jumlah_user)
              << users[i].gold;
         resetColor();
 
-        // JUMLAH MONSTER
         cout << "| ";
 
         setColor(2);
@@ -338,6 +334,7 @@ void tampilHasilSearchUserID(User users[], int jumlah_user, int id)
         {
             tampilDetailUser(users[i]);
             tampilUserDeck(users, i);
+            tunggu();
             ditemukan = true;
             break;
         }

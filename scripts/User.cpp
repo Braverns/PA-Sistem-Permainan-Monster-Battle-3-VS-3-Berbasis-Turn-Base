@@ -366,7 +366,7 @@ void menuSearch(User users[], int current_user)
     cout << "\n=== MENU SEARCH ===\n";
     cout << "1. Cari berdasarkan ID\n";
     cout << "2. Cari berdasarkan Nama\n";
-    cout << "Pilih: ";
+    cout << "0. Kembali\n";
     
     int input;
 
@@ -383,41 +383,41 @@ void menuSearch(User users[], int current_user)
         return;
     }
 
+    CLEAR_SCREEN;
+    tampilUserDeck(users, current_user);
     // id
     if(input == 1)
     {
-        CLEAR_SCREEN;
 
         sortDeckIDAscending(users[current_user].deck.monsters, users[current_user].deck.jumlah);
 
         int id;
-        cout << "Masukkan ID: ";
-        cin >> id;
+        id = inputAngka("Masukkan ID: ");
 
         CLEAR_SCREEN;
 
         int index = interpolationSearchID(users[current_user].deck.monsters, users[current_user].deck.jumlah, id);
 
         tampilHasilSearchID(users[current_user].deck.monsters, index);
-        tungguEnter();
+        tunggu();
     }
 
     // nama
     else if(input == 2)
     {
-        CLEAR_SCREEN;
 
         string nama;
-        cout << "Masukkan nama: ";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        getline(cin, nama);
+        nama = inputClean("Masukkan Nama: ");
 
         CLEAR_SCREEN;
 
         tampilHasilSearchNama(users[current_user].deck.monsters, users[current_user].deck.jumlah, nama);
         tunggu();
     }
-
+    else if(input == 0)
+    {
+        return;
+    }
     else
     {
         tampilPesan("Menu tidak valid!");
@@ -428,10 +428,10 @@ void menuSearch(User users[], int current_user)
 
 void tampilHasilSearchID(UserMonster monsters[], int index)
 {
-    cout << "\n ____________________________________________________________________________________________________________\n";
-    cout << "|                                                                                                            |\n";
-    cout << "|                                         HASIL PENCARIAN MONSTER                                            |\n";
-    cout << "|____________________________________________________________________________________________________________|\n";
+    cout << "\n _________________________________________________________________________________________________________\n";
+    cout << "|                                                                                                         |\n";
+    cout << "|                                         HASIL PENCARIAN MONSTER                                         |\n";
+    cout << "|_________________________________________________________________________________________________________|\n";
 
     cout << left
          << setw(7)  << "|No"
@@ -499,9 +499,9 @@ void tampilHasilSearchID(UserMonster monsters[], int index)
     }
     else
     {
-        cout << "|                                                                                                            |\n";
-        cout << "|                                      MONSTER TIDAK DITEMUKAN                                               |\n";
-        cout << "|                                                                                                            |\n";
+        cout << "|                                                                                                         |\n";
+        cout << "|                                      MONSTER TIDAK DITEMUKAN                                            |\n";
+        cout << "|                                                                                                         |\n";
     }
 
     cout << "|______|________________________|_________|_________|_________|_________|_____________________|___________|\n";
