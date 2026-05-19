@@ -307,7 +307,7 @@ string inputClean(string label)
                 continue;
             }
 
-            // hapus spasi di akhir
+            // hapus spasi belakang
             if(input[input.length() - 1] == ' ')
             {
                 input.pop_back();
@@ -330,13 +330,19 @@ string inputClean(string label)
         // SPASI
         else if(ch == ' ')
         {
+            // batas max 30
+            if(input.length() >= 30)
+            {
+                continue;
+            }
+
             // blok spasi awal
             if(input.empty())
             {
                 continue;
             }
 
-            // blok double spasi
+            // blok double space
             if(input[input.length() - 1] == ' ')
             {
                 continue;
@@ -349,6 +355,12 @@ string inputClean(string label)
         // HANYA HURUF & ANGKA
         else if(isalnum(ch))
         {
+            // batas max 30
+            if(input.length() >= 30)
+            {
+                continue;
+            }
+
             input += ch;
             cout << ch;
         }
@@ -390,6 +402,12 @@ int inputAngka(string label)
         // HANYA ANGKA
         else if(isdigit(ch))
         {
+            // max 5 digit
+            if(input.length() >= 5)
+            {
+                continue;
+            }
+
             input += ch;
             cout << ch;
         }
