@@ -205,9 +205,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
                 int rarityColor =
                 getRarityColor(monsters[i].rarity);
 
-                // =====================================
-                // NAMA MONSTER
-                // =====================================
+                // NAMA
                 if(line == 1)
                 {
                     string nama = monsters[i].nama;
@@ -239,9 +237,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
                     resetColor();
                 }
 
-                // =====================================
                 // HP
-                // =====================================
                 else if(line == 3)
                 {
                     setColor(rarityColor);
@@ -265,9 +261,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
                     resetColor();
                 }
 
-                // =====================================
                 // ATK
-                // =====================================
                 else if(line == 4)
                 {
                     setColor(rarityColor);
@@ -291,9 +285,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
                     resetColor();
                 }
 
-                // =====================================
                 // DEF
-                // =====================================
                 else if(line == 5)
                 {
                     setColor(rarityColor);
@@ -317,9 +309,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
                     resetColor();
                 }
 
-                // =====================================
                 // SPD
-                // =====================================
                 else if(line == 6)
                 {
                     setColor(rarityColor);
@@ -343,9 +333,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
                     resetColor();
                 }
 
-                // =====================================
                 // SKILL 1
-                // =====================================
                 else if(line == 7)
                 {
                     setColor(rarityColor);
@@ -373,9 +361,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
                     resetColor();
                 }
 
-                // =====================================
                 // SKILL 2
-                // =====================================
                 else if(line == 8)
                 {
                     setColor(rarityColor);
@@ -403,9 +389,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
                     resetColor();
                 }
 
-                // =====================================
                 // SKILL 3
-                // =====================================
                 else if(line == 9)
                 {
                     setColor(rarityColor);
@@ -414,9 +398,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
 
                     cout << "S3  : ";
 
-                    setColor(
-                    getTypeColor(
-                    monsters[i].skills[2].element));
+                    setColor(getTypeColor(monsters[i].skills[2].element));
 
                     cout << monsters[i].skills[2].nama;
                     resetColor();
@@ -433,9 +415,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
                     resetColor();
                 }
 
-                // =====================================
                 // TYPE
-                // =====================================
                 else if(line == 10)
                 {
                     setColor(rarityColor);
@@ -444,9 +424,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
 
                     cout << "TP  : ";
 
-                    setColor(
-                    getTypeColor(monsters[i].type));
-
+                    setColor(getTypeColor(monsters[i].type));
                     cout << monsters[i].type;
                     resetColor();
 
@@ -461,9 +439,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
                     resetColor();
                 }
 
-                // =====================================
                 // RARITY
-                // =====================================
                 else if(line == 12)
                 {
                     string rarity = monsters[i].rarity;
@@ -489,9 +465,7 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
                     resetColor();
                 }
 
-                // =====================================
-                // BORDER CARD
-                // =====================================
+                // BORDER
                 else
                 {
                     setColor(rarityColor);
