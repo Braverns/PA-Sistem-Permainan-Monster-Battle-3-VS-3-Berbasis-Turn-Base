@@ -191,16 +191,36 @@ void resetColor()
 int getRarityColor(string rarity)
 {
     if(rarity == "Common")
-    return 7;
+    return 2;
     
     if(rarity == "Rare")
-    return 9;
+    return 11;
     
     if(rarity == "Epic")
-    return 5;
+    return 13;
     
     if(rarity == "Legendary")
     return 14;
+    
+    return 7;
+}
+
+int getTypeColor(string rarity)
+{
+    if(rarity == "Earth")
+    return 6;
+    
+    if(rarity == "Fire")
+    return 4;
+    
+    if(rarity == "Rock")
+    return 8;
+    
+    if(rarity == "Water")
+    return 1;
+
+    if(rarity == "Wind")
+    return 3;
     
     return 7;
 }
@@ -258,41 +278,52 @@ string inputClean(string label)
 {
     string input = "";
     char ch;
-    
+
     cout << label;
-    
+
     while(true)
     {
         ch = _getch();
-        
+
         // ENTER
         if(ch == 13)
         {
-            // kosong -> ignore
             if(input.empty())
             {
                 continue;
             }
-            
+
+            // hapus spasi di akhir
+            if(input[input.length() - 1] == ' ')
+            {
+                input.pop_back();
+            }
+
             cout << endl;
             return input;
         }
-        
+
         // BACKSPACE
         else if(ch == 8)
         {
             if(!input.empty())
             {
                 input.pop_back();
-                
                 cout << "\b \b";
             }
         }
-        
-        // SPASI AWAL DIBLOK
+
+        // SPASI
         else if(ch == ' ')
         {
+            // blok spasi awal
             if(input.empty())
+            {
+                continue;
+            }
+
+            // blok double spasi
+            if(input[input.length() - 1] == ' ')
             {
                 continue;
             }
@@ -301,8 +332,8 @@ string inputClean(string label)
             cout << ch;
         }
 
-        // CHARACTER NORMAL
-        else if(isprint(ch))
+        // HANYA HURUF & ANGKA
+        else if(isalnum(ch))
         {
             input += ch;
             cout << ch;
@@ -402,18 +433,16 @@ void validasiCreateMonster(const string& nama_str, const string& hp_str, const s
 {
     if(nama_str.empty() || hp_str.empty() || attack_str.empty() || defense_str.empty() || speed_str.empty() || type_str.empty() || rarity_str.empty())
         throw invalid_argument("Semua field harus diisi!");
+
 }
 
-void validasiUserGacha(const string& jumlah_str)
+int validasiUserGacha(int jumlah_gacha)
 {
-    if(jumlah_str.empty())
-        throw invalid_argument("Jumlah tidak boleh kosong!");
-    if(jumlah_str < "0")
-        throw invalid_argument("Jumlah harus lebih dari 0!");
-    if(jumlah_str > "10")
-        throw invalid_argument("Jumlah tidak boleh lebih dari 10!");
+    if(jumlah_gacha < 0 || jumlah_gacha > 10)
+        throw invalid_argument("Jumlah gacha harus antara 1-10!");
+    
+    return jumlah_gacha;
 }
-
 
 
 

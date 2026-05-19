@@ -52,6 +52,7 @@ int tampilUserDeckInput(User users[], int current_user)
         // ARROW
         if(tombol == -32)
         {
+            setColor(15);
             tombol = _getch();
 
             // ATAS
@@ -100,9 +101,15 @@ void tampilUserDeckRekursifInput(UserMonster monsters[], int index, int jumlah, 
 
     // CURSOR
     if(index == pilih)
+    {
+        setColor(15);
         cout << "|>>";
+    }
     else
+    {
         cout << "|  ";
+        resetColor();
+    }
 
     cout << left
         << setw(4)  << index + 1
@@ -123,6 +130,7 @@ void tampilUserDeckRekursifInput(UserMonster monsters[], int index, int jumlah, 
         << "|\n";
 
     tampilUserDeckRekursifInput(monsters, index + 1, jumlah, pilih);
+    resetColor();
 }
 
 void tampilUserDeck(User users[], int current_user)

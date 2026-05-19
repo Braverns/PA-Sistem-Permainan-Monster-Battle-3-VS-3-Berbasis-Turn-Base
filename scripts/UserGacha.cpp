@@ -104,7 +104,6 @@ void buatKartuMonster(UserMonster monster, string kartu[])
     kartu[2] = "|____________________|";
 
     kartu[3] = "|HP  : " + to_string(monster.hp);
-
     while(kartu[3].length() < 21)
         kartu[3] += " ";
 
@@ -202,7 +201,100 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
             {
                 string kartu[14];
                 buatKartuMonster(monsters[i], kartu);
-                cout << kartu[line] << " ";
+
+                if(line == 3)
+                {
+                    cout << "|HP  : ";
+
+                    setColor(12);
+                    cout << monsters[i].hp;
+                    resetColor();
+
+                    int sisa = 14 - to_string(monsters[i].hp).length();
+
+                    for(int j = 0; j < sisa; j++)
+                        cout << " ";
+
+                    cout << "|";
+                }
+
+                else if(line == 4)
+                {
+                    cout << "|ATK : ";
+
+                    setColor(14);
+                    cout << monsters[i].attack;
+                    resetColor();
+
+                    int sisa = 14 - to_string(monsters[i].attack).length();
+
+                    for(int j = 0; j < sisa; j++)
+                        cout << " ";
+
+                    cout << "|";
+                }
+
+                else if(line == 5)
+                {
+                    cout << "|DEF : ";
+
+                    setColor(11);
+                    cout << monsters[i].defense;
+                    resetColor();
+
+                    int sisa = 14 - to_string(monsters[i].defense).length();
+
+                    for(int j = 0; j < sisa; j++)
+                        cout << " ";
+
+                    cout << "|";
+                }
+
+                else if(line == 6)
+                {
+                    cout << "|SPD : ";
+
+                    setColor(10);
+                    cout << monsters[i].speed;
+                    resetColor();
+
+                    int sisa = 14 - to_string(monsters[i].speed).length();
+
+                    for(int j = 0; j < sisa; j++)
+                        cout << " ";
+
+                    cout << "|";
+                }
+
+                else if(line == 12)
+                {
+                    string rarity = monsters[i].rarity;
+
+                    int padding = 20 - rarity.length();
+                    int kiri = padding / 2;
+                    int kanan = padding - kiri;
+
+                    cout << "|";
+
+                    for(int j = 0; j < kiri; j++)
+                        cout << " ";
+
+                    setColor(getRarityColor(rarity));
+                    cout << rarity;
+                    resetColor();
+
+                    for(int j = 0; j < kanan; j++)
+                        cout << " ";
+
+                    cout << "|";
+                }
+
+                else
+                {
+                    cout << kartu[line];
+                }
+
+                cout << " ";
             }
 
             cout << endl;
@@ -236,8 +328,7 @@ void gachaMonster(User users[], Monster monsters[], Skill skills[],
     cout << "pilih 0 untuk membatalkan gacha\n";
     try {
         jumlah_gacha = inputAngka("Masukkan jumlah gacha (1-10): ");
-        validasiUserGacha(to_string(jumlah_gacha));
-    
+        validasiUserGacha(jumlah_gacha);
         if(jumlah_gacha == 0)
         {
             tampilPesan("Gacha dibatalkan!");

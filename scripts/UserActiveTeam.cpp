@@ -218,27 +218,55 @@ void rekursifActiveTeamInput(UserMonster monsters[], int index, int jumlah, int 
 
     // CURSOR
     if(index == pilih)
+    {
+        setColor(15);
         cout << "|>>";
+    }
     else
+    {
         cout << "|  ";
+        resetColor();
+    }
 
     cout << left
-        << setw(4)  << index + 1
-        << "|"
-        << setw(24) << monsters[index].nama
-        << "|"
-        << setw(9) << monsters[index].hp
-        << "|"
-        << setw(9) << monsters[index].attack
-        << "|"
-        << setw(9) << monsters[index].defense
-        << "|"
-        << setw(9) << monsters[index].speed
-        << "|"
-        << setw(17) << monsters[index].type
-        << "|"
-        << setw(11) << monsters[index].rarity
-        << "|\n";
+        << setw(4)  << index + 1;
+    cout << "|"
+         << setw(24);
+    setColor(15);
+    cout << monsters[index].nama;
+    resetColor();
+    cout << "|"
+         << setw(9);
+    setColor(10);
+    cout << monsters[index].hp;
+    resetColor();
+    cout << "|"
+         << setw(9);
+    setColor(12);
+    cout << monsters[index].attack;
+    resetColor();
+    cout << "|"
+         << setw(9);
+    setColor(14);
+    cout << monsters[index].defense;
+    resetColor();
+    cout << "|"
+         << setw(9);
+    setColor(9);
+    cout << monsters[index].speed;
+    resetColor();
+    cout << "|"
+        << setw(17);
+    setColor(getTypeColor(monsters[index].type));
+    cout << monsters[index].type;
+    resetColor();
+    cout << "|"
+        << setw(11);
+    setColor(getRarityColor(monsters[index].rarity));
+    cout << monsters[index].rarity;
+    resetColor();
+    cout << "|\n";
 
     rekursifActiveTeamInput(monsters, index + 1, jumlah, pilih);
+    resetColor();
 }

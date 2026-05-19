@@ -32,11 +32,18 @@ void menuUser(User users[], Monster monsters[], Skill skills[],
             cout << "| ";
 
             if(cursor == i)
+            {
+                setColor(15);
                 cout << ">> ";
+            }
             else
+            {
                 cout << "   ";
+                resetColor();
+            }
 
             cout << left << setw(28) << menu[i] << " |\n";
+            resetColor();
         }
 
         cout << "|_________________________________|\n";
