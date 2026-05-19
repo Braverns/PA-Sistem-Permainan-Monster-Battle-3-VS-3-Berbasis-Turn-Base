@@ -13,3 +13,9 @@ user_id,deck_id,monster_id,nama,hp,attack,defense,speed,type,rarity,skill1_id,sk
 1,12,12,Terrahorn,900,240,180,100,Earth,Rare,24,23,18
 1,13,25,Dragonica,100,400,300,600,Water,Epic,10,14,15
 1,14,26,Roggy,800,100,500,100,Rock,Common,35,39,39
+1,15,11,Hydraserpent,700,320,100,240,Water,Rare,12,11,14
+1,16,18,Stormpuff,500,250,80,300,Wind,Common,29,29,28
+1,17,26,Roggy,800,101,500,100,Rock,Common,40,37,35
+1,18,21,Graniteback,1000,180,180,80,Rock,Epic,38,37,34
+1,19,6,Cinderfox,380,300,60,400,Fire,Common,1,1,6
+1,20,18,Stormpuff,500,250,80,300,Wind,Common,32,27,26

@@ -1,7 +1,7 @@
 id,nama,element,tipe,power
 1,Fire Slash,Fire,Damage,40
 2,Fire Ball,Fire,Damage,60
-3,Inferno,Fire,AOE,50
+3,Inferno,Earth,AOE,50
 4,Lava Burst,Fire,Damage,50
 5,Magma Crash,Fire,Damage,70
 6,Blaze Rush,Fire,Damage,55
@@ -39,3 +39,4 @@ id,nama,element,tipe,power
 38,Shard Storm,Rock,AOE,55
 39,Golem Crusher,Rock,AOE,70
 40,Rock Throw,Rock,Damage,35
+41,Water Slice,Water,Damage,80
