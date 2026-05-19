@@ -1,5 +1,5 @@
 id,username,password,role,gold,next_deck_id,team1,team2,team3
 0,admin,123,admin,0,1,-1,-1,-1
 1,ajis,123456,user,1000,1,-1,-1,-1
-2,muja,123456,user,0,11,-1,-1,-1
+2,muja,123456,user,9800,13,0,1,2
 3,ulung,123456,user,1000,1,-1,-1,-1

@@ -9,3 +9,5 @@ user_id,deck_id,monster_id,nama,hp,attack,defense,speed,type,rarity,skill1_id,sk
 2,8,16,Galewisp,350,280,50,400,Wind,Common,30,27,27
 2,9,26,Roggy,800,100,500,100,Rock,Common,36,35,38
 2,10,13,Rootbound,750,220,150,160,Earth,Common,18,22,22
+2,11,22,Cragclaw,700,300,130,180,Rock,Rare,40,36,39
+2,12,6,Cinderfox,380,300,60,400,Fire,Common,6,8,6

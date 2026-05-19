@@ -497,6 +497,7 @@ void tampilDetailUser(User user)
     cout << "\n";
 
     cout << "|______________________________|______________________________|______________________________|\n";
+    
 }
 
 void deleteUser(User users[], int &jumlah_user)
@@ -509,33 +510,60 @@ void deleteUser(User users[], int &jumlah_user)
         return;
     }
 
-    tampilDaftarUser(users, jumlah_user);
+    int index = tampilUserInput(users, jumlah_user);
 
-    int id;
-    int index = -1;
-
-    cout << "\n ____________________________________________\n";
-    cout << "|                 DELETE USER                |\n";
-    cout << "|____________________________________________|\n";
-
-    cout << "Masukkan ID user : ";
-    cin >> id;
-
-    if(cin.fail())
+    if(index == -1)
     {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        tampilPesan("ID harus berupa angka!");
+        tampilPesan("Delete user dibatalkan!");
         return;
     }
 
-    for(int i = 0; i < jumlah_user; i++)
+    if(index == -2)
     {
-        if(users[i].id == id)
+        CLEAR_SCREEN;
+
+        tampilDaftarUser(users, jumlah_user);
+
+        cout << "\n1. Cari berdasarkan ID\n";
+        cout << "2. Cari berdasarkan Username\n";
+
+        int pilih = inputAngka("Pilih : ");
+
+        // ID
+        if(pilih == 1)
         {
-            index = i;
-            break;
+            int id = inputAngka("Masukkan ID : ");
+
+            for(int i = 0; i < jumlah_user; i++)
+            {
+                if(users[i].id == id && users[i].role != "admin")
+                {
+                    
+                    index = i;
+                    break;
+                }
+            }
+        }
+
+        // USERNAME
+        else if(pilih == 2)
+        {
+            string nama = inputClean("Masukkan Username : ");
+
+            for(int i = 0; i < jumlah_user; i++)
+            {
+                if(users[i].username == nama && users[i].role != "admin")
+                {
+                    index = i;
+                    break;
+                }
+            }
+        }
+
+        if(index == -1)
+        {
+            tampilPesan("User tidak ditemukan!");
+            return;
         }
     }
 
@@ -669,4 +697,131 @@ while(true)
         return;
     }
 }
+}
+
+int tampilUserInput(User users[], int jumlah_user)
+{
+    int pilih = 0;
+
+    while(users[pilih].role == "admin")
+    {
+        pilih++;
+    }
+
+    while(true)
+    {
+        clearArea();
+
+        cout << "\n ___________________________________________________________________\n";
+        cout << "|                                                                   |\n";
+        cout << "|                           DAFTAR USER                             |\n";
+        cout << "|___________________________________________________________________|\n";
+
+        cout << left
+             << setw(7)  << "|No"
+             << setw(25) << "|Username"
+             << setw(15) << "|Gold"
+             << setw(20) << "|Jumlah Monster"
+             << "|\n";
+
+        cout << "|------|------------------------|--------------|-------------------|\n";
+
+        tampilUserRekursifInput(users, 0, jumlah_user, pilih);
+
+        cout << "|______|________________________|______________|___________________|\n";
+
+        cout << "\n ________________________________________________\n";
+        cout << "|                 CONTROL MENU                  |\n";
+        cout << "|________________________________________________|\n";
+        cout << "| [UP/DOWN] | Pindah Cursor                     |\n";
+        cout << "| [ENTER]   | Delete User                       |\n";
+        cout << "| [SPACE]   | Input ID / Username               |\n";
+        cout << "| [ESC]     | Kembali                           |\n";
+        cout << "|___________|___________________________________|\n";
+
+        char tombol = _getch();
+
+        // ARROW
+        if(tombol == -32)
+        {
+            tombol = _getch();
+
+            // UP
+            if(tombol == 72)
+            {
+                do
+                {
+                    pilih--;
+
+                    if(pilih < 0)
+                        pilih = jumlah_user - 1;
+
+                } while(users[pilih].role == "admin");
+            }
+
+            // DOWN
+            else if(tombol == 80)
+            {
+                do
+                {
+                    pilih++;
+
+                    if(pilih >= jumlah_user)
+                        pilih = 0;
+
+                } while(users[pilih].role == "admin");
+            }
+        }
+
+        // ENTER
+        else if(tombol == 13)
+        {
+            // skip admin
+            if(users[pilih].role == "admin")
+            {
+                tampilPesan("Admin tidak bisa dihapus!");
+                continue;
+            }
+
+            return pilih;
+        }
+
+        // SPACE
+        else if(tombol == 32)
+        {
+            return -2;
+        }
+
+        // ESC
+        else if(tombol == 27)
+        {
+            return -1;
+        }
+    }
+}
+
+void tampilUserRekursifInput(User users[], int index, int jumlah_user, int pilih)
+{
+    if(index >= jumlah_user)
+        return;
+
+    if(users[index].role != "admin")
+    {
+        if(index == pilih)
+            cout << "|>>";
+        else
+            cout << "|  ";
+
+        cout << left
+             << setw(4)  << index + 1
+             << "|"
+             << setw(24) << users[index].username
+             << "|"
+             << setw(14) << users[index].gold
+             << "|"
+             << setw(19) << users[index].deck.jumlah
+             << "|\n";
+    }
+
+    tampilUserRekursifInput(users, index + 1, jumlah_user, pilih);
 }
