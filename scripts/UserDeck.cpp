@@ -112,22 +112,44 @@ void tampilUserDeckRekursifInput(UserMonster monsters[], int index, int jumlah, 
     }
 
     cout << left
-        << setw(4)  << index + 1
-        << "|"
-        << setw(24) << monsters[index].nama
-        << "|"
-        << setw(9) << monsters[index].hp
-        << "|"
-        << setw(9) << monsters[index].attack
-        << "|"
-        << setw(9) << monsters[index].defense
-        << "|"
-        << setw(9) << monsters[index].speed
-        << "|"
-        << setw(17) << monsters[index].type
-        << "|"
-        << setw(11) << monsters[index].rarity
-        << "|\n";
+         << setw(4)  << index + 1;
+    cout << "|"
+         << setw(24);
+    setColor(15);
+    cout << monsters[index].nama;
+    resetColor();
+    cout << "|"
+         << setw(9);
+    setColor(10);
+    cout << monsters[index].hp;
+    resetColor();
+    cout << "|"
+         << setw(9);
+    setColor(12);
+    cout << monsters[index].attack;
+    resetColor();
+    cout << "|"
+         << setw(9);
+    setColor(14);
+    cout << monsters[index].defense;
+    resetColor();
+    cout << "|"
+         << setw(9);
+    setColor(9);
+    cout << monsters[index].speed;
+    resetColor();
+    cout << "|"
+         << setw(17);
+    setColor(getTypeColor(monsters[index].type));
+    cout << monsters[index].type;
+    resetColor();
+    cout << "|"
+         << setw(11);
+    setColor(getRarityColor(monsters[index].rarity));
+    cout << monsters[index].rarity;
+    resetColor();
+
+    cout << "|\n";
 
     tampilUserDeckRekursifInput(monsters, index + 1, jumlah, pilih);
     resetColor();
@@ -171,38 +193,52 @@ void tampilUserDeckRekursif(UserMonster monsters[], int index, int jumlah)
         return;
 
     cout << "|"
-        << left << setw(6)
-        << index + 1
+         << left << setw(6)
+         << index + 1;
 
-        << "|"
-        << setw(24)
-        << monsters[index].nama
+    cout << "|"
+         << setw(24);
+    setColor(15);
+    cout << monsters[index].nama;
+    resetColor();
 
-        << "|"
-        << setw(9)
-        << monsters[index].hp
+    cout << "|"
+        << setw(9);
+    setColor(10);
+    cout << monsters[index].hp;
+    resetColor();
 
-        << "|"
-        << setw(9)
-        << monsters[index].attack
+    cout << "|"
+         << setw(9);
+    setColor(12);
+    cout << monsters[index].attack;
+    resetColor();
 
-        << "|"
-        << setw(9)
-        << monsters[index].defense
+    cout << "|"
+         << setw(9);
+    setColor(14);
+    cout << monsters[index].defense;
+    resetColor();
 
-        << "|"
-        << setw(9)
-        << monsters[index].speed
+    cout << "|"
+         << setw(9);
+    setColor(9);
+    cout << monsters[index].speed;
+    resetColor();
 
-        << "|"
-        << setw(17)
-        << monsters[index].type
+    cout << "|"
+         << setw(17);
+    setColor(getTypeColor(monsters[index].type));
+    cout << monsters[index].type;
+    resetColor();
 
-        << "|"
-        << setw(11)
-        << monsters[index].rarity
+    cout << "|"
+         << setw(11);
+    setColor(getRarityColor(monsters[index].rarity));
+    cout << monsters[index].rarity;
+    resetColor();
 
-        << "|\n";
+    cout << "|\n";
 
     tampilUserDeckRekursif(monsters, index + 1, jumlah);
 }

@@ -180,6 +180,7 @@ void setColor(int color);
 void resetColor();
 int getRarityColor(string rarity);
 int getTypeColor(string type);
+int getTypeSkillColor(string SkillType);
 void menuSetting();
 string inputClean(string label);
 int inputAngka(string label);

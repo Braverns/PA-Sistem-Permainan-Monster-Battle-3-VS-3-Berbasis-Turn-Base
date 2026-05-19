@@ -224,7 +224,7 @@ void sacrificeMonster(User users[], int current_user, int jumlah_user)
     saveDeckCSV(users, jumlah_user);
 
     cout << "Monster korban berhasil dikorbankan\n";
-    tungguEnter();
+    tunggu();
 }
 
 
@@ -319,7 +319,7 @@ void sortDeckIDAscending(UserMonster monsters[], int jumlah)
     {
         for(int j = 0; j < jumlah - i - 1; j++)
         {
-            if(monsters[j].monster_id > monsters[j+1].monster_id)
+            if(monsters[j].deck_id > monsters[j+1].deck_id)
             {
                 UserMonster temp = monsters[j];
                 monsters[j] = monsters[j+1];
@@ -334,23 +334,23 @@ int interpolationSearchID(UserMonster *monsters, int jumlah, int target_id)
     int left = 0, right = jumlah - 1;
 
     while(left <= right &&
-          target_id >= monsters[left].monster_id &&
-          target_id <= monsters[right].monster_id)
+          target_id >= monsters[left].deck_id &&
+          target_id <= monsters[right].deck_id)
     {
         // Hindari pembagian nol
-        if(monsters[right].monster_id == monsters[left].monster_id)
+        if(monsters[right].deck_id == monsters[left].deck_id)
         {
-            if(monsters[left].monster_id == target_id) return left;
+            if(monsters[left].deck_id == target_id) return left;
             else return -1;
         }
 
         // Rumus interpolasi
-        int pos = left + ((target_id - monsters[left].monster_id) * (right - left))
-                        / (monsters[right].monster_id - monsters[left].monster_id);
+        int pos = left + ((target_id - monsters[left].deck_id) * (right - left))
+                        / (monsters[right].deck_id - monsters[left].deck_id);
 
-        if(monsters[pos].monster_id == target_id)
+        if(monsters[pos].deck_id == target_id)
             return pos;
-        else if(monsters[pos].monster_id < target_id)
+        else if(monsters[pos].deck_id < target_id)
             left = pos + 1;
         else
             right = pos - 1;
@@ -362,29 +362,29 @@ int interpolationSearchID(UserMonster *monsters, int jumlah, int target_id)
 void menuSearch(User users[], int current_user)
 {
     CLEAR_SCREEN;
-
-    int pilih;
-
+    
     cout << "\n=== MENU SEARCH ===\n";
     cout << "1. Cari berdasarkan ID\n";
     cout << "2. Cari berdasarkan Nama\n";
     cout << "Pilih: ";
-    cin >> pilih;
+    
+    int input;
 
+    input = inputAngka("pilihan: ");
     if(cin.fail())
     {
-        tampilPesan("Menu tidak valid!");
+        tampilPesan2("Menu tidak valid!");
         return;
     }
 
     if(users[current_user].deck.jumlah == 0)
     {
-        tampilPesan("Deck kosong!");
+        tampilPesan2("Deck kosong!");
         return;
     }
 
     // id
-    if(pilih == 1)
+    if(input == 1)
     {
         CLEAR_SCREEN;
 
@@ -403,7 +403,7 @@ void menuSearch(User users[], int current_user)
     }
 
     // nama
-    else if(pilih == 2)
+    else if(input == 2)
     {
         CLEAR_SCREEN;
 
@@ -451,37 +451,51 @@ void tampilHasilSearchID(UserMonster monsters[], int index)
     {
         cout << "|"
              << left << setw(6)
-             << index + 1
+             << index + 1;
 
-             << "|"
-             << setw(24)
-             << monsters[index].nama
+        cout << "|"
+             << setw(24);
+        setColor(15);
+        cout << monsters[index].nama;
+        resetColor();
 
-             << "|"
-             << setw(9)
-             << monsters[index].hp
+        cout << "|"
+             << setw(9);
+        setColor(10);
+        cout << monsters[index].hp;
+        resetColor();
 
-             << "|"
-             << setw(9)
-             << monsters[index].attack
+        cout << "|"
+             << setw(9);
+        setColor(12);
+        cout << monsters[index].attack;
+        resetColor();
 
-             << "|"
-             << setw(9)
-             << monsters[index].defense
+        cout << "|"
+             << setw(9);
+        setColor(14);
+        cout << monsters[index].defense;
+        resetColor();
 
-             << "|"
-             << setw(9)
-             << monsters[index].speed
+        cout << "|"
+             << setw(9);
+        setColor(9);
+        cout << monsters[index].speed;
+        resetColor();
 
-             << "|"
-             << setw(21)
-             << monsters[index].type
+        cout << "|"
+             << setw(21);
+        setColor(getTypeColor(monsters[index].type));
+        cout << monsters[index].type;
+        resetColor();
 
-             << "|"
-             << setw(11)
-             << monsters[index].rarity
+        cout << "|"
+             << setw(11);
+        setColor(getRarityColor(monsters[index].rarity));
+        cout << monsters[index].rarity;
+        resetColor();
 
-             << "|\n";
+        cout << "|\n";
     }
     else
     {
@@ -524,37 +538,51 @@ void tampilHasilSearchNama(UserMonster monsters[], int jumlah, string nama)
 
             cout << "|"
                  << left << setw(6)
-                 << i + 1
+                 << i + 1;
 
-                 << "|"
-                 << setw(24)
-                 << monsters[i].nama
+            cout << "|"
+                 << setw(24);
+            setColor(15);
+            cout << monsters[i].nama;
+            resetColor();
 
-                 << "|"
-                 << setw(9)
-                 << monsters[i].hp
+            cout << "|"
+                 << setw(9);
+            setColor(10);
+            cout << monsters[i].hp;
+            resetColor();
 
-                 << "|"
-                 << setw(9)
-                 << monsters[i].attack
+            cout << "|"
+                 << setw(9);
+            setColor(12);
+            cout << monsters[i].attack;
+            resetColor();
 
-                 << "|"
-                 << setw(9)
-                 << monsters[i].defense
+            cout << "|"
+                 << setw(9);
+            setColor(14);
+            cout << monsters[i].defense;
+            resetColor();
 
-                 << "|"
-                 << setw(9)
-                 << monsters[i].speed
+            cout << "|"
+                 << setw(9);
+            setColor(9);
+            cout << monsters[i].speed;
+            resetColor();
 
-                 << "|"
-                 << setw(21)
-                 << monsters[i].type
+            cout << "|"
+                 << setw(21);
+            setColor(getTypeColor(monsters[i].type));
+            cout << monsters[i].type;
+            resetColor();
 
-                 << "|"
-                 << setw(11)
-                 << monsters[i].rarity
+            cout << "|"
+                 << setw(11);
+            setColor(getRarityColor(monsters[i].rarity));
+            cout << monsters[i].rarity;
+            resetColor();
 
-                 << "|\n";
+            cout << "|\n";
         }
     }
 

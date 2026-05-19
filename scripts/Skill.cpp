@@ -228,19 +228,19 @@ void tampilSkillList(Skill skills[], int jumlah_skill)
 
         cout << "|"
              << setw(24);
-            setColor(14);
+            setColor(15);
         cout << skills[i].nama;
         resetColor();
 
         cout << "|"
              << setw(14);
-            setColor(15);
+        setColor(getTypeColor(skills[i].element));
         cout << skills[i].element;
         resetColor();
 
         cout << "|"
              << setw(14);
-            setColor(3);
+        setColor(getTypeSkillColor(skills[i].tipe));
         cout << skills[i].tipe;
         resetColor();
 
@@ -249,7 +249,7 @@ void tampilSkillList(Skill skills[], int jumlah_skill)
             setColor(12);
         cout << skills[i].power;
         resetColor();
-        
+
         cout << "|\n";
     }
 
