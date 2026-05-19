@@ -425,9 +425,6 @@ void updateSkill(Skill skills[], int jumlah_skill)
                 continue;
             }
 
-            // =========================
-            // TEMP DATA
-            // =========================
 
             Skill temp = skills[index];
 
@@ -436,28 +433,17 @@ void updateSkill(Skill skills[], int jumlah_skill)
                 // NAMA
                 if(pilih_update[0])
                 {
-                    cout << "\nNama Lama : "
-                         << temp.nama;
-
+                    cout << "\nNama Lama : " << temp.nama;
                     cout << "\nNama Baru : ";
 
-                    string nama_baru =
-                    inputClean("");
-
-                    validasiPanjang(
-                        nama_baru,
-                        20,
-                        "Nama skill"
-                    );
+                    string nama_baru = inputClean("");
+                    validasiPanjang(nama_baru, 20, "Nama skill");
 
                     if(nama_baru.empty())
                     {
-                        throw invalid_argument(
-                            "Nama skill tidak boleh kosong!"
-                        );
+                        throw invalid_argument("Nama skill tidak boleh kosong!");
                     }
 
-                    // DUPLIKAT
                     for(int i = 0; i < jumlah_skill; i++)
                     {
                         if(i == index)
@@ -465,9 +451,7 @@ void updateSkill(Skill skills[], int jumlah_skill)
 
                         if(skills[i].nama == nama_baru)
                         {
-                            throw invalid_argument(
-                                "Nama skill sudah digunakan!"
-                            );
+                            throw invalid_argument("Nama skill sudah digunakan!");
                         }
                     }
 
@@ -477,9 +461,7 @@ void updateSkill(Skill skills[], int jumlah_skill)
                 // ELEMENT
                 if(pilih_update[1])
                 {
-                    cout << "\nElement Lama : "
-                         << temp.element;
-
+                    cout << "\nElement Lama : " << temp.element;
                     cout << "\n";
                     cout << "1. Fire\n";
                     cout << "2. Water\n";
@@ -487,10 +469,7 @@ void updateSkill(Skill skills[], int jumlah_skill)
                     cout << "4. Wind\n";
                     cout << "5. Rock\n";
 
-                    int pilih =
-                    inputAngka(
-                        "Pilih Element Baru : "
-                    );
+                    int pilih = inputAngka("Pilih Element Baru : ");
 
                     if(pilih == 1)
                         temp.element = "Fire";
@@ -509,27 +488,20 @@ void updateSkill(Skill skills[], int jumlah_skill)
 
                     else
                     {
-                        throw invalid_argument(
-                            "Pilihan element tidak valid!"
-                        );
+                        throw invalid_argument("Pilihan element tidak valid!");
                     }
                 }
 
                 // TIPE
                 if(pilih_update[2])
                 {
-                    cout << "\nTipe Lama : "
-                         << temp.tipe;
-
+                    cout << "\nTipe Lama : " << temp.tipe;
                     cout << "\n";
                     cout << "1. Damage\n";
                     cout << "2. Heal\n";
                     cout << "3. AOE\n";
 
-                    int pilih =
-                    inputAngka(
-                        "Pilih Tipe Baru : "
-                    );
+                    int pilih = inputAngka("Pilih Tipe Baru : ");
 
                     if(pilih == 1)
                         temp.tipe = "Damage";
@@ -542,45 +514,25 @@ void updateSkill(Skill skills[], int jumlah_skill)
 
                     else
                     {
-                        throw invalid_argument(
-                            "Pilihan tipe tidak valid!"
-                        );
+                        throw invalid_argument("Pilihan tipe tidak valid!");
                     }
                 }
 
                 // POWER
                 if(pilih_update[3])
                 {
-                    cout << "\nPower Lama : "
-                         << temp.power;
-
+                    cout << "\nPower Lama : " << temp.power;
                     cout << "\nPower Baru : ";
 
-                    temp.power =
-                    inputAngka("");
-
-                    validasiRange(
-                        temp.power,
-                        1,
-                        999,
-                        "Power skill"
-                    );
+                    temp.power = inputAngka("");
+                    validasiRange(temp.power, 1, 999, "Power skill");
                 }
-
-                // =========================
-                // COMMIT DATA
-                // =========================
 
                 skills[index] = temp;
 
-                saveSkillCSV(
-                    skills,
-                    jumlah_skill
-                );
+                saveSkillCSV(skills, jumlah_skill);
 
-                tampilPesan(
-                    "Skill berhasil diupdate!"
-                );
+                tampilPesan("Skill berhasil diupdate!");
 
                 return;
             }
@@ -591,7 +543,7 @@ void updateSkill(Skill skills[], int jumlah_skill)
             }
         }
 
-        // ESC
+
         else if(tombol == 27)
         {
             tampilPesan("Update dibatalkan!");
