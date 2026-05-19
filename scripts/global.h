@@ -237,6 +237,7 @@ float getTypeMultiplier(string attack_type, string target_type);
 int hitungDamage(UserMonster attacker, UserMonster target, Skill skill);
 void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker);
 void printBattleTextLine(string text);
+int pilihTargetHeal(BattleMonster player[], BattleMonster enemy[], string healer_name);
 
 
 // SEARCH & SORT

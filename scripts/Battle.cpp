@@ -470,12 +470,36 @@ int pilihSkill(BattleMonster player[], BattleMonster enemy[], UserMonster monste
 
         tampilBattleUI(player, enemy);
 
-        cout << "\n ________________________________________________________________\n";
-        cout << "|                                                                |\n";
-        cout << "|                          SKILL LIST                            |\n";
-        cout << "|________________________________________________________________|\n";
-        cout << "| No | NAME                   | ELEMENT      | TIPE         | POWER     |\n";
-        cout << "|____|________________________|______________|______________|___________|\n";
+        string teks =
+        monster.nama + " MENGGUNAKAN SKILL";
+
+        int width = 70;
+
+        int padding = width - teks.length();
+
+        if(padding < 0)
+            padding = 0;
+
+        int kiri = padding / 2;
+        int kanan = padding - kiri;
+
+        cout << "\n ______________________________________________________________________\n";
+        cout << "|";
+
+        for(int i = 0; i < kiri; i++)
+            cout << " ";
+
+        cout << teks;
+
+        for(int i = 0; i < kanan; i++)
+            cout << " ";
+
+        cout << "|\n";
+
+        cout << "|______________________________________________________________________|\n";
+
+        cout << "|    | NAME                 | ELEMENT     | TIPE        | POWER        |\n";
+        cout << "|____|______________________|_____________|_____________|______________|\n";
 
         for(int i = 0; i < 3; i++)
         {
@@ -484,42 +508,32 @@ int pilihSkill(BattleMonster player[], BattleMonster enemy[], UserMonster monste
             cout << "| ";
 
             if(cursor == i)
-            {
                 cout << ">>";
-            }
             else
-            {
                 cout << "  ";
-            }
 
             cout << " | ";
 
-            cout << left << setw(18)
-                 << s.nama
-
+            cout << left
+                 << setw(21) << s.nama
                  << "| "
-                 << setw(12)
-                 << s.element
-
+                 << setw(12) << s.element
                  << "| "
-                 << setw(12)
-                 << s.tipe
-
+                 << setw(12) << s.tipe
                  << "| "
-                 << setw(10)
-                 << s.power
-
+                 << setw(13) << s.power
                  << "|\n";
+
+            cout << "|____|______________________|_____________|_____________|______________|\n";
         }
 
-        cout << "|____|___________________|_____________|_____________|___________|\n";
-
-        cout << "\n ________________________\n";
-        cout << "|      CONTROL MENU      |\n";
-        cout << "|                        |\n";
-        cout << "| [ENTER] SELECT SKILL   |\n";
-        cout << "| [ESC]   KEMBALI        |\n";
-        cout << "|________________________|\n";
+        cout << "\n ___________________________\n";
+        cout << "|       CONTROL MENU        |\n";
+        cout << "|                           |\n";
+        cout << "| [UP/DOWN] MOVE CURSOR     |\n";
+        cout << "| [ENTER]   SELECT SKILL    |\n";
+        cout << "| [ESC]     KEMBALI         |\n";
+        cout << "|___________________________|\n";
 
         char tombol = _getch();
 
@@ -612,91 +626,277 @@ int hitungDamage(UserMonster attacker, UserMonster target, Skill skill)
     return damage;
 }
 
+void printBattleTextLine(string text)
+{
+    int width = 63;
+
+    int padding = width - text.length();
+
+    if(padding < 0)
+        padding = 0;
+
+    int kiri = padding / 2;
+    int kanan = padding - kiri;
+
+    cout << "|";
+
+    for(int i = 0; i < kiri; i++)
+        cout << " ";
+
+    cout << text;
+
+    for(int i = 0; i < kanan; i++)
+        cout << " ";
+
+    cout << "|\n";
+}
+
+
 bool playerAttack(BattleMonster player[], BattleMonster enemy[], int attacker)
 {
     while(true)
     {
-        // PILIH TARGET
-
-        int target = pilihTarget( player, enemy, player[attacker].data.nama);
-
-        // FLEE
-        if(target == -1)
-        {
-            CLEAR_SCREEN;
-            tampilBattleUI(player, enemy);
-            cout << "\nMencoba kabur...\n";
-
-            Sleep(1500);
-
-            int flee = rand() % 100;
-
-            if(flee < 5)
-            {
-                cout << "\nBERHASIL KABUR!\n";
-                Sleep(2000);
-                return true;
-            }
-            else
-            {
-                cout << "\nGAGAL KABUR!\n";
-                Sleep(2000);
-                return false;
-            }
-        }
-
         // PILIH SKILL
 
-        int skill_index = pilihSkill(player, enemy, player[attacker].data);
+        int skill_index =
+        pilihSkill(
+            player,
+            enemy,
+            player[attacker].data
+        );
 
-        // ESC = kembali target
+        // ESC = kembali
         if(skill_index == -1)
         {
             continue;
         }
 
-        Skill skill = player[attacker].data.skills[skill_index];
+        Skill skill =
+        player[attacker].data.skills[skill_index];
 
-        int damage = hitungDamage(player[attacker].data, enemy[target].data, skill);
-        enemy[target].current_hp -= damage;
 
-        if(enemy[target].current_hp <= 0)
+        // =====================================================
+        // HEAL
+        // =====================================================
+
+        if(skill.tipe == "Heal")
         {
-            enemy[target].current_hp = 0;
-            enemy[target].hidup = false;
+            int heal_target =
+            pilihTargetHeal(
+                player,
+                enemy,
+                player[attacker].data.nama
+            );
+
+            // ESC = kembali pilih skill
+            if(heal_target == -1)
+            {
+                continue;
+            }
+
+            player[heal_target].current_hp += skill.power;
+
+            // LIMIT MAX HP
+            if(player[heal_target].current_hp >
+               player[heal_target].data.hp)
+            {
+                player[heal_target].current_hp =
+                player[heal_target].data.hp;
+            }
+
+            CLEAR_SCREEN;
+
+            tampilBattleUI(player, enemy);
+
+            cout << "\n _______________________________________________________________\n";
+
+            string teks =
+            player[attacker].data.nama +
+            " HEAL " +
+            player[heal_target].data.nama;
+
+            printBattleTextLine(teks);
+
+            printBattleTextLine("");
+
+            string heal =
+            "+" + to_string(skill.power) + " HP";
+
+            printBattleTextLine(heal);
+
+            cout << "|_______________________________________________________________|\n";
+
+            Sleep(2500);
+
+            return false;
         }
 
-        float multiplier = getTypeMultiplier(skill.element, enemy[target].data.type);
 
-        CLEAR_SCREEN;
+        // =====================================================
+        // AOE
+        // =====================================================
 
-        tampilBattleUI(player, enemy);
-
-        cout << "\n _______________________________________________________________\n";
-        string teks = player[attacker].data.nama + " MENYERANG " + enemy[target].data.nama;
-        printBattleTextLine(teks);
-        printBattleTextLine("");
-
-        if(multiplier > 1.0f)
+        else if(skill.tipe == "AOE")
         {
-            printBattleTextLine("SUPER EFEKTIF");
+            CLEAR_SCREEN;
+
+            tampilBattleUI(player, enemy);
+
+            cout << "\n _______________________________________________________________\n";
+
+            string teks =
+            player[attacker].data.nama +
+            " MENGGUNAKAN " +
+            skill.nama;
+
+            printBattleTextLine(teks);
+
+            printBattleTextLine("");
+
+            for(int i = 0; i < 3; i++)
+            {
+                if(enemy[i].hidup)
+                {
+                    int damage =
+                    hitungDamage(
+                        player[attacker].data,
+                        enemy[i].data,
+                        skill
+                    );
+
+                    enemy[i].current_hp -= damage;
+
+                    if(enemy[i].current_hp <= 0)
+                    {
+                        enemy[i].current_hp = 0;
+                        enemy[i].hidup = false;
+                    }
+
+                    string dmg =
+                    enemy[i].data.nama +
+                    " -" +
+                    to_string(damage) +
+                    " HP";
+
+                    printBattleTextLine(dmg);
+                }
+            }
+
+            cout << "|_______________________________________________________________|\n";
+
+            Sleep(3000);
+
+            return false;
         }
+
+
+        // =====================================================
+        // DAMAGE NORMAL
+        // =====================================================
+
         else
         {
+            int target =
+            pilihTarget(
+                player,
+                enemy,
+                player[attacker].data.nama
+            );
+
+            // ESC = flee
+            if(target == -1)
+            {
+                CLEAR_SCREEN;
+
+                tampilBattleUI(player, enemy);
+
+                cout << "\nMencoba kabur...\n";
+
+                Sleep(1500);
+
+                int flee = rand() % 100;
+
+                if(flee < 5)
+                {
+                    cout << "\nBERHASIL KABUR!\n";
+
+                    Sleep(2000);
+
+                    return true;
+                }
+                else
+                {
+                    cout << "\nGAGAL KABUR!\n";
+
+                    Sleep(2000);
+
+                    return false;
+                }
+            }
+
+            int damage =
+            hitungDamage(
+                player[attacker].data,
+                enemy[target].data,
+                skill
+            );
+
+            enemy[target].current_hp -= damage;
+
+            if(enemy[target].current_hp <= 0)
+            {
+                enemy[target].current_hp = 0;
+                enemy[target].hidup = false;
+            }
+
+            float multiplier =
+            getTypeMultiplier(
+                skill.element,
+                enemy[target].data.type
+            );
+
+            CLEAR_SCREEN;
+
+            tampilBattleUI(player, enemy);
+
+            cout << "\n _______________________________________________________________\n";
+
+            string teks =
+            player[attacker].data.nama +
+            " MENYERANG " +
+            enemy[target].data.nama;
+
+            printBattleTextLine(teks);
+
             printBattleTextLine("");
+
+            if(multiplier > 1.0f)
+            {
+                printBattleTextLine("SUPER EFEKTIF");
+            }
+            else
+            {
+                printBattleTextLine("");
+            }
+
+            string dmg =
+            to_string(damage) + " DAMAGE";
+
+            printBattleTextLine(dmg);
+
+            cout << "|_______________________________________________________________|\n";
+
+            if(!enemy[target].hidup)
+            {
+                cout << "\n"
+                     << enemy[target].data.nama
+                     << " KO!\n";
+            }
+
+            Sleep(2500);
+
+            return false;
         }
-
-        string dmg = to_string(damage) + " DAMAGE";
-        printBattleTextLine(dmg);
-        cout << "|_______________________________________________________________|\n";
-
-        if(!enemy[target].hidup)
-        {
-            cout << "\n" << enemy[target].data.nama << " KO!\n";
-        }
-
-        Sleep(2500);
-        return false;
     }
 }
 
@@ -755,27 +955,105 @@ void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker)
     Sleep(3000);
 }
 
-void printBattleTextLine(string text)
+
+int pilihTargetHeal(BattleMonster player[], BattleMonster enemy[], string healer_name)
 {
-    int width = 63;
+    int cursor = 0;
 
-    int padding = width - text.length();
+    while(true)
+    {
+        CLEAR_SCREEN;
 
-    if(padding < 0)
-        padding = 0;
+        tampilBattleUI(player, enemy);
 
-    int kiri = padding / 2;
-    int kanan = padding - kiri;
+        cout << "\n ___________________________________\n";
 
-    cout << "|";
+        string teks = healer_name + " HEAL TARGET";
 
-    for(int i = 0; i < kiri; i++)
-        cout << " ";
+        int width = 35;
+        int padding = width - teks.length();
 
-    cout << text;
+        if(padding < 0)
+            padding = 0;
 
-    for(int i = 0; i < kanan; i++)
-        cout << " ";
+        int kiri = padding / 2;
+        int kanan = padding - kiri;
 
-    cout << "|\n";
+        cout << "|";
+
+        for(int i = 0; i < kiri; i++)
+            cout << " ";
+
+        cout << teks;
+
+        for(int i = 0; i < kanan; i++)
+            cout << " ";
+
+        cout << "|\n";
+
+        cout << "|___________________________________|\n";
+
+        for(int i = 0; i < 3; i++)
+        {
+            cout << "| ";
+
+            if(cursor == i)
+                cout << ">> ";
+            else
+                cout << "   ";
+
+            cout << left << setw(30) << player[i].data.nama;
+            cout << " |\n";
+        }
+
+        cout << "|___________________________________|\n";
+
+        cout << "\n ___________________________\n";
+        cout << "|       CONTROL MENU        |\n";
+        cout << "|                           |\n";
+        cout << "| [UP/DOWN] MOVE CURSOR     |\n";
+        cout << "| [ENTER]   PILIH TARGET    |\n";
+        cout << "| [ESC]     KEMBALI         |\n";
+        cout << "|___________________________|\n";
+
+        char tombol = _getch();
+
+        if(tombol == -32)
+        {
+            tombol = _getch();
+
+            // UP
+            if(tombol == 72)
+            {
+                cursor--;
+
+                if(cursor < 0)
+                    cursor = 2;
+            }
+
+            // DOWN
+            else if(tombol == 80)
+            {
+                cursor++;
+
+                if(cursor > 2)
+                    cursor = 0;
+            }
+        }
+
+        // ENTER
+        else if(tombol == 13)
+        {
+            if(player[cursor].hidup)
+            {
+                return cursor;
+            }
+        }
+
+        // ESC
+        else if(tombol == 27)
+        {
+            return -1;
+        }
+    }
 }
