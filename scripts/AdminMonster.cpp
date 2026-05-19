@@ -517,10 +517,6 @@ void updateMonster(Monster monsters[], int jumlah_monster)
                 continue;
             }
 
-            // =========================
-            // TEMP DATA
-            // =========================
-
             Monster temp = monsters[index];
 
             try
@@ -531,23 +527,15 @@ void updateMonster(Monster monsters[], int jumlah_monster)
                     cout << "\nNama Lama : " << temp.status.nama;
                     cout << "\nNama Baru : ";
 
-                    string nama_baru =
-                    inputClean("");
+                    string nama_baru = inputClean("");
 
-                    validasiPanjang(
-                        nama_baru,
-                        20,
-                        "Nama monster"
-                    );
+                    validasiPanjang(nama_baru, 20, "Nama monster");
 
                     if(nama_baru.empty())
                     {
-                        throw invalid_argument(
-                            "Nama monster tidak boleh kosong!"
-                        );
+                        throw invalid_argument("Nama monster tidak boleh kosong!");
                     }
 
-                    // CEK DUPLIKAT
                     for(int i = 0; i < jumlah_monster; i++)
                     {
                         if(i == index)
@@ -555,9 +543,7 @@ void updateMonster(Monster monsters[], int jumlah_monster)
 
                         if(monsters[i].status.nama == nama_baru)
                         {
-                            throw invalid_argument(
-                                "Nama monster sudah digunakan!"
-                            );
+                            throw invalid_argument("Nama monster sudah digunakan!");
                         }
                     }
 
@@ -567,85 +553,48 @@ void updateMonster(Monster monsters[], int jumlah_monster)
                 // HP
                 if(pilih_update[1])
                 {
-                    cout << "\nHP Lama : "
-                         << temp.status.hp;
-
+                    cout << "\nHP Lama : " << temp.status.hp;
                     cout << "\nHP Baru : ";
 
-                    temp.status.hp =
-                    inputAngka("");
-
-                    validasiRange(
-                        temp.status.hp,
-                        1,
-                        999,
-                        "HP"
-                    );
+                    temp.status.hp = inputAngka("");
+                    validasiRange(temp.status.hp, 1, 999, "HP");
                 }
 
                 // ATTACK
                 if(pilih_update[2])
                 {
-                    cout << "\nAttack Lama : "
-                         << temp.status.attack;
-
+                    cout << "\nAttack Lama : " << temp.status.attack;
                     cout << "\nAttack Baru : ";
 
-                    temp.status.attack =
-                    inputAngka("");
-
-                    validasiRange(
-                        temp.status.attack,
-                        1,
-                        999,
-                        "Attack"
-                    );
+                    temp.status.attack = inputAngka("");
+                    validasiRange(temp.status.attack, 1, 999, "Attack");
                 }
 
                 // DEFENSE
                 if(pilih_update[3])
                 {
-                    cout << "\nDefense Lama : "
-                         << temp.status.defense;
-
+                    cout << "\nDefense Lama : " << temp.status.defense;
                     cout << "\nDefense Baru : ";
 
-                    temp.status.defense =
-                    inputAngka("");
-
-                    validasiRange(
-                        temp.status.defense,
-                        1,
-                        999,
-                        "Defense"
-                    );
+                    temp.status.defense = inputAngka("");
+                    validasiRange(temp.status.defense, 1, 999, "Defense");
                 }
 
                 // SPEED
                 if(pilih_update[4])
                 {
-                    cout << "\nSpeed Lama : "
-                         << temp.status.speed;
-
+                    cout << "\nSpeed Lama : " << temp.status.speed;
                     cout << "\nSpeed Baru : ";
 
-                    temp.status.speed =
-                    inputAngka("");
+                    temp.status.speed = inputAngka("");
 
-                    validasiRange(
-                        temp.status.speed,
-                        1,
-                        999,
-                        "Speed"
-                    );
+                    validasiRange(temp.status.speed, 1, 999, "Speed");
                 }
 
                 // TYPE
                 if(pilih_update[5])
                 {
-                    cout << "\nType Lama : "
-                         << temp.type.tipe;
-
+                    cout << "\nType Lama : " << temp.type.tipe;
                     cout << "\n";
                     cout << "1. Fire\n";
                     cout << "2. Water\n";
@@ -653,10 +602,7 @@ void updateMonster(Monster monsters[], int jumlah_monster)
                     cout << "4. Wind\n";
                     cout << "5. Rock\n";
 
-                    int pilih =
-                    inputAngka(
-                        "Pilih Type Baru : "
-                    );
+                    int pilih = inputAngka("Pilih Type Baru : ");
 
                     if(pilih == 1)
                         temp.type.tipe = "Fire";
@@ -675,27 +621,20 @@ void updateMonster(Monster monsters[], int jumlah_monster)
 
                     else
                     {
-                        throw invalid_argument(
-                            "Pilihan type tidak valid!"
-                        );
+                        throw invalid_argument("Pilihan type tidak valid!");
                     }
                 }
 
                 // RARITY
                 if(pilih_update[6])
                 {
-                    cout << "\nRarity Lama : "
-                         << temp.rarity.rarity;
-
+                    cout << "\nRarity Lama : " << temp.rarity.rarity;
                     cout << "\n";
                     cout << "1. Common\n";
                     cout << "2. Rare\n";
                     cout << "3. Epic\n";
 
-                    int pilih =
-                    inputAngka(
-                        "Pilih Rarity Baru : "
-                    );
+                    int pilih = inputAngka("Pilih Rarity Baru : ");
 
                     if(pilih == 1)
                         temp.rarity.rarity = "Common";
@@ -714,20 +653,9 @@ void updateMonster(Monster monsters[], int jumlah_monster)
                     }
                 }
 
-                // =========================
-                // COMMIT DATA
-                // =========================
-
                 monsters[index] = temp;
-
-                saveMonsterCSV(
-                    monsters,
-                    jumlah_monster
-                );
-
-                tampilPesan(
-                    "Monster berhasil diupdate!"
-                );
+                saveMonsterCSV(monsters, jumlah_monster);
+                tampilPesan("Monster berhasil diupdate!");
 
                 return;
             }

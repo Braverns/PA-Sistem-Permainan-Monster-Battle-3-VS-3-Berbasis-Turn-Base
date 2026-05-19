@@ -958,13 +958,9 @@ void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker)
 {
     int random_skill = rand() % 3;
 
-    Skill skill =
-    enemy[attacker].data.skills[random_skill];
+    Skill skill = enemy[attacker].data.skills[random_skill];
 
-    // =====================================================
     // HEAL
-    // =====================================================
-
     if(skill.tipe == "Heal")
     {
         int heal_target;
@@ -989,70 +985,46 @@ void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker)
         CLEAR_SCREEN;
 
         tampilBattleUI(player, enemy);
-
         setColor(10);
 
         cout << "\n _______________________________________________________________\n";
 
-        string teks =
-        enemy[attacker].data.nama +
-        " MENGGUNAKAN " +
-        skill.nama;
+        string teks = enemy[attacker].data.nama + " MENGGUNAKAN " + skill.nama;
 
         printBattleTextLine(teks);
-
         printBattleTextLine("");
 
-        string heal =
-        enemy[heal_target].data.nama +
-        " +" +
-        to_string(skill.power) +
-        " HP";
-
+        string heal = enemy[heal_target].data.nama + " +" + to_string(skill.power) + " HP";
         printBattleTextLine(heal);
 
         cout << "|_______________________________________________________________|\n";
 
         resetColor();
-
         Sleep(2500);
 
         return;
     }
 
-    // =====================================================
-    // AOE
-    // =====================================================
-
+    // AREA OF EFFECT
     else if(skill.tipe == "AOE")
     {
         CLEAR_SCREEN;
 
         tampilBattleUI(player, enemy);
-
         setColor(12);
 
         cout << "\n _______________________________________________________________\n";
 
-        string teks =
-        enemy[attacker].data.nama +
-        " MENGGUNAKAN " +
-        skill.nama;
+        string teks = enemy[attacker].data.nama + " MENGGUNAKAN " + skill.nama;
 
         printBattleTextLine(teks);
-
         printBattleTextLine("");
 
         for(int i = 0; i < 3; i++)
         {
             if(player[i].hidup)
             {
-                int damage =
-                hitungDamage(
-                    enemy[attacker].data,
-                    player[i].data,
-                    skill
-                );
+                int damage = hitungDamage(enemy[attacker].data, player[i].data, skill);
 
                 player[i].current_hp -= damage;
 
@@ -1062,11 +1034,7 @@ void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker)
                     player[i].hidup = false;
                 }
 
-                string dmg =
-                player[i].data.nama +
-                " -" +
-                to_string(damage) +
-                " HP";
+                string dmg = player[i].data.nama + " -" + to_string(damage) + " HP";
 
                 printBattleTextLine(dmg);
             }
@@ -1075,16 +1043,12 @@ void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker)
         cout << "|_______________________________________________________________|\n";
 
         resetColor();
-
         Sleep(3000);
 
         return;
     }
 
-    // =====================================================
     // DAMAGE SINGLE TARGET
-    // =====================================================
-
     int target;
 
     do
@@ -1093,12 +1057,7 @@ void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker)
     }
     while(!player[target].hidup);
 
-    int damage =
-    hitungDamage(
-        enemy[attacker].data,
-        player[target].data,
-        skill
-    );
+    int damage = hitungDamage(enemy[attacker].data, player[target].data, skill);
 
     player[target].current_hp -= damage;
 
@@ -1108,27 +1067,18 @@ void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker)
         player[target].hidup = false;
     }
 
-    float multiplier =
-    getTypeMultiplier(
-        skill.element,
-        player[target].data.type
-    );
+    float multiplier = getTypeMultiplier(skill.element, player[target].data.type);
 
     CLEAR_SCREEN;
 
     tampilBattleUI(player, enemy);
-
     setColor(12);
 
     cout << "\n _______________________________________________________________\n";
 
-    string teks =
-    enemy[attacker].data.nama +
-    " MENYERANG " +
-    player[target].data.nama;
+    string teks = enemy[attacker].data.nama + " MENYERANG " + player[target].data.nama;
 
     printBattleTextLine(teks);
-
     printBattleTextLine("");
 
     if(multiplier > 1.0f)
@@ -1140,8 +1090,7 @@ void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker)
         printBattleTextLine("");
     }
 
-    string dmg =
-    to_string(damage) + " DAMAGE";
+    string dmg = to_string(damage) + " DAMAGE";
 
     printBattleTextLine(dmg);
 
