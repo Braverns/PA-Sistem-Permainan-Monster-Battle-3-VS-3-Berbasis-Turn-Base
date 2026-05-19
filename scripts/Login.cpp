@@ -27,11 +27,18 @@ void menuHome(int &state, bool &program_jalan)
             cout << "| ";
 
             if(cursor == i)
+            {
+                setColor(15);
                 cout << ">> ";
+            }
             else
+            {
+                resetColor();
                 cout << "   ";
+            }
 
             cout << left << setw(28) << menu[i]  << "  |\n";
+            resetColor();
         }
 
         cout << "|__________________________________|\n";

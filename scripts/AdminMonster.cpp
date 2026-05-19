@@ -273,29 +273,37 @@ void tampilMonsterList(Monster monsters[], int jumlah_monster)
     {
         cout << "|"
              << left << setw(4)
-             << monsters[i].status.id
+             << monsters[i].status.id;
 
-             << "|"
+        cout << "|"
              << setw(24)
-             << monsters[i].status.nama
+             << monsters[i].status.nama;
+             
+        cout << "|"
+             << setw(10);
+        setColor(10);
+        cout << monsters[i].status.hp;
+        resetColor();
 
-             << "|"
+        setColor(12);
+        cout << "|"
              << setw(10)
-             << monsters[i].status.hp
+             << monsters[i].status.attack;
+        resetColor();
 
-             << "|"
-             << setw(10)
-             << monsters[i].status.attack
+        cout << "|"
+        << setw(10);
+        setColor(14);
+        cout << monsters[i].status.defense;
+        resetColor();
 
-             << "|"
-             << setw(10)
-             << monsters[i].status.defense
+        cout << "|"
+             << setw(10);
+        setColor(9);
+        cout << monsters[i].status.speed;
+        resetColor();
 
-             << "|"
-             << setw(10)
-             << monsters[i].status.speed
-
-             << "|"
+        cout << "|"
              << setw(21)
              << monsters[i].type.tipe
 
