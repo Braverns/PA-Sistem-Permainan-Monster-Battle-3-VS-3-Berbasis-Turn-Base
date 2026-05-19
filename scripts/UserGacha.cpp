@@ -202,70 +202,268 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
                 string kartu[14];
                 buatKartuMonster(monsters[i], kartu);
 
-                if(line == 3)
-                {
-                    cout << "|HP  : ";
+                int rarityColor =
+                getRarityColor(monsters[i].rarity);
 
-                    setColor(12);
+                // =====================================
+                // NAMA MONSTER
+                // =====================================
+                if(line == 1)
+                {
+                    string nama = monsters[i].nama;
+
+                    int padding = 20 - nama.length();
+                    int kiri = padding / 2;
+                    int kanan = padding - kiri;
+
+                    setColor(rarityColor);
+
+                    cout << "|";
+
+                    for(int j = 0; j < kiri; j++)
+                        cout << " ";
+
+                    resetColor();
+
+                    setColor(15);
+                    cout << nama;
+                    resetColor();
+
+                    setColor(rarityColor);
+
+                    for(int j = 0; j < kanan; j++)
+                        cout << " ";
+
+                    cout << "|";
+
+                    resetColor();
+                }
+
+                // =====================================
+                // HP
+                // =====================================
+                else if(line == 3)
+                {
+                    setColor(rarityColor);
+                    cout << "|";
+                    resetColor();
+
+                    cout << "HP  : ";
+
+                    setColor(10);
                     cout << monsters[i].hp;
                     resetColor();
 
-                    int sisa = 14 - to_string(monsters[i].hp).length();
+                    int sisa =
+                    14 - to_string(monsters[i].hp).length();
 
                     for(int j = 0; j < sisa; j++)
                         cout << " ";
 
+                    setColor(rarityColor);
                     cout << "|";
+                    resetColor();
                 }
 
+                // =====================================
+                // ATK
+                // =====================================
                 else if(line == 4)
                 {
-                    cout << "|ATK : ";
+                    setColor(rarityColor);
+                    cout << "|";
+                    resetColor();
 
-                    setColor(14);
+                    cout << "ATK : ";
+
+                    setColor(12);
                     cout << monsters[i].attack;
                     resetColor();
 
-                    int sisa = 14 - to_string(monsters[i].attack).length();
+                    int sisa =
+                    14 - to_string(monsters[i].attack).length();
 
                     for(int j = 0; j < sisa; j++)
                         cout << " ";
 
+                    setColor(rarityColor);
                     cout << "|";
+                    resetColor();
                 }
 
+                // =====================================
+                // DEF
+                // =====================================
                 else if(line == 5)
                 {
-                    cout << "|DEF : ";
+                    setColor(rarityColor);
+                    cout << "|";
+                    resetColor();
 
-                    setColor(11);
+                    cout << "DEF : ";
+
+                    setColor(14);
                     cout << monsters[i].defense;
                     resetColor();
 
-                    int sisa = 14 - to_string(monsters[i].defense).length();
+                    int sisa =
+                    14 - to_string(monsters[i].defense).length();
 
                     for(int j = 0; j < sisa; j++)
                         cout << " ";
 
+                    setColor(rarityColor);
                     cout << "|";
+                    resetColor();
                 }
 
+                // =====================================
+                // SPD
+                // =====================================
                 else if(line == 6)
                 {
-                    cout << "|SPD : ";
+                    setColor(rarityColor);
+                    cout << "|";
+                    resetColor();
 
-                    setColor(10);
+                    cout << "SPD : ";
+
+                    setColor(9);
                     cout << monsters[i].speed;
                     resetColor();
 
-                    int sisa = 14 - to_string(monsters[i].speed).length();
+                    int sisa =
+                    14 - to_string(monsters[i].speed).length();
 
                     for(int j = 0; j < sisa; j++)
                         cout << " ";
 
+                    setColor(rarityColor);
                     cout << "|";
+                    resetColor();
                 }
 
+                // =====================================
+                // SKILL 1
+                // =====================================
+                else if(line == 7)
+                {
+                    setColor(rarityColor);
+                    cout << "|";
+                    resetColor();
+
+                    cout << "S1  : ";
+
+                    setColor(
+                    getTypeColor(
+                    monsters[i].skills[0].element));
+
+                    cout << monsters[i].skills[0].nama;
+                    resetColor();
+
+                    int sisa =
+                    14 -
+                    monsters[i].skills[0].nama.length();
+
+                    for(int j = 0; j < sisa; j++)
+                        cout << " ";
+
+                    setColor(rarityColor);
+                    cout << "|";
+                    resetColor();
+                }
+
+                // =====================================
+                // SKILL 2
+                // =====================================
+                else if(line == 8)
+                {
+                    setColor(rarityColor);
+                    cout << "|";
+                    resetColor();
+
+                    cout << "S2  : ";
+
+                    setColor(
+                    getTypeColor(
+                    monsters[i].skills[1].element));
+
+                    cout << monsters[i].skills[1].nama;
+                    resetColor();
+
+                    int sisa =
+                    14 -
+                    monsters[i].skills[1].nama.length();
+
+                    for(int j = 0; j < sisa; j++)
+                        cout << " ";
+
+                    setColor(rarityColor);
+                    cout << "|";
+                    resetColor();
+                }
+
+                // =====================================
+                // SKILL 3
+                // =====================================
+                else if(line == 9)
+                {
+                    setColor(rarityColor);
+                    cout << "|";
+                    resetColor();
+
+                    cout << "S3  : ";
+
+                    setColor(
+                    getTypeColor(
+                    monsters[i].skills[2].element));
+
+                    cout << monsters[i].skills[2].nama;
+                    resetColor();
+
+                    int sisa =
+                    14 -
+                    monsters[i].skills[2].nama.length();
+
+                    for(int j = 0; j < sisa; j++)
+                        cout << " ";
+
+                    setColor(rarityColor);
+                    cout << "|";
+                    resetColor();
+                }
+
+                // =====================================
+                // TYPE
+                // =====================================
+                else if(line == 10)
+                {
+                    setColor(rarityColor);
+                    cout << "|";
+                    resetColor();
+
+                    cout << "TP  : ";
+
+                    setColor(
+                    getTypeColor(monsters[i].type));
+
+                    cout << monsters[i].type;
+                    resetColor();
+
+                    int sisa =
+                    14 - monsters[i].type.length();
+
+                    for(int j = 0; j < sisa; j++)
+                        cout << " ";
+
+                    setColor(rarityColor);
+                    cout << "|";
+                    resetColor();
+                }
+
+                // =====================================
+                // RARITY
+                // =====================================
                 else if(line == 12)
                 {
                     string rarity = monsters[i].rarity;
@@ -274,24 +472,31 @@ void tampilMultiKartu(UserMonster monsters[], int jumlah)
                     int kiri = padding / 2;
                     int kanan = padding - kiri;
 
+                    setColor(rarityColor);
+
                     cout << "|";
 
                     for(int j = 0; j < kiri; j++)
                         cout << " ";
 
-                    setColor(getRarityColor(rarity));
                     cout << rarity;
-                    resetColor();
 
                     for(int j = 0; j < kanan; j++)
                         cout << " ";
 
                     cout << "|";
+
+                    resetColor();
                 }
 
+                // =====================================
+                // BORDER CARD
+                // =====================================
                 else
                 {
+                    setColor(rarityColor);
                     cout << kartu[line];
+                    resetColor();
                 }
 
                 cout << " ";
