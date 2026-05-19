@@ -1,6 +1,6 @@
 id,nama,hp,attack,defense,speed,type,rarity
 4,Blazewing,500,320,90,280,Fire,Rare
-5,Infernode,700,360,140,120,Fire,Epic
+5,Infernode,700,300,100,120,Fire,Rare
 6,Cinderfox,380,300,60,400,Fire,Common
 7,Magmastomp,950,220,180,80,Fire,Rare
 8,Tidalfin,550,220,130,260,Water,Common
