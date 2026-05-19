@@ -334,7 +334,6 @@ void tampilHasilSearchUserID(User users[], int jumlah_user, int id)
         {
             tampilDetailUser(users[i]);
             tampilUserDeck(users, i);
-            tunggu();
             ditemukan = true;
             break;
         }
@@ -358,6 +357,7 @@ void tampilHasilSearchUserNama(User users[], int jumlah_user, string nama)
         if(users[i].username == nama && users[i].role != "admin")
         {
             tampilDetailUser(users[i]);
+            tampilUserDeck(users, i);
             ditemukan = true;
             break;
         }
@@ -376,167 +376,171 @@ void tampilDetailUser(User user)
 {
     cout << "\n ____________________________________________________________________________________________\n";
     cout << "|                                                                                            |\n";
-
+ 
     // USERNAME
     string nama = user.username;
-
     int kiri = (92 - nama.length()) / 2;
     int kanan = 92 - nama.length() - kiri;
-
-    cout << "|" 
-         << string(kiri, ' ')
-         << nama
-         << string(kanan, ' ')
-         << "|\n";
-
+ 
+    cout << "|" << string(kiri, ' ');
+    setColor(15);
+    cout << nama;
+    resetColor();
+    cout << string(kanan, ' ') << "|\n";
+ 
     cout << "|____________________________________________________________________________________________|\n";
-
-    // GOLD & MONSTER
     cout << "|                                                                                            |\n";
-
-    cout << "| GOLD   : "
-         << left << setw(82)
-         << user.gold
-         << "|\n";
-
-    cout << "| MONSTER: "
-         << left << setw(82)
-         << user.deck.jumlah
-         << "|\n";
-
+ 
+    // GOLD
+    cout << "| GOLD   : ";
+    setColor(14);
+    cout << left << setw(82) << user.gold;
+    resetColor();
+    cout << "|\n";
+ 
+    // MONSTER COUNT
+    cout << "| MONSTER: ";
+    setColor(10);
+    cout << left << setw(82) << user.deck.jumlah;
+    resetColor();
+    cout << "|\n";
+ 
     cout << "|____________________________________________________________________________________________|\n";
-
+ 
     // HEADER DECK
-    string deck = "DECK";
-
+    string deck = "ACTIVE TEAM";
     int dk_kiri = (92 - deck.length()) / 2;
     int dk_kanan = 92 - deck.length() - dk_kiri;
-
-    cout << "|"
-         << string(dk_kiri, ' ')
-         << deck
-         << string(dk_kanan, ' ')
-         << "|\n";
-
+ 
+    cout << "|" << string(dk_kiri, ' ');
+    setColor(15);
+    cout << deck;
+    resetColor();
+    cout << string(dk_kanan, ' ') << "|\n";
+ 
     cout << "|____________________________________________________________________________________________|\n";
-
-    // ACTIVE TEAM
+ 
+    // ACTIVE TEAM DATA
     UserMonster active[3];
     bool ada[3] = {false, false, false};
-
+ 
     for(int i = 0; i < 3; i++)
     {
         int idx = user.active_team[i];
-
+ 
         if(idx != -1 && idx < user.deck.jumlah)
         {
             active[i] = user.deck.monsters[idx];
             ada[i] = true;
         }
     }
-
+ 
     // HP
     cout << "| ";
-
     for(int i = 0; i < 3; i++)
     {
-        if(ada[i])
-            cout << left << setw(29) << ("HP  : " + to_string(active[i].hp));
-        else
-            cout << left << setw(29) << "HP  : -";
-
+        cout << "HP  : ";
+        setColor(10);
+        if(ada[i]) cout << left << setw(23) << active[i].hp;
+        else        cout << left << setw(23) << "-";
+        resetColor();
         cout << "| ";
     }
-
     cout << "\n";
-
+ 
     // ATK
     cout << "| ";
-
     for(int i = 0; i < 3; i++)
     {
-        if(ada[i])
-            cout << left << setw(29) << ("ATK : " + to_string(active[i].attack));
-        else
-            cout << left << setw(29) << "ATK : -";
-
+        cout << "ATK : ";
+        setColor(12);
+        if(ada[i]) cout << left << setw(23) << active[i].attack;
+        else        cout << left << setw(23) << "-";
+        resetColor();
         cout << "| ";
     }
-
     cout << "\n";
-
+ 
     // DEF
     cout << "| ";
-
     for(int i = 0; i < 3; i++)
     {
-        if(ada[i])
-            cout << left << setw(29) << ("DEF : " + to_string(active[i].defense));
-        else
-            cout << left << setw(29) << "DEF : -";
-
+        cout << "DEF : ";
+        setColor(14);
+        if(ada[i]) cout << left << setw(23) << active[i].defense;
+        else        cout << left << setw(23) << "-";
+        resetColor();
         cout << "| ";
     }
-
     cout << "\n";
-
+ 
     // SPD
     cout << "| ";
-
     for(int i = 0; i < 3; i++)
     {
-        if(ada[i])
-            cout << left << setw(29) << ("SPD : " + to_string(active[i].speed));
-        else
-            cout << left << setw(29) << "SPD : -";
-
+        cout << "SPD : ";
+        setColor(9);
+        if(ada[i]) cout << left << setw(23) << active[i].speed;
+        else        cout << left << setw(23) << "-";
+        resetColor();
         cout << "| ";
     }
-
     cout << "\n";
-
+ 
     // TYPE
     cout << "| ";
-
     for(int i = 0; i < 3; i++)
     {
+        cout << "TP  : ";
         if(ada[i])
-            cout << left << setw(29) << ("TP  : " + active[i].type);
+        {
+            setColor(getTypeColor(active[i].type));
+            cout << left << setw(23) << active[i].type;
+        }
         else
-            cout << left << setw(29) << "TP  : -";
-
+        {
+            cout << left << setw(23) << "-";
+        }
+        resetColor();
         cout << "| ";
     }
-
     cout << "\n";
-
+ 
     cout << "|______________________________|______________________________|______________________________|\n";
-
-    // MONSTER
+ 
+    // NAMA MONSTER + RARITY
     cout << "|";
-
     for(int i = 0; i < 3; i++)
     {
-        string monster;
-
-        if(ada[i])
-            monster = active[i].nama;
-        else
-            monster = "[ EMPTY ]";
-
-        int kiri_mon = (30 - monster.length()) / 2;
-        int kanan_mon = 30 - monster.length() - kiri_mon;
-
-        cout << string(kiri_mon, ' ')
-             << monster
-             << string(kanan_mon, ' ')
-             << "|";
+        string monster = ada[i] ? active[i].nama : "[ EMPTY ]";
+        int kiri_mon  = (30 - (int)monster.length()) / 2;
+        int kanan_mon = 30 - (int)monster.length() - kiri_mon;
+ 
+        if(ada[i]) setColor(getRarityColor(active[i].rarity));
+        cout << string(kiri_mon, ' ') << monster << string(kanan_mon, ' ');
+        resetColor();
+        cout << "|";
     }
-
     cout << "\n";
-
-    cout << "|______________________________|______________________________|______________________________|";
-    
+ 
+    cout << "|______________________________|______________________________|______________________________|\n";
+ 
+    // RARITY LABEL
+    cout << "|";
+    for(int i = 0; i < 3; i++)
+    {
+        string rar = ada[i] ? active[i].rarity : "-";
+        int kiri_rar  = (30 - (int)rar.length()) / 2;
+        int kanan_rar = 30 - (int)rar.length() - kiri_rar;
+ 
+        if(ada[i]) setColor(getRarityColor(active[i].rarity));
+        cout << string(kiri_rar, ' ') << rar << string(kanan_rar, ' ');
+        resetColor();
+        cout << "|";
+    }
+    cout << "\n";
+ 
+    cout << "|______________________________|______________________________|______________________________|\n";
 }
 
 void deleteUser(User users[], int &jumlah_user)

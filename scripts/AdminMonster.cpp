@@ -128,10 +128,9 @@ void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id
         cout << "\n| [ Nama Monster ]\n";
         cout << "|> ";
         m.status.nama = inputClean("Nama Monster : ");
+        validasiPanjang(m.status.nama, 20, "Nama monster");
         if(m.status.nama.empty())
         throw invalid_argument("Nama monster tidak boleh kosong!");
-        if(m.status.nama.length() > 20)
-        throw invalid_argument("Nama monster tidak boleh lebih dari 20 karakter!");
         for(int j = 0; j < jumlah_monster; j++)
             {
                 if(monsters[j].status.nama == m.status.nama)
@@ -141,35 +140,22 @@ void createMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id
         cout << "| [ HP Monster ]\n";
         cout << "|> ";
         m.status.hp = inputAngka("HP Monster : ");
-        if(m.status.hp <= 0)
-        throw invalid_argument("HP harus lebih dari 0!");
-        if(m.status.hp > 999)
-        throw invalid_argument("HP tidak boleh lebih dari 999!");
-    
+        validasiRange(m.status.hp, 1, 999, "HP");
+
         cout << "| [ Attack Monster ]\n";
         cout << "|> ";
         m.status.attack = inputAngka("Attack Monster : ");
-         if(m.status.attack <= 0)
-        throw invalid_argument("Attack harus lebih dari 0!");
-        if(m.status.attack > 999)
-        throw invalid_argument("Attack tidak boleh lebih dari 999!");
+        validasiRange(m.status.attack, 1, 999, "Attack");
 
-    
         cout << "| [ Defense Monster ]\n";
         cout << "|> ";
         m.status.defense = inputAngka("Defense Monster : ");
-         if(m.status.defense <= 0)
-        throw invalid_argument("Defense harus lebih dari 0!");
-        if(m.status.defense > 999)
-        throw invalid_argument("Defense tidak boleh lebih dari 999!");
+        validasiRange(m.status.defense, 1, 999, "Defense");
     
         cout << "| [ Speed Monster ]\n";
         cout << "|> ";
         m.status.speed = inputAngka("Speed Monster : ");
-        if(m.status.speed <= 0)
-        throw invalid_argument("Speed harus lebih dari 0!");
-        if(m.status.speed > 999)
-        throw invalid_argument("Speed tidak boleh lebih dari 999!");
+        validasiRange(m.status.speed, 1, 999, "Speed");
     
         cout << "| [ Type Monster ]\n";
         cout << "| 1. Fire\n";
@@ -385,40 +371,54 @@ void updateMonster(Monster monsters[], int jumlah_monster)
         cout << "|                 UPDATE MONSTER                       |\n";
         cout << "|______________________________________________________|\n";
 
-        cout << "| Nama    : "
-             << left << setw(43)
-             << monsters[index].status.nama
-             << "|\n";
+        cout << "| Nama    : ";
+        cout << left << setw(43);
+        setColor(15);
+        cout << monsters[index].status.nama;
+        resetColor();
+        cout << "|\n";
 
-        cout << "| HP      : "
-             << left << setw(43)
-             << monsters[index].status.hp
-             << "|\n";
+        cout << "| HP      : ";
+        cout << left << setw(43);
+        setColor(10);
+        cout << monsters[index].status.hp;
+        resetColor();
+        cout << "|\n";
 
-        cout << "| Attack  : "
-             << left << setw(43)
-             << monsters[index].status.attack
-             << "|\n";
+        cout << "| Attack  : ";
+        cout << left << setw(43);
+        setColor(12);
+        cout << monsters[index].status.attack;
+        resetColor();
+        cout << "|\n";
 
-        cout << "| Defense : "
-             << left << setw(43)
-             << monsters[index].status.defense
-             << "|\n";
+        cout << "| Defense : ";
+        cout << left << setw(43);
+        setColor(14);
+        cout << monsters[index].status.defense;
+        resetColor();
+        cout << "|\n";
 
-        cout << "| Speed   : "
-             << left << setw(43)
-             << monsters[index].status.speed
-             << "|\n";
+        cout << "| Speed   : ";
+        cout << left << setw(43);
+        setColor(9);
+        cout << monsters[index].status.speed;
+        resetColor();
+        cout << "|\n";
 
-        cout << "| Type    : "
-             << left << setw(43)
-             << monsters[index].type.tipe
-             << "|\n";
+        cout << "| Type    : ";
+        cout << left << setw(43);
+        setColor(getTypeColor(monsters[index].type.tipe));
+        cout << monsters[index].type.tipe;
+        resetColor();
+        cout << "|\n";
 
-        cout << "| Rarity  : "
-             << left << setw(43)
-             << monsters[index].rarity.rarity
-             << "|\n";
+        cout << "| Rarity  : ";
+        cout << left << setw(43);
+        setColor(getRarityColor(monsters[index].rarity.rarity));
+        cout << monsters[index].rarity.rarity;
+        resetColor();
+        cout << "|\n";
 
         cout << "|______________________________________________________|\n";
 
@@ -495,8 +495,7 @@ void updateMonster(Monster monsters[], int jumlah_monster)
         // SPACE
         else if(tombol == 32)
         {
-            pilih_update[cursor] =
-            !pilih_update[cursor];
+            pilih_update[cursor] = !pilih_update[cursor];
         }
 
         // ENTER
@@ -514,137 +513,138 @@ void updateMonster(Monster monsters[], int jumlah_monster)
 
             if(!ada_pilihan)
             {
-                tampilPesan(
-                "Pilih minimal 1 field!");
+                tampilPesan("Pilih minimal 1 field!");
                 continue;
             }
 
             // NAMA
-            if(pilih_update[0])
+            try {
+                if(pilih_update[0])
+                {
+                    cout << "\nNama Lama : " << monsters[index].status.nama;
+                    cout << "\nNama Baru : ";
+                    string nama_baru = inputClean("");
+                    validasiPanjang(nama_baru, 20, "Nama monster");
+
+                    if(nama_baru.empty())
+                    {
+                        tampilPesan("Nama monster tidak boleh kosong!");
+                        return;
+                    }
+                    monsters[index].status.nama = nama_baru;
+                }
+
+                // HP
+                if(pilih_update[1])
+                {
+                    cout << "\nHP Lama : " << monsters[index].status.hp;
+                    cout << "\nHP Baru : ";
+
+                    monsters[index].status.hp = inputAngka("");
+                    validasiRange(monsters[index].status.hp, 1, 999, "HP");
+                }
+
+                // ATTACK
+                if(pilih_update[2])
+                {
+                    cout << "\nAttack Lama : " << monsters[index].status.attack;
+                    cout << "\nAttack Baru : ";
+
+                    monsters[index].status.attack =inputAngka("");
+                    validasiRange(monsters[index].status.attack, 1, 999, "Attack");
+                }
+
+                // DEFENSE
+                if(pilih_update[3])
+                {
+                    cout << "\nDefense Lama : " << monsters[index].status.defense;
+                    cout << "\nDefense Baru : ";
+
+                    monsters[index].status.defense = inputAngka("");
+                    validasiRange(monsters[index].status.defense, 1, 999, "Defense");
+                }
+
+                // SPEED
+                if(pilih_update[4])
+                {
+                    cout << "\nSpeed Lama : " << monsters[index].status.speed;
+                    cout << "\nSpeed Baru : ";
+
+                    monsters[index].status.speed = inputAngka("");
+                    validasiRange(monsters[index].status.speed, 1, 999, "Speed");
+                }
+
+                // TYPE
+                if(pilih_update[5])
+                {
+                    cout << "\nType Lama : " << monsters[index].type.tipe;
+
+                    cout << "\n";
+                    cout << "1. Fire\n";
+                    cout << "2. Water\n";
+                    cout << "3. Earth\n";
+                    cout << "4. Wind\n";
+                    cout << "5. Rock\n";
+
+                    int pilih = inputAngka("Pilih Type Baru : ");
+
+                    if(pilih == 1)
+                        monsters[index].type.tipe = "Fire";
+
+                    else if(pilih == 2)
+                        monsters[index].type.tipe = "Water";
+
+                    else if(pilih == 3)
+                        monsters[index].type.tipe = "Earth";
+
+                    else if(pilih == 4)
+                        monsters[index].type.tipe = "Wind";
+
+                    else if(pilih == 5)
+                        monsters[index].type.tipe = "Rock";
+                    else
+                    {
+                        tampilPesan("Pilihan type tidak valid!");
+                        return;
+                    }
+                }
+
+                // RARITY
+                if(pilih_update[6])
+                {
+                    cout << "\nRarity Lama : " << monsters[index].rarity.rarity;
+
+                    cout << "\n";
+                    cout << "1. Common\n";
+                    cout << "2. Rare\n";
+                    cout << "3. Epic\n";
+
+                    int pilih = inputAngka("Pilih Rarity Baru : ");
+
+                    if(pilih == 1)
+                        monsters[index].rarity.rarity = "Common";
+
+                    else if(pilih == 2)
+                        monsters[index].rarity.rarity = "Rare";
+
+                    else if(pilih == 3)
+                        monsters[index].rarity.rarity = "Epic";
+                    else
+                    {
+                        tampilPesan("Pilihan rarity tidak valid!");
+                        return;
+                    }
+                }
+
+            }
+            catch(const invalid_argument& e)
             {
-                cout << "\nNama Lama : "
-                     << monsters[index].status.nama;
-
-                cout << "\nNama Baru : ";
-
-                string nama_baru =
-                inputClean("");
-
-                monsters[index].status.nama =
-                nama_baru;
+                tampilPesan(e.what());
+                return;
             }
 
-            // HP
-            if(pilih_update[1])
-            {
-                cout << "\nHP Lama : "
-                     << monsters[index].status.hp;
-
-                cout << "\nHP Baru : ";
-
-                monsters[index].status.hp =
-                inputAngka("");
-            }
-
-            // ATTACK
-            if(pilih_update[2])
-            {
-                cout << "\nAttack Lama : "
-                     << monsters[index].status.attack;
-
-                cout << "\nAttack Baru : ";
-
-                monsters[index].status.attack =
-                inputAngka("");
-            }
-
-            // DEFENSE
-            if(pilih_update[3])
-            {
-                cout << "\nDefense Lama : "
-                     << monsters[index].status.defense;
-
-                cout << "\nDefense Baru : ";
-
-                monsters[index].status.defense =
-                inputAngka("");
-            }
-
-            // SPEED
-            if(pilih_update[4])
-            {
-                cout << "\nSpeed Lama : "
-                     << monsters[index].status.speed;
-
-                cout << "\nSpeed Baru : ";
-
-                monsters[index].status.speed =
-                inputAngka("");
-            }
-
-            // TYPE
-            if(pilih_update[5])
-            {
-                cout << "\nType Lama : "
-                     << monsters[index].type.tipe;
-
-                cout << "\n";
-                cout << "1. Fire\n";
-                cout << "2. Water\n";
-                cout << "3. Earth\n";
-                cout << "4. Wind\n";
-                cout << "5. Rock\n";
-
-                int pilih =
-                inputAngka("Pilih Type Baru : ");
-
-                if(pilih == 1)
-                    monsters[index].type.tipe = "Fire";
-
-                else if(pilih == 2)
-                    monsters[index].type.tipe = "Water";
-
-                else if(pilih == 3)
-                    monsters[index].type.tipe = "Earth";
-
-                else if(pilih == 4)
-                    monsters[index].type.tipe = "Wind";
-
-                else if(pilih == 5)
-                    monsters[index].type.tipe = "Rock";
-            }
-
-            // RARITY
-            if(pilih_update[6])
-            {
-                cout << "\nRarity Lama : "
-                     << monsters[index].rarity.rarity;
-
-                cout << "\n";
-                cout << "1. Common\n";
-                cout << "2. Rare\n";
-                cout << "3. Epic\n";
-
-                int pilih =
-                inputAngka("Pilih Rarity Baru : ");
-
-                if(pilih == 1)
-                    monsters[index].rarity.rarity = "Common";
-
-                else if(pilih == 2)
-                    monsters[index].rarity.rarity = "Rare";
-
-                else if(pilih == 3)
-                    monsters[index].rarity.rarity = "Epic";
-            }
-
-            saveMonsterCSV(
-                monsters,
-                jumlah_monster
-            );
-
-            tampilPesan(
-            "Monster berhasil diupdate!");
+            saveMonsterCSV(monsters, jumlah_monster);
+            tampilPesan("Monster berhasil diupdate!");
 
             return;
         }
@@ -652,9 +652,7 @@ void updateMonster(Monster monsters[], int jumlah_monster)
         // ESC
         else if(tombol == 27)
         {
-            tampilPesan(
-            "Update dibatalkan!");
-
+            tampilPesan("Update dibatalkan!");
             return;
         }
     }

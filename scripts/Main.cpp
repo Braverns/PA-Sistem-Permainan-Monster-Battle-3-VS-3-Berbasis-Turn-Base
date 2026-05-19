@@ -110,6 +110,8 @@ int main()
     saveUserCSV(users, jumlah_user);
     saveDeckCSV(users, jumlah_user);
 
+    setColor(15);
     tampilPesan("Terima kasih telah bermain Battle Monster!");
+    resetColor();
     return 0;
 }

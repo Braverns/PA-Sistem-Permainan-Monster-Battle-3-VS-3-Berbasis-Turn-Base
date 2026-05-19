@@ -458,6 +458,32 @@ int validasiUserGacha(int jumlah_gacha)
     return jumlah_gacha;
 }
 
+void validasiRange(int nilai, int min, int max, string field)
+{
+    if(nilai < min)
+    {
+        throw invalid_argument(field + " harus lebih dari " + to_string(min - 1) + "!");
+    }
+
+    if(nilai > max)
+    {
+        throw invalid_argument(field + " tidak boleh lebih dari " + to_string(max) + "!");
+    }
+}
+
+void validasiPanjang(const string& input, int max_length, string field)
+{
+    if(input.empty())
+    {
+        throw invalid_argument(field + " tidak boleh kosong!");
+    }
+
+    if(input.length() > max_length)
+    {
+        throw invalid_argument(field + " tidak boleh lebih dari " + to_string(max_length) + " karakter!");
+    }
+}
+
 
 
 

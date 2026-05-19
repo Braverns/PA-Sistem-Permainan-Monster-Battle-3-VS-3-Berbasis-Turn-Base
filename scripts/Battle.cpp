@@ -53,7 +53,6 @@ void battleMenu(User users[], Monster monsters[], Skill skills[], int jumlah_mon
     {
 
         // CEK WIN
-
         if(semuaMonsterMati(enemy))
         {
             CLEAR_SCREEN;
@@ -71,12 +70,11 @@ void battleMenu(User users[], Monster monsters[], Skill skills[], int jumlah_mon
             Sleep(3000);
             playBGM(L"music/bgm1.wav");
 
-            tungguEnter();
+            tunggu();
             return;
         }
 
         // CEK LOSE
-
         if(semuaMonsterMati(player))
         {
             CLEAR_SCREEN;
@@ -93,7 +91,7 @@ void battleMenu(User users[], Monster monsters[], Skill skills[], int jumlah_mon
             Sleep(3000);
             playBGM(L"music/bgm1.wav");
 
-            tungguEnter();
+            tunggu();
             return;
         }
 
@@ -142,7 +140,7 @@ void battleMenu(User users[], Monster monsters[], Skill skills[], int jumlah_mon
                     stopBGM();
                     playBGM(L"music/bgm1.wav");
 
-                    tampilPesan("Berhasil kabur!");
+                    tampilPesan2("Berhasil kabur!");
                     return;
                 }
             }
@@ -210,148 +208,178 @@ bool semuaMonsterMati(BattleMonster team[])
 
 void tampilBattleUI(BattleMonster player[], BattleMonster enemy[])
 {
+    // ===== ENEMY SECTION (BORDER MERAH) =====
     setColor(12);
     cout << "\n _________________________________________________________________\n";
     cout << "|                              ENEMY                              |\n";
     cout << "|_________________________________________________________________|\n";
+    resetColor();
 
+    // Baris nama enemy
     for(int i = 0; i < 3; i++)
     {
-        cout << "|" << left << setw(21) << enemy[i].data.nama;
+        setColor(12); cout << "|"; resetColor();
+        cout << left << setw(21) << enemy[i].data.nama;
     }
+    setColor(12); cout << "|\n"; resetColor();
 
-    cout << "|\n";
-
+    // Separator atas enemy
     for(int i = 0; i < 3; i++)
     {
-        cout << "|_____________________";
+        setColor(12); cout << "|_____________________"; resetColor();
     }
+    setColor(12); cout << "|\n"; resetColor();
 
-    cout << "|\n";
-
+    // Baris stat enemy
     for(int row = 0; row < 5; row++)
     {
         for(int i = 0; i < 3; i++)
         {
             UserMonster m = enemy[i].data;
-            cout << "|";
+
+            // Border kiri
+            setColor(12); cout << "|"; resetColor();
+
             switch(row)
             {
-                case 0:
-
+                case 0: // HP
+                    cout << "HP  : ";
                     if(enemy[i].hidup)
                     {
-                        cout << left << setw(21) << ("HP  : " + to_string(enemy[i].current_hp));
+                        setColor(10); // Hijau untuk nilai HP
+                        cout << left << setw(15) << enemy[i].current_hp;
                     }
                     else
                     {
-                        cout << left << setw(21) << "HP  : KO";
+                        setColor(8); // Abu gelap untuk KO
+                        cout << left << setw(15) << "KO";
                     }
-
+                    resetColor();
                     break;
 
-                case 1:
-
-                    cout << left<< setw(21) << ("ATK : " + to_string(m.attack));
+                case 1: // ATK
+                    cout << "ATK : ";
+                    setColor(12); // Merah untuk nilai Attack
+                    cout << left << setw(15) << m.attack;
+                    resetColor();
                     break;
 
-                case 2:
-
-                    cout << left << setw(21) << ("DEF : " + to_string(m.defense));
+                case 2: // DEF
+                    cout << "DEF : ";
+                    setColor(14); // Kuning untuk nilai Defense
+                    cout << left << setw(15) << m.defense;
+                    resetColor();
                     break;
 
-                case 3:
-
-                    cout << left << setw(21) << ("SPD : " + to_string(m.speed));
-
+                case 3: // SPD
+                    cout << "SPD : ";
+                    setColor(11); // Cyan untuk nilai Speed
+                    cout << left << setw(15) << m.speed;
+                    resetColor();
                     break;
 
-                case 4:
-
-                    cout << left << setw(21) << ("TP  : " + m.type);
-
+                case 4: // TYPE
+                    cout << "TP  : ";
+                    setColor(getTypeColor(m.type)); // Warna sesuai tipe
+                    cout << left << setw(15) << m.type;
+                    resetColor();
                     break;
             }
         }
-
-        cout << "|\n";
+        setColor(12); cout << "|\n"; resetColor();
     }
 
+    // Separator bawah enemy
     for(int i = 0; i < 3; i++)
     {
-        cout << "|_____________________";
+        setColor(12); cout << "|_____________________"; resetColor();
     }
+    setColor(12); cout << "|\n"; resetColor();
 
-    cout << "|\n";
-    resetColor();
-    setColor(10);
+    // ===== PLAYER SECTION (BORDER HIJAU) =====
+
+    // Separator atas player
     for(int i = 0; i < 3; i++)
     {
-        cout << "|_____________________";
+        setColor(10); cout << "|_____________________"; resetColor();
     }
+    setColor(10); cout << "|\n"; resetColor();
 
-    cout << "|\n";
-
+    // Baris stat player
     for(int row = 0; row < 5; row++)
     {
         for(int i = 0; i < 3; i++)
         {
             UserMonster m = player[i].data;
-            cout << "|";
+
+            // Border kiri
+            setColor(10); cout << "|"; resetColor();
 
             switch(row)
             {
-                case 0:
-// rapikan
+                case 0: // HP
+                    cout << "HP  : ";
                     if(player[i].hidup)
                     {
-                        cout << left << setw(21) << ("HP  : " + to_string(player[i].current_hp));
+                        setColor(10); // Hijau untuk nilai HP
+                        cout << left << setw(15) << player[i].current_hp;
                     }
                     else
                     {
-                        cout << left << setw(21) << "HP  : KO";
+                        setColor(8); // Abu gelap untuk KO
+                        cout << left << setw(15) << "KO";
                     }
-
+                    resetColor();
                     break;
 
-                case 1:
-
-                    cout << left << setw(21) << ("ATK : " + to_string(m.attack));
+                case 1: // ATK
+                    cout << "ATK : ";
+                    setColor(12); // Merah untuk nilai Attack
+                    cout << left << setw(15) << m.attack;
+                    resetColor();
                     break;
 
-                case 2:
-
-                    cout << left << setw(21) << ("DEF : " + to_string(m.defense));
+                case 2: // DEF
+                    cout << "DEF : ";
+                    setColor(14); // Kuning untuk nilai Defense
+                    cout << left << setw(15) << m.defense;
+                    resetColor();
                     break;
 
-                case 3:
-
-                    cout << left << setw(21) << ("SPD : " + to_string(m.speed));
+                case 3: // SPD
+                    cout << "SPD : ";
+                    setColor(11); // Cyan untuk nilai Speed
+                    cout << left << setw(15) << m.speed;
+                    resetColor();
                     break;
 
-                case 4:
-
-                    cout << left << setw(21) << ("TP  : " + m.type);
+                case 4: // TYPE
+                    cout << "TP  : ";
+                    setColor(getTypeColor(m.type)); // Warna sesuai tipe
+                    cout << left << setw(15) << m.type;
+                    resetColor();
                     break;
             }
         }
-
-        cout << "|\n";
+        setColor(10); cout << "|\n"; resetColor();
     }
 
+    // Separator bawah player
     for(int i = 0; i < 3; i++)
     {
-        cout << "|_____________________";
+        setColor(10); cout << "|_____________________"; resetColor();
     }
+    setColor(10); cout << "|\n"; resetColor();
 
-    cout << "|\n";
-
+    // Baris nama player
     for(int i = 0; i < 3; i++)
     {
-        cout << "|" << left << setw(21) << player[i].data.nama;
+        setColor(10); cout << "|"; resetColor();
+        cout << left << setw(21) << player[i].data.nama;
     }
+    setColor(10); cout << "|\n"; resetColor();
 
-    cout << "|\n";
+    setColor(10);
     cout << "|_____________________|_____________________|_____________________|\n";
     cout << "|                              PLAYER                             |\n";
     cout << "|_________________________________________________________________|\n";
@@ -359,8 +387,7 @@ void tampilBattleUI(BattleMonster player[], BattleMonster enemy[])
 }
 
 
-
-int pilihTarget( BattleMonster player[], BattleMonster enemy[], string attacker_name)
+int pilihTarget(BattleMonster player[], BattleMonster enemy[], string attacker_name)
 {
     int cursor = 0;
 
@@ -400,11 +427,18 @@ int pilihTarget( BattleMonster player[], BattleMonster enemy[], string attacker_
             cout << "| ";
 
             if(cursor == i)
+            {
+                setColor(15);
                 cout << ">> ";
+                cout << left << setw(30) << enemy[i].data.nama;
+                resetColor();
+            }
             else
+            {
                 cout << "   ";
+                cout << left << setw(30) << enemy[i].data.nama;
+            }
 
-            cout << left << setw(30) << enemy[i].data.nama;
             cout << " |\n";
         }
 
@@ -470,11 +504,9 @@ int pilihSkill(BattleMonster player[], BattleMonster enemy[], UserMonster monste
 
         tampilBattleUI(player, enemy);
 
-        string teks =
-        monster.nama + " MENGGUNAKAN SKILL";
+        string teks = monster.nama + " MENGGUNAKAN SKILL";
 
         int width = 70;
-
         int padding = width - teks.length();
 
         if(padding < 0)
@@ -497,7 +529,6 @@ int pilihSkill(BattleMonster player[], BattleMonster enemy[], UserMonster monste
         cout << "|\n";
 
         cout << "|______________________________________________________________________|\n";
-
         cout << "|    | NAME                 | ELEMENT     | TIPE        | POWER        |\n";
         cout << "|____|______________________|_____________|_____________|______________|\n";
 
@@ -507,23 +538,49 @@ int pilihSkill(BattleMonster player[], BattleMonster enemy[], UserMonster monste
 
             cout << "| ";
 
+            // Cursor: putih jika dipilih
             if(cursor == i)
+            {
+                setColor(15);
                 cout << ">>";
+                resetColor();
+            }
             else
+            {
                 cout << "  ";
+            }
 
             cout << " | ";
 
-            cout << left
-                 << setw(21) << s.nama
-                 << "| "
-                 << setw(12) << s.element
-                 << "| "
-                 << setw(12) << s.tipe
-                 << "| "
-                 << setw(13) << s.power
-                 << "|\n";
+            // Nama skill: putih jika dipilih, default jika tidak
+            if(cursor == i) setColor(15);
+            cout << left << setw(21) << s.nama;
+            resetColor();
 
+            cout << "| ";
+
+            // Element: warna sesuai tipe elemen
+            setColor(getTypeColor(s.element));
+            cout << left << setw(12) << s.element;
+            resetColor();
+
+            cout << "| ";
+
+            // Tipe skill: Damage=merah, Heal=hijau, AOE=kuning
+            if(s.tipe == "Damage")      setColor(12);
+            else if(s.tipe == "Heal")   setColor(10);
+            else if(s.tipe == "AOE")    setColor(14);
+            cout << left << setw(12) << s.tipe;
+            resetColor();
+
+            cout << "| ";
+
+            // Power: cyan
+            setColor(11);
+            cout << left << setw(13) << s.power;
+            resetColor();
+
+            cout << "|\n";
             cout << "|____|______________________|_____________|_____________|______________|\n";
         }
 
@@ -577,19 +634,16 @@ int pilihSkill(BattleMonster player[], BattleMonster enemy[], UserMonster monste
 
 float getTypeMultiplier(string attack_type, string target_type)
 {
-    
     if(attack_type == "Fire" && target_type == "Earth")
     {
         return 1.5f;
     }
 
-    
     if(attack_type == "Water" && target_type == "Fire")
     {
         return 1.5f;
     }
 
-    
     if(attack_type == "Earth" && target_type == "Rock")
     {
         return 1.5f;
@@ -612,9 +666,9 @@ float getTypeMultiplier(string attack_type, string target_type)
 
 int hitungDamage(UserMonster attacker, UserMonster target, Skill skill)
 {
-    int damage =(attacker.attack + skill.power) - target.defense;
+    int damage = (attacker.attack + skill.power) - target.defense;
 
-    float multiplier = getTypeMultiplier( skill.element, target.type);
+    float multiplier = getTypeMultiplier(skill.element, target.type);
 
     damage = damage * multiplier;
 
@@ -657,7 +711,6 @@ bool playerAttack(BattleMonster player[], BattleMonster enemy[], int attacker)
     while(true)
     {
         // PILIH SKILL
-
         int skill_index =
         pilihSkill(
             player,
@@ -675,10 +728,7 @@ bool playerAttack(BattleMonster player[], BattleMonster enemy[], int attacker)
         player[attacker].data.skills[skill_index];
 
 
-        // =====================================================
         // HEAL
-        // =====================================================
-
         if(skill.tipe == "Heal")
         {
             int heal_target =
@@ -708,6 +758,8 @@ bool playerAttack(BattleMonster player[], BattleMonster enemy[], int attacker)
 
             tampilBattleUI(player, enemy);
 
+            // ===== NOTIF HEAL (HIJAU) =====
+            setColor(10);
             cout << "\n _______________________________________________________________\n";
 
             string teks =
@@ -725,6 +777,7 @@ bool playerAttack(BattleMonster player[], BattleMonster enemy[], int attacker)
             printBattleTextLine(heal);
 
             cout << "|_______________________________________________________________|\n";
+            resetColor();
 
             Sleep(2500);
 
@@ -732,16 +785,15 @@ bool playerAttack(BattleMonster player[], BattleMonster enemy[], int attacker)
         }
 
 
-        // =====================================================
-        // AOE
-        // =====================================================
-
+        // AREA OF EFFECT
         else if(skill.tipe == "AOE")
         {
             CLEAR_SCREEN;
 
             tampilBattleUI(player, enemy);
 
+            // ===== NOTIF AOE (MERAH) =====
+            setColor(12);
             cout << "\n _______________________________________________________________\n";
 
             string teks =
@@ -783,6 +835,7 @@ bool playerAttack(BattleMonster player[], BattleMonster enemy[], int attacker)
             }
 
             cout << "|_______________________________________________________________|\n";
+            resetColor();
 
             Sleep(3000);
 
@@ -790,10 +843,7 @@ bool playerAttack(BattleMonster player[], BattleMonster enemy[], int attacker)
         }
 
 
-        // =====================================================
-        // DAMAGE NORMAL
-        // =====================================================
-
+        // DAMAGE SINGLE TARGET
         else
         {
             int target =
@@ -859,6 +909,8 @@ bool playerAttack(BattleMonster player[], BattleMonster enemy[], int attacker)
 
             tampilBattleUI(player, enemy);
 
+            // ===== NOTIF DAMAGE SINGLE (MERAH) =====
+            setColor(12);
             cout << "\n _______________________________________________________________\n";
 
             string teks =
@@ -885,6 +937,7 @@ bool playerAttack(BattleMonster player[], BattleMonster enemy[], int attacker)
             printBattleTextLine(dmg);
 
             cout << "|_______________________________________________________________|\n";
+            resetColor();
 
             if(!enemy[target].hidup)
             {
@@ -928,6 +981,8 @@ void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker)
     CLEAR_SCREEN;
     tampilBattleUI(player, enemy);
 
+    // ===== NOTIF DAMAGE ENEMY (MERAH) =====
+    setColor(12);
     cout << "\n _______________________________________________________________\n";
 
     string teks = enemy[attacker].data.nama + " MENYERANG " + player[target].data.nama;
@@ -946,6 +1001,7 @@ void enemyAttack(BattleMonster enemy[], BattleMonster player[], int attacker)
     string dmg = to_string(damage) + " DAMAGE";
     printBattleTextLine(dmg);
     cout << "|_______________________________________________________________|\n";
+    resetColor();
 
     if(!player[target].hidup)
     {
@@ -998,11 +1054,18 @@ int pilihTargetHeal(BattleMonster player[], BattleMonster enemy[], string healer
             cout << "| ";
 
             if(cursor == i)
+            {
+                setColor(15);
                 cout << ">> ";
+                cout << left << setw(30) << player[i].data.nama;
+                resetColor();
+            }
             else
+            {
                 cout << "   ";
+                cout << left << setw(30) << player[i].data.nama;
+            }
 
-            cout << left << setw(30) << player[i].data.nama;
             cout << " |\n";
         }
 
