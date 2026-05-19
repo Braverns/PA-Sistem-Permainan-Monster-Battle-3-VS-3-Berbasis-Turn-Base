@@ -122,8 +122,7 @@ void createSkill(Skill skills[], int &jumlah_skill)
         s.nama = inputClean("nama skill : ");
         if (s.nama.empty())
         throw invalid_argument("Nama skill tidak boleh kosong!");
-        if (s.nama.length() > 20)
-        throw invalid_argument("Nama skill tidak boleh lebih dari 20 karakter!");
+        validasiPanjang(s.nama, 20, "Nama skill");
         for(int j = 0; j < jumlah_skill; j++)
             {
                 if(skills[j].nama == s.nama)
@@ -181,10 +180,7 @@ void createSkill(Skill skills[], int &jumlah_skill)
         
     
         s.power = inputAngka("Power Skill : ");
-        if (s.power <= 0)
-        throw invalid_argument("Power skill harus lebih dari 0!");
-        if (s.power > 999)
-        throw invalid_argument("Power skill tidak boleh lebih dari 999!");
+        validasiRange(s.power, 1, 999, "Power skill");
     }
     catch(const invalid_argument& e)
     {
@@ -307,25 +303,33 @@ void updateSkill(Skill skills[], int jumlah_skill)
         cout << "|                 UPDATE SKILL                    |\n";
         cout << "|_________________________________________________|\n";
 
-        cout << "| Nama    : "
-             << left << setw(38)
-             << skills[index].nama
-             << "|\n";
+        cout << "| Nama    : ";
+        cout << left << setw(38);
+        setColor(15);
+        cout << skills[index].nama;
+        resetColor();
+        cout << "|\n";
 
-        cout << "| Element : "
-             << left << setw(38)
-             << skills[index].element
-             << "|\n";
+        cout << "| Element : ";
+        cout << left << setw(38);
+        setColor(getTypeColor(skills[index].element));
+        cout << skills[index].element;
+        resetColor();
+        cout << "|\n";
 
-        cout << "| Tipe    : "
-             << left << setw(38)
-             << skills[index].tipe
-             << "|\n";
+        cout << "| Tipe    : ";
+        cout << left << setw(38);
+        setColor(getTypeSkillColor(skills[index].tipe));
+        cout << skills[index].tipe;
+        resetColor();
+        cout << "|\n";
 
-        cout << "| Power   : "
-             << left << setw(38)
-             << skills[index].power
-             << "|\n";
+        cout << "| Power   : ";
+        cout << left << setw(38);
+        setColor(12);
+        cout << skills[index].power;
+        resetColor();
+        cout << "|\n";
 
         cout << "|_________________________________________________|\n";
 
@@ -417,28 +421,28 @@ void updateSkill(Skill skills[], int jumlah_skill)
 
             if(!ada_pilihan)
             {
-                tampilPesan(
-                "Pilih minimal 1 field!");
+                tampilPesan("Pilih minimal 1 field!");
                 continue;
             }
 
             // NAMA
             if(pilih_update[0])
             {
-                cout << "\nNama Lama : "
-                     << skills[index].nama;
-
+                cout << "\nNama Lama : " << skills[index].nama;
                 cout << "\nNama Baru : ";
-
-                skills[index].nama =
-                inputClean("");
+                skills[index].nama = inputClean("");
+                validasiPanjang(skills[index].nama, 20, "Nama skill");
+                if (skills[index].nama.empty())
+                {
+                    tampilPesan("Nama skill tidak boleh kosong!");
+                    return;
+                }
             }
 
             // ELEMENT
             if(pilih_update[1])
             {
-                cout << "\nElement Lama : "
-                     << skills[index].element;
+                cout << "\nElement Lama : " << skills[index].element;
 
                 cout << "\n";
                 cout << "1. Fire\n";
@@ -447,9 +451,7 @@ void updateSkill(Skill skills[], int jumlah_skill)
                 cout << "4. Wind\n";
                 cout << "5. Rock\n";
 
-                int pilih =
-                inputAngka(
-                "Pilih Element Baru : ");
+                int pilih = inputAngka("Pilih Element Baru : ");
 
                 if(pilih == 1)
                     skills[index].element = "Fire";
@@ -465,22 +467,30 @@ void updateSkill(Skill skills[], int jumlah_skill)
 
                 else if(pilih == 5)
                     skills[index].element = "Rock";
+                else
+                {
+                    tampilPesan("Pilihan element tidak valid!");
+                    return;
+                }
+                if (skills[index].element.empty())
+                {
+                    tampilPesan("Element skill tidak boleh kosong!");
+                    return;
+                }
+                
             }
 
             // TIPE
             if(pilih_update[2])
             {
-                cout << "\nTipe Lama : "
-                     << skills[index].tipe;
+                cout << "\nTipe Lama : " << skills[index].tipe;
 
                 cout << "\n";
                 cout << "1. Damage\n";
                 cout << "2. Heal\n";
                 cout << "3. AOE\n";
 
-                int pilih =
-                inputAngka(
-                "Pilih Tipe Baru : ");
+                int pilih = inputAngka("Pilih Tipe Baru : ");
 
                 if(pilih == 1)
                     skills[index].tipe = "Damage";
@@ -490,37 +500,37 @@ void updateSkill(Skill skills[], int jumlah_skill)
 
                 else if(pilih == 3)
                     skills[index].tipe = "AOE";
+                else
+                {
+                    tampilPesan("Pilihan tipe tidak valid!");
+                    return;
+                }
+                if (skills[index].tipe.empty())
+                {
+                    tampilPesan("Tipe skill tidak boleh kosong!");
+                    return;
+                }
             }
 
             // POWER
             if(pilih_update[3])
             {
-                cout << "\nPower Lama : "
-                     << skills[index].power;
-
+                cout << "\nPower Lama : " << skills[index].power;
                 cout << "\nPower Baru : ";
 
-                skills[index].power =
-                inputAngka("");
+                skills[index].power = inputAngka("");
+                validasiRange(skills[index].power, 1, 999, "Power skill");
             }
 
-            saveSkillCSV(
-                skills,
-                jumlah_skill
-            );
-
-            tampilPesan(
-            "Skill berhasil diupdate!");
-
+            saveSkillCSV(skills, jumlah_skill);
+            tampilPesan("Skill berhasil diupdate!");
             return;
         }
 
         // ESC
         else if(tombol == 27)
         {
-            tampilPesan(
-            "Update dibatalkan!");
-
+            tampilPesan("Update dibatalkan!");
             return;
         }
     }

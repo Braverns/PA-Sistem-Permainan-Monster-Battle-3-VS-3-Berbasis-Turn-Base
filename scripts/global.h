@@ -193,6 +193,8 @@ void validasiDaftarUser(const string& username, const string& password);
 void validasiLogin(const string& username, const string& password);
 void validasiCreateMonster(const string& nama_str, const string& hp_str, const string& attack_str, const string& defense_str, const string& speed_str, const string& type_str, const string& rarity_str);
 int validasiUserGacha(int jumlah_gacha);
+void validasiRange(int nilai, int min, int max, string field);
+void validasiPanjang(const string& input, int max_length, string field);
 
 // USER
 void menuUser(User users[], Monster monsters[], Skill skills[],
