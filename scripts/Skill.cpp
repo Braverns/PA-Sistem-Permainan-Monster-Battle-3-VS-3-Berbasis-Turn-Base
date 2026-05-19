@@ -268,98 +268,261 @@ void updateSkill(Skill skills[], int jumlah_skill)
         return;
     }
 
-    tampilSkillList(skills, jumlah_skill);
+    int index =
+    pilihSkillUpdate(
+        skills,
+        jumlah_skill
+    );
 
-    int id;
-    bool ditemukan = false;
-
-    cout << "\nMasukkan ID skill: ";
-    cin >> id;
-
-    for(int i = 0; i < jumlah_skill; i++)
+    if(index == -1)
     {
-        if(skills[i].id == id)
-        {
-            ditemukan = true;
+        tampilPesan("Update dibatalkan!");
+        return;
+    }
 
-            cin.ignore(numeric_limits<streamsize>::max(),'\n');
-            try {
-                skills[i].nama = inputClean("Nama Skill : ");
-                if (skills[i].nama.empty())
-                throw invalid_argument("Nama skill tidak boleh kosong!");
-                if (skills[i].nama.length() > 20)
-                throw invalid_argument("Nama skill tidak boleh lebih dari 20 karakter!");
-    
-                cout << "Element Skill\n";
+    string menu[4] =
+    {
+        "Nama",
+        "Element",
+        "Tipe",
+        "Power"
+    };
+
+    bool pilih_update[4] =
+    {
+        false,
+        false,
+        false,
+        false
+    };
+
+    int cursor = 0;
+
+    while(true)
+    {
+        CLEAR_SCREEN;
+
+        cout << "\n _________________________________________________\n";
+        cout << "|                                                 |\n";
+        cout << "|                 UPDATE SKILL                    |\n";
+        cout << "|_________________________________________________|\n";
+
+        cout << "| Nama    : "
+             << left << setw(38)
+             << skills[index].nama
+             << "|\n";
+
+        cout << "| Element : "
+             << left << setw(38)
+             << skills[index].element
+             << "|\n";
+
+        cout << "| Tipe    : "
+             << left << setw(38)
+             << skills[index].tipe
+             << "|\n";
+
+        cout << "| Power   : "
+             << left << setw(38)
+             << skills[index].power
+             << "|\n";
+
+        cout << "|_________________________________________________|\n";
+
+        for(int i = 0; i < 4; i++)
+        {
+            cout << "| ";
+
+            if(cursor == i)
+            {
+                setColor(15);
+                cout << ">> ";
+            }
+            else
+            {
+                cout << "   ";
+            }
+
+            if(pilih_update[i])
+            {
+                setColor(10);
+                cout << "[X] ";
+            }
+            else
+            {
+                resetColor();
+                cout << "[ ] ";
+            }
+
+            cout << left
+                 << setw(41)
+                 << menu[i]
+                 << "|\n";
+
+            resetColor();
+        }
+
+        cout << "|_________________________________________________|\n";
+
+        cout << "\n _________________________________________________\n";
+        cout << "|                 CONTROL MENU                   |\n";
+        cout << "|________________________________________________|\n";
+        cout << "| [UP/DOWN] | Pindah Cursor                      |\n";
+        cout << "| [SPACE]   | Pilih Update                       |\n";
+        cout << "| [ENTER]   | Konfirmasi Update                  |\n";
+        cout << "| [ESC]     | Kembali                            |\n";
+        cout << "|___________|____________________________________|\n";
+
+        char tombol = _getch();
+
+        // ARROW
+        if(tombol == -32)
+        {
+            tombol = _getch();
+
+            if(tombol == 72)
+            {
+                cursor--;
+
+                if(cursor < 0)
+                    cursor = 3;
+            }
+
+            else if(tombol == 80)
+            {
+                cursor++;
+
+                if(cursor > 3)
+                    cursor = 0;
+            }
+        }
+
+        // SPACE
+        else if(tombol == 32)
+        {
+            pilih_update[cursor] =
+            !pilih_update[cursor];
+        }
+
+        // ENTER
+        else if(tombol == 13)
+        {
+            bool ada_pilihan = false;
+
+            for(int i = 0; i < 4; i++)
+            {
+                if(pilih_update[i])
+                    ada_pilihan = true;
+            }
+
+            if(!ada_pilihan)
+            {
+                tampilPesan(
+                "Pilih minimal 1 field!");
+                continue;
+            }
+
+            // NAMA
+            if(pilih_update[0])
+            {
+                cout << "\nNama Lama : "
+                     << skills[index].nama;
+
+                cout << "\nNama Baru : ";
+
+                skills[index].nama =
+                inputClean("");
+            }
+
+            // ELEMENT
+            if(pilih_update[1])
+            {
+                cout << "\nElement Lama : "
+                     << skills[index].element;
+
+                cout << "\n";
                 cout << "1. Fire\n";
                 cout << "2. Water\n";
                 cout << "3. Earth\n";
                 cout << "4. Wind\n";
                 cout << "5. Rock\n";
-    
-                int pilih_element;
-                pilih_element = inputAngka("Element Baru : ");
-                if(pilih_element == 1)
-                skills[i].element = "Fire";
-                else if(pilih_element == 2)
-                skills[i].element = "Water";
-                else if(pilih_element == 3)
-                skills[i].element = "Earth";
-                else if(pilih_element == 4)
-                skills[i].element = "Wind";
-                else if(pilih_element == 5)
-                skills[i].element = "Rock";
-                else
-                {
-                    tampilPesan("Pilihan element tidak valid!");
-                    return;
-                }
-                if (skills[i].element.empty())
-                throw invalid_argument("Element skill tidak boleh kosong!");
-    
-                 cout << "Tipe Skill\n";
-                 cout << "1. Damage\n";
-                 cout << "2. Heal\n";
-                 cout << "3. AOE\n";
-    
-                 int pilih_tipe;
-                 pilih_tipe = inputAngka("Tipe Baru : ");
-                 if(pilih_tipe == 1)
-                 skills[i].tipe = "Damage";
-                 else if(pilih_tipe == 2)
-                 skills[i].tipe = "Heal";
-                 else if(pilih_tipe == 3)
-                 skills[i].tipe = "AOE";
-                 else
-                 {
-                     tampilPesan("Pilihan tipe tidak valid!");
-                     return;
-                 }
-                 if (skills[i].tipe.empty())
-                 throw invalid_argument("Tipe skill tidak boleh kosong!");
-    
-                skills[i].power = inputAngka("Power Skill : ");
-                if (skills[i].power <= 0)
-                throw invalid_argument("Power skill harus lebih dari 0!");
-                if (skills[i].power > 999)
-                throw invalid_argument("Power skill tidak boleh lebih dari 999!");
+
+                int pilih =
+                inputAngka(
+                "Pilih Element Baru : ");
+
+                if(pilih == 1)
+                    skills[index].element = "Fire";
+
+                else if(pilih == 2)
+                    skills[index].element = "Water";
+
+                else if(pilih == 3)
+                    skills[index].element = "Earth";
+
+                else if(pilih == 4)
+                    skills[index].element = "Wind";
+
+                else if(pilih == 5)
+                    skills[index].element = "Rock";
             }
-            catch(const invalid_argument& e)
+
+            // TIPE
+            if(pilih_update[2])
             {
-                tampilPesan(e.what());
-                return;
+                cout << "\nTipe Lama : "
+                     << skills[index].tipe;
+
+                cout << "\n";
+                cout << "1. Damage\n";
+                cout << "2. Heal\n";
+                cout << "3. AOE\n";
+
+                int pilih =
+                inputAngka(
+                "Pilih Tipe Baru : ");
+
+                if(pilih == 1)
+                    skills[index].tipe = "Damage";
+
+                else if(pilih == 2)
+                    skills[index].tipe = "Heal";
+
+                else if(pilih == 3)
+                    skills[index].tipe = "AOE";
             }
 
+            // POWER
+            if(pilih_update[3])
+            {
+                cout << "\nPower Lama : "
+                     << skills[index].power;
 
-            saveSkillCSV(skills, jumlah_skill);
-            tampilPesan("Skill berhasil diupdate!");
+                cout << "\nPower Baru : ";
+
+                skills[index].power =
+                inputAngka("");
+            }
+
+            saveSkillCSV(
+                skills,
+                jumlah_skill
+            );
+
+            tampilPesan(
+            "Skill berhasil diupdate!");
+
             return;
         }
-    }
 
-    if(!ditemukan)
-    {
-        tampilPesan2("Skill tidak ditemukan!");
+        // ESC
+        else if(tombol == 27)
+        {
+            tampilPesan(
+            "Update dibatalkan!");
+
+            return;
+        }
     }
 }
 
@@ -405,3 +568,161 @@ void deleteSkill(Skill skills[], int &jumlah_skill)
     tampilPesan2("Skill berhasil dihapus!");
 }
 
+int pilihSkillUpdate(Skill skills[], int jumlah_skill)
+{
+    if(jumlah_skill == 0)
+    {
+        tampilPesan("Belum ada skill!");
+        return -1;
+    }
+
+    int pilih = 0;
+
+    while(true)
+    {
+        CLEAR_SCREEN;
+
+        cout << "\n ______________________________________________________________________\n";
+        cout << "|                                                                      |\n";
+        cout << "|                          PILIH SKILL UPDATE                          |\n";
+        cout << "|______________________________________________________________________|\n";
+
+        cout << left
+             << setw(7)  << "|No"
+             << setw(25) << "|Nama"
+             << setw(15) << "|Element"
+             << setw(15) << "|Tipe"
+             << setw(10) << "|Power"
+             << "|\n";
+
+        cout << "|------|------------------------|--------------|--------------|---------|\n";
+
+        tampilSkillRekursifInput(
+            skills,
+            0,
+            jumlah_skill,
+            pilih
+        );
+
+        cout << "|______|________________________|______________|______________|_________|\n";
+
+        cout << "\n _________________________________________________\n";
+        cout << "|                 CONTROL MENU                   |\n";
+        cout << "|________________________________________________|\n";
+        cout << "| [UP/DOWN] | Pindah Cursor                      |\n";
+        cout << "| [ENTER]   | Pilih Skill                        |\n";
+        cout << "| [ESC]     | Kembali / Batal                    |\n";
+        cout << "|___________|____________________________________|\n";
+
+        char tombol = _getch();
+
+        // ARROW
+        if(tombol == -32)
+        {
+            tombol = _getch();
+
+            // UP
+            if(tombol == 72)
+            {
+                pilih--;
+
+                if(pilih < 0)
+                    pilih = jumlah_skill - 1;
+            }
+
+            // DOWN
+            else if(tombol == 80)
+            {
+                pilih++;
+
+                if(pilih >= jumlah_skill)
+                    pilih = 0;
+            }
+        }
+
+        // ENTER
+        else if(tombol == 13)
+        {
+            return pilih;
+        }
+
+        // ESC
+        else if(tombol == 27)
+        {
+            return -1;
+        }
+    }
+}
+
+void tampilSkillRekursifInput(
+    Skill skills[],
+    int index,
+    int jumlah,
+    int pilih
+)
+{
+    if(index >= jumlah)
+        return;
+
+    if(index == pilih)
+    {
+        setColor(15);
+        cout << "|>>";
+    }
+    else
+    {
+        cout << "|  ";
+        resetColor();
+    }
+
+    cout << left
+         << setw(4)
+         << index + 1;
+
+    cout << "|"
+         << setw(24);
+
+    setColor(15);
+    cout << skills[index].nama;
+    resetColor();
+
+    cout << "|"
+         << setw(14);
+
+    setColor(
+        getTypeColor(
+            skills[index].element
+        )
+    );
+
+    cout << skills[index].element;
+    resetColor();
+
+    cout << "|"
+         << setw(14);
+
+    setColor(
+        getTypeSkillColor(
+            skills[index].tipe
+        )
+    );
+
+    cout << skills[index].tipe;
+    resetColor();
+
+    cout << "|"
+         << setw(9);
+
+    setColor(12);
+    cout << skills[index].power;
+    resetColor();
+
+    cout << "|\n";
+
+    tampilSkillRekursifInput(
+        skills,
+        index + 1,
+        jumlah,
+        pilih
+    );
+}

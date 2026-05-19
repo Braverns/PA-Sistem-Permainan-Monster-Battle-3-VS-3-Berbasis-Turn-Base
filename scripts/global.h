@@ -150,6 +150,8 @@ void deleteMonster(Monster monsters[], int *jumlah_monster);
 void tampilDaftarUser(User users[], int jumlah_user);
 void deleteUser(User users[], int &jumlah_user);
 void menuKelolaMonster(Monster monsters[], int &jumlah_monster, int &next_monster_id);
+int pilihMonsterUpdate(Monster monsters[], int jumlah_monster);
+void tampilMonsterRekursifInput(Monster monsters[], int index, int jumlah, int pilih);
 
 
 
@@ -159,6 +161,9 @@ void createSkill(Skill skills[], int &jumlah_skill);
 void tampilSkillList(Skill skills[], int jumlah_skill);
 void updateSkill(Skill skills[], int jumlah_skill);
 void deleteSkill(Skill skills[], int &jumlah_skill);
+int pilihSkillUpdate(Skill skills[], int jumlah_skill);
+void tampilSkillRekursifInput(Skill skills[], int index, int jumlah, int pilih);
+
 
 //LOGIN
 void menuHome(int &state, bool &program_jalan);
