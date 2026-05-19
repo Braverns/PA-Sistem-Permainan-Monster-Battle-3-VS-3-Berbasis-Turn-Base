@@ -180,8 +180,6 @@ void tampilUserDeck(User users[], int current_user)
                  
     cout << "|______|________________________|_________|_________|_________|_________|_________________|___________|\n";
     cout << "Gold : " << users[current_user].gold << endl;
-
-    tunggu();
 }
 
 
