@@ -26,11 +26,18 @@ void menuSkill(Skill skills[], int &jumlah_skill)
             cout << "| ";
 
             if(cursor == i)
+            {
+                setColor(15);
                 cout << ">> ";
+            }
             else
+            {
                 cout << "   ";
+                resetColor();
+            }
 
             cout << left << setw(28) << menu[i] << " |\n";
+            resetColor();
         }
 
         cout << "|_________________________________|\n";
@@ -217,25 +224,33 @@ void tampilSkillList(Skill skills[], int jumlah_skill)
     {
         cout << "|"
              << left << setw(5)
-             << skills[i].id
+             << skills[i].id;
 
-             << "|"
-             << setw(24)
-             << skills[i].nama
+        cout << "|"
+             << setw(24);
+            setColor(14);
+        cout << skills[i].nama;
+        resetColor();
 
-             << "|"
-             << setw(14)
-             << skills[i].element
+        cout << "|"
+             << setw(14);
+            setColor(15);
+        cout << skills[i].element;
+        resetColor();
 
-             << "|"
-             << setw(14)
-             << skills[i].tipe
+        cout << "|"
+             << setw(14);
+            setColor(3);
+        cout << skills[i].tipe;
+        resetColor();
 
-             << "|"
-             << setw(9)
-             << skills[i].power
-
-             << "|\n";
+        cout << "|"
+             << setw(9);
+            setColor(12);
+        cout << skills[i].power;
+        resetColor();
+        
+        cout << "|\n";
     }
 
     cout << "|_____|________________________|______________|______________|_________|\n";

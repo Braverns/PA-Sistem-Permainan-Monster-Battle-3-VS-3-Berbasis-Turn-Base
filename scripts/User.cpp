@@ -6,7 +6,7 @@ void menuUser(User users[], Monster monsters[], Skill skills[],
 {
     int cursor = 0;
 
-    string menu[10] =
+    string menu[9] =
     {
         "Battle",
         "Active Team",
@@ -15,7 +15,6 @@ void menuUser(User users[], Monster monsters[], Skill skills[],
         "Monster List",
         "Sacrifice Monster",
         "Delete Monster",
-        "Sort Deck",
         "Search Deck",
         "Logout"
     };
@@ -28,16 +27,23 @@ void menuUser(User users[], Monster monsters[], Skill skills[],
         cout << "|            MENU USER            |\n";
         cout << "|_________________________________|\n";
 
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 9; i++)
         {
             cout << "| ";
 
             if(cursor == i)
+            {
+                setColor(15);
                 cout << ">> ";
+            }
             else
+            {
                 cout << "   ";
+                resetColor();
+            }
 
             cout << left << setw(28) << menu[i] << " |\n";
+            resetColor();
         }
 
         cout << "|_________________________________|\n";
@@ -58,7 +64,7 @@ void menuUser(User users[], Monster monsters[], Skill skills[],
                 cursor--;
 
                 if(cursor < 0)
-                    cursor = 9;
+                    cursor = 8;
             }
 
             // DOWN
@@ -68,7 +74,7 @@ void menuUser(User users[], Monster monsters[], Skill skills[],
 
                 cursor++;
 
-                if(cursor > 9)
+                if(cursor > 8)
                     cursor = 0;
             }
         }
@@ -118,14 +124,10 @@ void menuUser(User users[], Monster monsters[], Skill skills[],
                     break;
 
                 case 7:
-                    menuSort(users, current_user);
-                    break;
-
-                case 8:
                     menuSearch(users, current_user);
                     break;
 
-                case 9:
+                case 8:
                     logout(state);
                     return;
             }
@@ -327,66 +329,34 @@ void sortDeckIDAscending(UserMonster monsters[], int jumlah)
     }
 }
 
-int binarySearchID(UserMonster *monsters, int jumlah, int target_id)
+int interpolationSearchID(UserMonster *monsters, int jumlah, int target_id)
 {
     int left = 0, right = jumlah - 1;
 
-    while(left <= right)
+    while(left <= right &&
+          target_id >= monsters[left].monster_id &&
+          target_id <= monsters[right].monster_id)
     {
-        int mid = (left + right) / 2;
+        // Hindari pembagian nol
+        if(monsters[right].monster_id == monsters[left].monster_id)
+        {
+            if(monsters[left].monster_id == target_id) return left;
+            else return -1;
+        }
 
-        if(monsters[mid].monster_id == target_id)
-            return mid;
-        else if(monsters[mid].monster_id < target_id)
-            left = mid + 1;
+        // Rumus interpolasi
+        int pos = left + ((target_id - monsters[left].monster_id) * (right - left))
+                        / (monsters[right].monster_id - monsters[left].monster_id);
+
+        if(monsters[pos].monster_id == target_id)
+            return pos;
+        else if(monsters[pos].monster_id < target_id)
+            left = pos + 1;
         else
-            right = mid - 1;
+            right = pos - 1;
     }
 
     return -1;
-}
-
-
-void menuSort(User users[], int current_user)
-{
-    CLEAR_SCREEN;
-
-    int pilih;
-
-    cout << "\n=== MENU SORT ===\n";
-    cout << "1. Nama (A-Z)\n";
-    cout << "2. HP (Desc)\n";
-    cout << "3. ID (Asc)\n";
-    cout << "Pilih: ";
-    cin >> pilih;
-
-    if(users[current_user].deck.jumlah == 0)
-    {
-        cout << "Deck kosong\n";
-        return;
-    }
-
-    switch(pilih)
-    {
-        case 1:
-            sortDeckNamaAscending(users[current_user].deck.monsters, users[current_user].deck.jumlah);
-            break;
-
-        case 2:
-            sortDeckHPDescending(users[current_user].deck.monsters, users[current_user].deck.jumlah);
-            break;
-
-        case 3:
-            sortDeckIDAscending(users[current_user].deck.monsters, users[current_user].deck.jumlah);
-            break;
-
-        default:
-            cout << "Pilihan tidak valid\n";
-            return;
-    }
-
-    tampilUserDeck(users, current_user);
-
 }
 
 void menuSearch(User users[], int current_user)
@@ -426,7 +396,7 @@ void menuSearch(User users[], int current_user)
 
         CLEAR_SCREEN;
 
-        int index = binarySearchID(users[current_user].deck.monsters, users[current_user].deck.jumlah, id);
+        int index = interpolationSearchID(users[current_user].deck.monsters, users[current_user].deck.jumlah, id);
 
         tampilHasilSearchID(users[current_user].deck.monsters, index);
         tungguEnter();

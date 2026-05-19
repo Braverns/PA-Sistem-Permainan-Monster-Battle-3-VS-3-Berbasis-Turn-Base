@@ -26,11 +26,18 @@ void menuKelolaMonster(Monster monsters[], int &jumlah_monster, int &next_monste
             cout << "| ";
 
             if(cursor == i)
+            {
+                setColor(15);
                 cout << ">> ";
+            }
             else
+            {
                 cout << "   ";
+                resetColor();
+            }
 
             cout << left << setw(28) << menu[i] << " |\n";
+            resetColor();
         }
 
         cout << "|_________________________________|\n";
@@ -273,37 +280,51 @@ void tampilMonsterList(Monster monsters[], int jumlah_monster)
     {
         cout << "|"
              << left << setw(4)
-             << monsters[i].status.id
+             << monsters[i].status.id;
 
-             << "|"
-             << setw(24)
-             << monsters[i].status.nama
+        cout << "|"
+             << setw(24);
+                setColor(15);
+        cout << monsters[i].status.nama;
+        resetColor();
+             
+        cout << "|"
+             << setw(10);
+        setColor(10);
+        cout << monsters[i].status.hp;
+        resetColor();
 
-             << "|"
+        setColor(12);
+        cout << "|"
              << setw(10)
-             << monsters[i].status.hp
+             << monsters[i].status.attack;
+        resetColor();
 
-             << "|"
-             << setw(10)
-             << monsters[i].status.attack
+        cout << "|"
+        << setw(10);
+        setColor(14);
+        cout << monsters[i].status.defense;
+        resetColor();
 
-             << "|"
-             << setw(10)
-             << monsters[i].status.defense
+        cout << "|"
+             << setw(10);
+        setColor(9);
+        cout << monsters[i].status.speed;
+        resetColor();
 
-             << "|"
-             << setw(10)
-             << monsters[i].status.speed
+        cout << "|"
+             << setw(21);
+        setColor(getTypeColor(monsters[i].type.tipe));
+        cout << monsters[i].type.tipe;
+        resetColor();
 
-             << "|"
-             << setw(21)
-             << monsters[i].type.tipe
+        cout << "|"
+             << setw(11);
+        setColor(getRarityColor(monsters[i].rarity.rarity));
+        cout << monsters[i].rarity.rarity;
+        resetColor();
 
-             << "|"
-             << setw(11)
-             << monsters[i].rarity.rarity
-
-             << "|\n";
+        cout << "|\n";
     }
 
     cout << "|____|________________________|__________|__________|__________|__________|_____________________|___________|\n";
@@ -441,7 +462,7 @@ void updateMonster( Monster monsters[], int jumlah_monster)
 
     if(!ditemukan)
     {
-        tampilPesan("ID monster tidak ditemukan!");
+        tampilPesan2("ID monster tidak ditemukan!");
         return;
     }
 

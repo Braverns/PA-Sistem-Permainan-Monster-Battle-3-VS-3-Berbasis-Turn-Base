@@ -26,11 +26,18 @@ void menuAdmin(User users[], Monster monsters[], Skill skills[],
             cout << "| ";
 
             if(cursor == i)
+            {
+                setColor(15);
                 cout << ">> ";
+            }
             else
+            {
+                resetColor();
                 cout << "   ";
+            }    
 
             cout << left << setw(28) << menu[i] << " |\n";
+            resetColor();
         }
 
         cout << "|_________________________________|\n";
@@ -124,11 +131,16 @@ void menuKelolaUser(User users[], int &jumlah_user)
             cout << "| ";
 
             if(cursor == i)
+            {
+                setColor(15);
                 cout << ">> ";
-            else
+            }else
+            {
+                resetColor();
                 cout << "   ";
-
+            }
             cout << left << setw(28) << menu[i] << " |\n";
+            resetColor();
         }
 
         cout << "|_________________________________|\n";
