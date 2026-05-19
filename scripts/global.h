@@ -196,6 +196,7 @@ void sacrificeMonster(User users[], int current_user, int jumlah_user);
 void deleteMonsterUser(User users[],int current_user,int jumlah_user);
 
 // USER ACTIVE TEAM
+void menuActiveTeam(User users[], int current_user, int jumlah_user);
 void pilihActiveTeam(User users[], int current_user, int jumlah_user);
 void tampilActiveTeam(User users[], int current_user);
 int activeDeckInput(User users[], int current_user, int slot_ke, int pilihan[]);

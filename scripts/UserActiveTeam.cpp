@@ -2,27 +2,126 @@
 
 void tampilActiveTeam(User users[], int current_user)
 {
-    cout << "\n _____________________________________________________________________________________________________________________\n";
-    cout << "|                                                                                                                     |\n";
-    cout << "|                                                ACTIVE TEAM MONSTER                                                 |\n";
-    cout << "|_____________________________________________________________________________________________________________________|\n";
+    cout << "\n _______________________________________________________________________________________________________\n";
+    cout << "|                                                                                                       |\n";
+    cout << "|                                           ACTIVE TEAM                                                 |\n";
+    cout << "|_______________________________________________________________________________________________________|\n";
+
+    cout << left
+         << setw(9)  << "|Slot"
+         << setw(25) << "|Nama"
+         << setw(10) << "|HP"
+         << setw(10) << "|ATK"
+         << setw(10) << "|DEF"
+         << setw(10) << "|SPD"
+         << setw(18) << "|Type"
+         << setw(12) << "|Rarity"
+         << "|"
+         << endl;
+
+    cout << "|--------|------------------------|---------|---------|---------|---------|-----------------|-----------|\n";
 
     for(int i = 0; i < 3; i++)
     {
         int idx = users[current_user].active_team[i];
 
-        cout << i + 1 << ". ";
-
+        // SLOT KOSONG
         if(idx == -1)
         {
-            cout << "[KOSONG]\n";
+            cout << "|"
+                 << left << setw(8)
+                 << i + 1
+
+                 << "|"
+                 << setw(24)
+                 << "[KOSONG]"
+
+                 << "|"
+                 << setw(9)
+                 << "-"
+
+                 << "|"
+                 << setw(9)
+                 << "-"
+
+                 << "|"
+                 << setw(9)
+                 << "-"
+
+                 << "|"
+                 << setw(9)
+                 << "-"
+
+                 << "|"
+                 << setw(17)
+                 << "-"
+
+                 << "|"
+                 << setw(11)
+                 << "-"
+
+                 << "|\n";
         }
+
+        // ADA MONSTER
         else
         {
-            UserMonster m = users[current_user].deck.monsters[idx];
-            cout << m.nama << " | HP: " << m.hp << " | Type: " << m.type << " | Rarity: " << m.rarity  << endl;
+            UserMonster m =
+            users[current_user]
+            .deck
+            .monsters[idx];
+
+            cout << "|"
+                 << left << setw(8)
+                 << i + 1;
+
+            cout << "|"
+                 << setw(24);
+            setColor(15);
+            cout << m.nama;
+            resetColor();
+
+            cout << "|"
+                 << setw(9);
+            setColor(10);
+            cout << m.hp;
+            resetColor();
+
+            cout << "|"
+                 << setw(9);
+            setColor(12);
+            cout << m.attack;
+            resetColor();
+
+            cout << "|"
+                 << setw(9);
+            setColor(14);
+            cout << m.defense;
+            resetColor();
+
+            cout << "|"
+                 << setw(9);
+            setColor(9);
+            cout << m.speed;
+            resetColor();
+
+            cout << "|"
+                 << setw(17);
+            setColor(getTypeColor(m.type));
+            cout << m.type;
+            resetColor();
+
+            cout << "|"
+                 << setw(11);
+            setColor(getRarityColor(m.rarity));
+            cout << m.rarity;
+            resetColor();
+
+            cout << "|\n";
         }
     }
+
+    cout << "|________|________________________|_________|_________|_________|_________|_________________|___________|\n";
 }
 
 void pilihActiveTeam(User users[], int current_user, int jumlah_user)
@@ -78,7 +177,8 @@ void pilihActiveTeam(User users[], int current_user, int jumlah_user)
 
     CLEAR_SCREEN;
 
-    tampilPesan("Active team berhasil disimpan!");
+    tampilActiveTeam(users, current_user);
+    tunggu();
 }
 
 int activeDeckInput(User users[], int current_user, int slot_ke, int pilihan[])
@@ -269,4 +369,116 @@ void rekursifActiveTeamInput(UserMonster monsters[], int index, int jumlah, int 
 
     rekursifActiveTeamInput(monsters, index + 1, jumlah, pilih);
     resetColor();
+}
+
+void menuActiveTeam(User users[], int current_user, int jumlah_user)
+{
+    int cursor = 0;
+
+    string menu[3] =
+    {
+        "Lihat Active Team",
+        "Pilih Active Team",
+        "Kembali"
+    };
+
+    while(true)
+    {
+        CLEAR_SCREEN;
+
+        cout << "\n __________________________________\n";
+        cout << "|          ACTIVE TEAM            |\n";
+        cout << "|_________________________________|\n";
+
+        for(int i = 0; i < 3; i++)
+        {
+            cout << "| ";
+
+            if(cursor == i)
+            {
+                setColor(15);
+                cout << ">> ";
+            }
+            else
+            {
+                resetColor();
+                cout << "   ";
+            }
+
+            cout << left  << setw(28)
+                 << menu[i]
+                 << " |\n";
+
+            resetColor();
+        }
+
+        cout << "|_________________________________|\n";
+        cout << "\nGunakan UP/DOWN dan ENTER\n";
+
+        char tombol = _getch();
+
+        // ARROW
+        if(tombol == -32)
+        {
+            tombol = _getch();
+
+            // UP
+            if(tombol == 72)
+            {
+                playSFX(L"music/cursor3.wav");
+
+                cursor--;
+
+                if(cursor < 0)
+                    cursor = 2;
+            }
+
+            // DOWN
+            else if(tombol == 80)
+            {
+                playSFX(L"music/cursor3.wav");
+
+                cursor++;
+
+                if(cursor > 2)
+                    cursor = 0;
+            }
+        }
+
+        // ENTER
+        else if(tombol == 13)
+        {
+            switch(cursor)
+            {
+                // LIHAT ACTIVE TEAM
+                case 0:
+                {
+                    CLEAR_SCREEN;
+
+                    tampilActiveTeam(users, current_user);
+                    tunggu();
+                    break;
+                }
+
+                // PILIH ACTIVE TEAM
+                case 1:
+                {
+                    pilihActiveTeam(users, current_user, jumlah_user);
+                    break;
+                }
+
+                // KEMBALI
+                case 2:
+                {
+                    return;
+                }
+            }
+        }
+
+        // ESC
+        else if(tombol == 27)
+        {
+            return;
+        }
+    }
 }
